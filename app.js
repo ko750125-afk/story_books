@@ -1,7 +1,47 @@
 // ==========================================
 // 꼬마 탐정 아리의 4대 마법 모험 시리즈 전집
-// 게임 엔진 및 4개 동화 스토리 종합 소스 코드
+// 동화 코스별 4대 맞춤 엔딩 도감 통합 소스 코드
 // ==========================================
+
+// 1. 동화 코스별 엔딩 메타데이터 정의 (각 4종 독립 엔딩)
+const storyAlbumMeta = {
+  story1: {
+    title: "📚 1탄: 비밀 도서관 마법 엔딩 도감",
+    endings: [
+      { id: "ending-happy", title: "🔑 도서관 수호자 엔딩", icon: "🔑", img: "assets/images/scene_ending_happy.png" },
+      { id: "ending-detective", title: "🌟 전설의 꼬마 탐정 엔딩", icon: "🌟", img: "assets/images/scene_ending_detective.png" },
+      { id: "ending-toy", title: "🐭 장난감 친구 엔딩", icon: "🐭", img: "assets/images/scene_ending_toy.png" },
+      { id: "ending-ghost", title: "👻 왁자지껄 유령 파티 엔딩", icon: "👻", img: "assets/images/scene_ending_ghost.png" }
+    ]
+  },
+  story2: {
+    title: "🍫 2탄: 달콤한 과자 성 마법 엔딩 도감",
+    endings: [
+      { id: "ending-happy", title: "👑 과자 왕국 수호자 엔딩", icon: "👑", img: "assets/images/scene_story2_ending.png" },
+      { id: "ending-detective", title: "🔍 달콤한 과자 명탐정 엔딩", icon: "🔍", img: "assets/images/scene_ending_detective.png" },
+      { id: "ending-toy", title: "🧸 젤리 곰 장난감 파티 엔딩", icon: "🧸", img: "assets/images/scene_story2_cookie.png" },
+      { id: "ending-ghost", title: "🍪 과자 성 달콤 대축제 엔딩", icon: "🍪", img: "assets/images/scene_story2_start.png" }
+    ]
+  },
+  story3: {
+    title: "🌊 3탄: 바닷속 용궁 마법 엔딩 도감",
+    endings: [
+      { id: "ending-happy", title: "🌈 해저 용궁 수호자 엔딩", icon: "🌈", img: "assets/images/scene_ending_happy.png" },
+      { id: "ending-detective", title: "🏆 용궁 해저 명탐정 엔딩", icon: "🏆", img: "assets/images/scene_ending_detective.png" },
+      { id: "ending-toy", title: "🐟 태엽 물고기 댄스 엔딩", icon: "🐟", img: "assets/images/scene_ending_toy.png" },
+      { id: "ending-ghost", title: "🐢 부기와 용궁 파티 엔딩", icon: "🐢", img: "assets/images/scene_story3_palace.png" }
+    ]
+  },
+  story4: {
+    title: "🚀 4탄: 장난감 우주선 마법 엔딩 도감",
+    endings: [
+      { id: "ending-happy", title: "🌌 은하수 우주 수호자 엔딩", icon: "🌌", img: "assets/images/scene_ending_happy.png" },
+      { id: "ending-detective", title: "🏆 전설의 우주 명탐정 엔딩", icon: "🏆", img: "assets/images/scene_ending_detective.png" },
+      { id: "ending-toy", title: "🤖 우주 로봇 파티 엔딩", icon: "🤖", img: "assets/images/scene_ending_toy.png" },
+      { id: "ending-ghost", title: "🪐 토성 띠 우주 파티 엔딩", icon: "🪐", img: "assets/images/scene_start.png" }
+    ]
+  }
+};
 
 // ------------------------------------------
 // 📚 동화 1탄: 비밀 도서관과 꼬마 유령 퐁이
@@ -298,9 +338,7 @@ const story4Data = {
   }
 };
 
-// ------------------------------------------
 // 동화 시리즈 통합 맵
-// ------------------------------------------
 const allStories = {
   story1: story1Data,
   story2: story2Data,
@@ -336,38 +374,11 @@ function getActiveStoryData() {
   return allStories[currentStoryKey] || story1Data;
 }
 
-// 헬퍼 함수: 엔딩 이름 반환
+// 헬퍼 함수: 현재 스토리의 특정 엔딩 이름 반환
 function getEndingName(endingId) {
-  if (currentStoryKey === "story2") {
-    switch (endingId) {
-      case "ending-happy": return "과자 왕국 수호자 엔딩";
-      case "ending-detective": return "달콤한 과자 명탐정 엔딩";
-      case "ending-toy": return "젤리 곰 장난감 파티 엔딩";
-      default: return "과자 왕국 수호자 엔딩";
-    }
-  } else if (currentStoryKey === "story3") {
-    switch (endingId) {
-      case "ending-happy": return "해저 용궁 수호자 엔딩";
-      case "ending-detective": return "용궁 해저 명탐정 엔딩";
-      case "ending-toy": return "태엽 물고기 댄스 엔딩";
-      default: return "해저 용궁 수호자 엔딩";
-    }
-  } else if (currentStoryKey === "story4") {
-    switch (endingId) {
-      case "ending-happy": return "은하수 우주 수호자 엔딩";
-      case "ending-detective": return "전설의 우주 명탐정 엔딩";
-      case "ending-toy": return "우주 로봇 파티 엔딩";
-      default: return "은하수 우주 수호자 엔딩";
-    }
-  } else {
-    switch (endingId) {
-      case "ending-happy": return "도서관 수호자 엔딩";
-      case "ending-detective": return "전설의 꼬마 탐정 엔딩";
-      case "ending-toy": return "장난감 친구 엔딩";
-      case "ending-ghost": return "왁자지껄 유령 파티 엔딩";
-      default: return "도서관 수호자 엔딩";
-    }
-  }
+  const meta = storyAlbumMeta[currentStoryKey] || storyAlbumMeta.story1;
+  const found = meta.endings.find(e => e.id === endingId);
+  return found ? found.title : "마법 해피 엔딩";
 }
 
 // 로컬 스토리지 로드
@@ -522,18 +533,16 @@ function showCelebrationModal(endingId) {
     cardEl.style.animation = "popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards";
   }
 
-  let endingImg = "assets/images/scene_ending_happy.png";
-  let endingTitle = getEndingName(endingId);
+  const currentMeta = storyAlbumMeta[currentStoryKey] || storyAlbumMeta.story1;
+  const foundEnding = currentMeta.endings.find(e => e.id === endingId);
 
-  if (endingId === "ending-happy") endingImg = "assets/images/scene_ending_happy.png";
-  else if (endingId === "ending-detective") endingImg = "assets/images/scene_ending_detective.png";
-  else if (endingId === "ending-toy") endingImg = "assets/images/scene_ending_toy.png";
-  else if (endingId === "ending-ghost") endingImg = "assets/images/scene_ending_ghost.png";
+  let endingImg = foundEnding ? foundEnding.img : "assets/images/scene_ending_happy.png";
+  let endingTitle = foundEnding ? foundEnding.title : getEndingName(endingId);
 
   celImageEl.src = endingImg;
-  celEndingNameEl.textContent = `🔑 ${endingTitle}`;
-  celTitleEl.textContent = "🎉 마법 동화 엔딩 달성!";
-  celDescEl.textContent = "아리와 함께 동화 속 멋진 모험을 성공적으로 마쳤습니다! 축하합니다!";
+  celEndingNameEl.textContent = endingTitle;
+  celTitleEl.textContent = "🎉 새로운 동화 엔딩 해금!";
+  celDescEl.textContent = "아리와 함께 동화 속 멋진 모험의 결말을 성공적으로 달성하셨습니다! 축하합니다!";
 
   launchConfetti();
 
@@ -597,33 +606,55 @@ function launchConfetti() {
   requestAnimationFrame(render);
 }
 
-// 도감 UI 업데이트
+// 8. 동화 코스별 맞춤 엔딩 도감 UI 실시간 동적 렌더링
 function updateAlbumUI() {
-  const currentUnlocked = unlockedEndingsMap[currentStoryKey] || [];
-  const endingIds = ["ending-happy", "ending-detective", "ending-toy", "ending-ghost"];
-  endingIds.forEach(id => {
-    const itemEl = document.getElementById(id);
-    if (itemEl) {
-      const h3El = itemEl.querySelector("h3");
-      if (h3El) h3El.textContent = getEndingName(id);
+  const gridEl = document.getElementById("album-grid");
+  const albumTitleEl = document.getElementById("album-title");
+  const albumDescEl = document.getElementById("album-desc");
+  if (!gridEl) return;
 
-      if (currentUnlocked.includes(id)) {
-        itemEl.classList.add("unlocked");
-        const statusEl = itemEl.querySelector(".album-status");
-        if (statusEl) statusEl.textContent = "🎉 획득 (클릭하여 감상)";
-        
-        itemEl.onclick = () => {
-          showCelebrationModal(id);
-        };
-        itemEl.style.cursor = "pointer";
-      } else {
-        itemEl.classList.remove("unlocked");
-        const statusEl = itemEl.querySelector(".album-status");
-        if (statusEl) statusEl.textContent = "🔒 미획득";
-        itemEl.onclick = null;
-        itemEl.style.cursor = "default";
-      }
+  const currentMeta = storyAlbumMeta[currentStoryKey] || storyAlbumMeta.story1;
+  const currentUnlocked = unlockedEndingsMap[currentStoryKey] || [];
+
+  if (albumTitleEl) {
+    albumTitleEl.textContent = `🏆 ${currentMeta.title}`;
+  }
+  if (albumDescEl) {
+    albumDescEl.textContent = `이 동화 모험의 엔딩 수집 현황: (달성 ${currentUnlocked.length} / ${currentMeta.endings.length})`;
+  }
+
+  gridEl.innerHTML = "";
+
+  currentMeta.endings.forEach(meta => {
+    const itemEl = document.createElement("div");
+    itemEl.className = "album-item";
+    itemEl.id = meta.id;
+
+    const isUnlocked = currentUnlocked.includes(meta.id);
+
+    if (isUnlocked) {
+      itemEl.classList.add("unlocked");
+      itemEl.innerHTML = `
+        <div class="album-status">🎉 획득 (클릭하여 감상)</div>
+        <img src="${meta.img}" alt="${meta.title}">
+        <h3>${meta.title}</h3>
+      `;
+      itemEl.onclick = () => {
+        showCelebrationModal(meta.id);
+      };
+      itemEl.style.cursor = "pointer";
+    } else {
+      itemEl.classList.remove("unlocked");
+      itemEl.innerHTML = `
+        <div class="album-status">🔒 미획득</div>
+        <img src="${meta.img}" alt="${meta.title}" style="filter: grayscale(1) opacity(0.4);">
+        <h3>${meta.title}</h3>
+      `;
+      itemEl.onclick = null;
+      itemEl.style.cursor = "default";
     }
+
+    gridEl.appendChild(itemEl);
   });
 }
 

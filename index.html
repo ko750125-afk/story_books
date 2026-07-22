@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>꼬마 탐정 아리와 비밀 도서관의 꼬마 유령</title>
-  <!-- 네이버 나눔고딕, 주아 폰트 임포트 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+  <title>꼬마 탐정 아리의 마법 모험 시리즈</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Nanum+Round:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="app" class="app-container">
-    <!-- 상단 진행 표시 및 헤더 -->
+  <!-- 폭죽 애니메이션 캠버스 -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="app-container">
+    <!-- 헤더 영역 -->
     <header class="header">
-      <div class="logo">🔍 아리의 도서관 모험</div>
-      <div class="progress-container">
-        <span class="progress-label">탐험도</span>
-        <div class="progress-bar">
-          <div id="progress" class="progress-fill" style="width: 10%;"></div>
+      <div class="title-area">
+        <h1 id="app-title">🔍 꼬마 탐정 아리의 마법 모험 시리즈</h1>
+        <div class="progress-bar-container">
+          <div id="progress" class="progress-bar"></div>
         </div>
       </div>
       <div class="header-controls">
@@ -38,41 +37,37 @@
 
     <!-- 메인 컨텐츠 영역 -->
     <main class="main-content">
-      <!-- 삽화 카드 -->
+      <!-- 삽화 일러스트 카드 -->
       <div class="illustration-card">
         <img id="illustration" src="assets/images/scene_start.png" alt="동화 삽화">
       </div>
 
-      <!-- 이야기 카드 -->
-      <section class="story-card" id="story-card">
+      <!-- 본문 스토리 카드 -->
+      <div id="story-card" class="story-card">
         <div class="story-header">
-          <button id="btn-tts" class="btn-tts" title="다정한 목소리로 동화 읽어주기">🔊 동화 읽어주기</button>
+          <button id="btn-tts" class="btn-tts" title="성우 목소리로 동화 듣기">🔊 동화 읽어주기</button>
         </div>
-        <div id="story-text" class="story-text">
-          이야기가 곧 시작됩니다...
-        </div>
-      </section>
+        <p id="story-text" class="story-text">
+          스토리 로딩 중...
+        </p>
+      </div>
 
-      <!-- 선택지 버튼 영역 -->
-      <section id="choice-container" class="choice-container">
-        <!-- 동적으로 버튼이 생성됩니다 -->
-      </section>
+      <!-- 선택지 카트 컨테이너 -->
+      <div id="choice-container" class="choice-container">
+        <!-- JS에서 버튼 생성 -->
+      </div>
     </main>
 
-    <!-- 마법 폭죽 컨페티 캔버스 -->
-    <canvas id="confetti-canvas"></canvas>
-
-    <!-- 엔딩 해금 축하 팝업 모달 -->
+    <!-- 엔딩 축하 마법 팝업 모달 -->
     <div id="celebration-modal" class="modal hidden">
       <div class="celebration-card">
-        <div class="sparkle-badge">✨ NEW ENDING! ✨</div>
-        <h2 id="cel-title" class="cel-title">🎉 새로운 도감 해금!</h2>
-        <div class="cel-image-box">
-          <img id="cel-image" src="assets/images/scene_ending_happy.png" alt="해금된 엔딩 이미지">
+        <h2 id="cel-title">🎉 새로운 엔딩 도감 해금!</h2>
+        <div class="cel-badge-frame">
+          <img id="cel-image" src="assets/images/scene_ending_happy.png" alt="엔딩 기념">
         </div>
-        <h3 id="cel-ending-name" class="cel-ending-name">🔑 도서관 수호자 엔딩</h3>
-        <p id="cel-desc" class="cel-desc">축하합니다! 아리와 함께 도서관의 비밀을 밝혀내셨습니다.</p>
-        <button id="btn-close-cel" class="btn-cel-confirm">🌟 도감에서 확인하기</button>
+        <h3 id="cel-ending-name">🔑 도서관 수호자 엔딩</h3>
+        <p id="cel-desc">아리와 함께 동화 속 새로운 모험의 결말을 밝혀내셨습니다!</p>
+        <button id="btn-close-cel" class="btn-primary">도감에서 확인하기</button>
       </div>
     </div>
 
@@ -80,34 +75,15 @@
     <div id="album-modal" class="modal hidden">
       <div class="modal-content">
         <div class="modal-header">
-          <h2>🏆 마법 엔딩 도감</h2>
+          <h2 id="album-title">🏆 마법 엔딩 도감</h2>
           <button id="btn-close-album" class="btn-close">&times;</button>
         </div>
-        <p class="album-desc">모험을 통해 4가지 엔딩을 모두 모아보세요!</p>
-        <div class="album-grid">
-          <div class="album-item" id="ending-happy">
-            <div class="album-status">🔒 미획득</div>
-            <img src="assets/images/scene_ending_happy.png" alt="해피 엔딩">
-            <h3>🔑 도서관 수호자 엔딩</h3>
-          </div>
-          <div class="album-item" id="ending-detective">
-            <div class="album-status">🔒 미획득</div>
-            <img src="assets/images/scene_ending_detective.png" alt="탐정 엔딩">
-            <h3>🌟 전설의 꼬마 탐정 엔딩</h3>
-          </div>
-          <div class="album-item" id="ending-toy">
-            <div class="album-status">🔒 미획득</div>
-            <img src="assets/images/scene_ending_toy.png" alt="장난감 엔딩">
-            <h3>🐭 장난감 친구 엔딩</h3>
-          </div>
-          <div class="album-item" id="ending-ghost">
-            <div class="album-status">🔒 미획득</div>
-            <img src="assets/images/scene_ending_ghost.png" alt="유령 파티 엔딩">
-            <h3>👻 왁자지껄 유령 파티 엔딩</h3>
-          </div>
+        <p id="album-desc" class="album-desc">모험을 통해 4가지 엔딩을 모두 모아보세요!</p>
+        <div id="album-grid" class="album-grid">
+          <!-- JS에서 동화 코스에 맞춰 4개 맞춤 엔딩 카드가 동적으로 자동 생성됨 -->
         </div>
         <div class="modal-footer">
-          <button id="btn-reset-story" class="btn-reset">처음부터 다시 읽기</button>
+          <button id="btn-reset-story" class="btn-secondary">🔄 처음부터 다시 도전하기</button>
         </div>
       </div>
     </div>
