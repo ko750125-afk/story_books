@@ -240,15 +240,16 @@ function renderNode(nodeId) {
       }
     }
 
-    // 페이드 인
+    // 페이드 인 및 fade-out 클래스 완벽 제거 (선택지 가시성 복구)
     illustrationEl.parentElement.classList.remove("fade-out");
     storyTextEl.parentElement.classList.remove("fade-out");
-    choiceContainerEl.classList.add("fade-in");
+    choiceContainerEl.classList.remove("fade-out");
+
     illustrationEl.parentElement.classList.add("fade-in");
     storyTextEl.parentElement.classList.add("fade-in");
     choiceContainerEl.classList.add("fade-in");
 
-    // 0.5초 뒤 클래스 정리
+    // 0.5초 뒤 트랜지션 클래스 정리
     setTimeout(() => {
       illustrationEl.parentElement.classList.remove("fade-in");
       storyTextEl.parentElement.classList.remove("fade-in");
@@ -454,19 +455,13 @@ if (btnTtsEl) {
     } else {
       window.soundManager.playClick();
 
-      // 본문 텍스트 조합
+      // 동화 본문 텍스트 낭독
       let fullTextToRead = storyTextEl.textContent;
 
-      // 선택지까지 포함하여 음성으로 맛깔나게 연결 낭독
+      // 선택지 노드인 경우 본문을 다 읽은 후 지우를 다정하게 부르는 멘트만 추가
       const currentChoices = storyData[currentNodeId]?.choices;
       if (currentChoices && currentChoices.length > 0) {
-        fullTextToRead += "\n\n아리의 선택!";
-        currentChoices.forEach((choice, idx) => {
-          // 특수 기호 이모지 제거하고 낭독용 텍스트 다듬기
-          const cleanChoiceText = choice.text.replace(/[\u{1F300}-\u{1F6FF}\u{2600}-\u{26FF}]/gu, '');
-          fullTextToRead += `\n${idx + 1}번, ${cleanChoiceText}.`;
-        });
-        fullTextToRead += "\n대표님, 어떤 길을 선택할까요?";
+        fullTextToRead += "\n\n지우야, 어떤 길을 선택할래?";
       }
 
       window.soundManager.speakText(
