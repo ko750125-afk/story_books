@@ -659,25 +659,38 @@ body {
   content: '🎉 획득!';
 }
 
+/* 도감 모달 하단 버튼 영역 */
 .modal-footer {
   margin-top: 20px;
   display: flex;
+  gap: 12px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
-.btn-reset {
+/* 처음부터 다시 도전하기 버튼 */
+.btn-secondary {
   font-family: 'Jua', sans-serif;
-  background: #3a0ca3;
-  color: white;
-  border: 1px solid rgba(255,255,255,0.2);
   padding: 10px 20px;
+  border: none;
   border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.3s;
+  background: linear-gradient(135deg, #3a0ca3 0%, #4361ee 100%);
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(67, 97, 238, 0.35);
 }
 
-.btn-reset:hover {
-  background: #4361ee;
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #4361ee 0%, #4cc9f0 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(67, 97, 238, 0.5);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
 }
 
 /* 화면 페이드 효과용 클래스 */
@@ -715,45 +728,221 @@ body {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* 미디어 쿼리 - 태블릿 및 모바일 최적화 */
-@media (max-width: 600px) {
+/* 미디어 쿼리 - 태블릿 및 모바일 전면 최적화 */
+@media (max-width: 768px) {
   .app-container {
-    padding: 10px;
+    padding: 8px;
+    max-height: none;
+    height: auto;
+    min-height: 100vh;
   }
-  .logo {
-    font-size: 1.1rem;
+
+  /* 헤더 모바일 */
+  .header {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 12px;
   }
-  .btn-icon {
-    padding: 6px 12px;
-    font-size: 0.9rem;
+
+  .title-area {
+    text-align: center;
+    width: 100%;
   }
-  .illustration-card {
-    height: 35%;
-    min-height: 180px;
-  }
-  .story-text {
-    font-size: 1.1rem;
-    line-height: 1.6;
-  }
-  .btn-choice {
-    padding: 12px 15px;
+
+  #app-title {
     font-size: 1rem;
+    line-height: 1.3;
   }
+
+  .total-score-badge {
+    font-size: 0.78rem;
+    padding: 3px 10px;
+  }
+
+  .progress-bar-container {
+    margin-top: 4px;
+  }
+
+  .header-controls {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .story-selector-container {
+    width: 100%;
+  }
+
+  .story-select {
+    width: 100%;
+    font-size: 0.82rem;
+    padding: 7px 10px;
+  }
+
+  .btn-icon {
+    padding: 6px 10px;
+    font-size: 0.82rem;
+    border-radius: 10px;
+  }
+
+  /* 삽화 카드 모바일 */
+  .illustration-card {
+    height: auto;
+    min-height: 160px;
+    max-height: 220px;
+    border-radius: 14px;
+  }
+
+  .illustration-card img {
+    animation: none;
+  }
+
+  /* 스토리 텍스트 모바일 */
+  .story-card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .story-text {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .btn-tts {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
+
+  /* 선택지 모바일 */
+  .btn-choice {
+    padding: 12px 14px;
+    font-size: 0.95rem;
+    border-radius: 12px;
+  }
+
+  /* 도감 모달 모바일 */
+  .modal-content {
+    width: 95%;
+    max-height: 90vh;
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .modal-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .modal-total-score {
+    font-size: 0.88rem;
+    padding: 5px 12px;
+  }
+
+  .album-desc {
+    font-size: 0.8rem;
+    margin: 6px 0 12px;
+  }
+
   .album-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
   }
+
+  .album-item {
+    padding: 8px;
+    border-radius: 12px;
+  }
+
   .album-item img {
-    height: 100px;
+    height: 80px;
+    border-radius: 8px;
+  }
+
+  .album-item h3 {
+    font-size: 0.8rem;
+    margin-top: 6px;
+  }
+
+  .album-status {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+  }
+
+  .album-item .score-tag {
+    font-size: 0.72rem;
+    padding: 2px 8px;
+  }
+
+  /* 하단 버튼 모바일 */
+  .modal-footer {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .btn-secondary,
+  .btn-danger {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  /* 경고 확인 모달 모바일 */
+  .confirm-card {
+    padding: 24px 18px;
+    max-width: 92%;
+    border-radius: 18px;
+  }
+
+  .confirm-title {
+    font-size: 1.25rem;
+  }
+
+  .confirm-desc {
+    font-size: 0.92rem;
+  }
+
+  .confirm-warning {
+    font-size: 0.95rem;
+    padding: 8px;
+  }
+
+  .confirm-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-confirm-cancel,
+  .btn-confirm-ok {
+    width: 100%;
+    padding: 12px;
   }
 }
 
-/* 도감 모달 하단 버튼 영역 */
-.modal-footer {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding-top: 10px;
+/* 초소형 모바일 (375px 이하) */
+@media (max-width: 375px) {
+  #app-title {
+    font-size: 0.88rem;
+  }
+
+  .story-text {
+    font-size: 0.92rem;
+  }
+
+  .btn-choice {
+    font-size: 0.88rem;
+    padding: 10px 12px;
+  }
+
+  .album-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .album-item img {
+    height: 100px;
+  }
 }
 
 /* 전체 기록 초기화 위험 버튼 */
