@@ -21,7 +21,10 @@
           <div id="progress" class="progress-fill" style="width: 10%;"></div>
         </div>
       </div>
-      <button id="btn-album" class="btn-icon" title="엔딩 앨범 열기">🏆 도감</button>
+      <div class="header-controls">
+        <button id="btn-bgm" class="btn-icon btn-bgm" title="배경음악 켜기/끄기">🎵 음악 ON</button>
+        <button id="btn-album" class="btn-icon" title="엔딩 앨범 열기">🏆 도감</button>
+      </div>
     </header>
 
     <!-- 메인 컨텐츠 영역 -->
@@ -43,6 +46,23 @@
         <!-- 동적으로 버튼이 생성됩니다 -->
       </section>
     </main>
+
+    <!-- 마법 폭죽 컨페티 캔버스 -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- 엔딩 해금 축하 팝업 모달 -->
+    <div id="celebration-modal" class="modal hidden">
+      <div class="celebration-card">
+        <div class="sparkle-badge">✨ NEW ENDING! ✨</div>
+        <h2 id="cel-title" class="cel-title">🎉 새로운 도감 해금!</h2>
+        <div class="cel-image-box">
+          <img id="cel-image" src="assets/images/scene_ending_happy.png" alt="해금된 엔딩 이미지">
+        </div>
+        <h3 id="cel-ending-name" class="cel-ending-name">🔑 도서관 수호자 엔딩</h3>
+        <p id="cel-desc" class="cel-desc">축하합니다! 아리와 함께 도서관의 비밀을 밝혀내셨습니다.</p>
+        <button id="btn-close-cel" class="btn-cel-confirm">🌟 도감에서 확인하기</button>
+      </div>
+    </div>
 
     <!-- 엔딩 앨범 모달 -->
     <div id="album-modal" class="modal hidden">
@@ -81,6 +101,7 @@
     </div>
   </div>
 
+  <script src="sound.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

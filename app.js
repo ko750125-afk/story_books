@@ -174,6 +174,15 @@ function renderNode(nodeId) {
   const node = storyData[nodeId];
   if (!node) return;
 
+  // 특수 노드 사운드 효과 트리거
+  if (window.soundManager) {
+    if (nodeId === "glowing_bookshelf" || nodeId === "friend_ghost" || nodeId === "search_clues") {
+      window.soundManager.playMagicChime();
+    } else if (node.choices && node.choices.length === 0) {
+      window.soundManager.playEndingFanfare();
+    }
+  }
+
   // 로컬스토리지에 현재 노드 저장
   localStorage.setItem("currentStoryNode", nodeId);
 
@@ -198,6 +207,10 @@ function renderNode(nodeId) {
         btn.className = "btn-choice";
         btn.textContent = choice.text;
         btn.addEventListener("click", () => {
+          if (window.soundManager) {
+            window.soundManager.playClick();
+            window.soundManager.playPageTurn();
+          }
           currentNodeId = choice.nextNode;
           renderNode(currentNodeId);
         });
@@ -209,7 +222,10 @@ function renderNode(nodeId) {
       btnReset.className = "btn-choice";
       btnReset.style.background = "linear-gradient(135deg, #7209b7 0%, #b5179e 100%)";
       btnReset.textContent = "📖 모험을 성공적으로 마쳤어요! 처음부터 다시 읽기";
-      btnReset.addEventListener("click", resetStory);
+      btnReset.addEventListener("click", () => {
+        if (window.soundManager) window.soundManager.playClick();
+        resetStory();
+      });
       choiceContainerEl.appendChild(btnReset);
 
       // 엔딩 해금 저장 및 알림
@@ -236,29 +252,120 @@ function renderNode(nodeId) {
   }, 400);
 }
 
-// 6. 엔딩 해금 로직
+// 6. 엔딩 해금 및 축하 이벤트 로직
 function unlockEnding(endingId) {
-  if (!unlockedEndings.includes(endingId)) {
+  const isNew = !unlockedEndings.includes(endingId);
+  if (isNew) {
     unlockedEndings.push(endingId);
     localStorage.setItem("unlockedEndings", JSON.stringify(unlockedEndings));
     updateAlbumUI();
     
-    // 이펙트 효과음 대용 귀여운 텍스트 알람 (초2 감성)
+    // 축하 애니메이션 팝업 및 컨페티 폭죽 연출!
     setTimeout(() => {
-      alert(`🎉 축하합니다! 새로운 엔딩 [${getEndingName(endingId)}]을(를) 앨범에 등록했어요!`);
+      showCelebrationModal(endingId);
     }, 600);
   }
 }
 
-// 엔딩 이름 매핑 헬퍼
-function getEndingName(endingId) {
-  switch (endingId) {
-    case "ending-happy": return "도서관 수호자 엔딩";
-    case "ending-detective": return "전설의 꼬마 탐정 엔딩";
-    case "ending-toy": return "장난감 친구 엔딩";
-    case "ending-ghost": return "왁자지껄 유령 파티 엔딩";
-    default: return "미지의 엔딩";
+// 6-1. 마법 축하 모달 및 컨페티 폭죽 엔진
+function showCelebrationModal(endingId) {
+  const celModalEl = document.getElementById("celebration-modal");
+  const celTitleEl = document.getElementById("cel-title");
+  const celImageEl = document.getElementById("cel-image");
+  const celEndingNameEl = document.getElementById("cel-ending-name");
+  const celDescEl = document.getElementById("cel-desc");
+
+  // 팬파레 사운드 재생
+  if (window.soundManager) {
+    window.soundManager.playEndingFanfare();
   }
+
+  // 4개 엔딩 올 클리어 여부 확인
+  const allEndings = ["ending-happy", "ending-detective", "ending-toy", "ending-ghost"];
+  const isAllCompleted = allEndings.every(id => unlockedEndings.includes(id));
+
+  // 해당 노드의 이미지 및 설명 매핑
+  let endingImg = "assets/images/scene_ending_happy.png";
+  let endingTitle = getEndingName(endingId);
+  let endingDesc = "아리와 함께 새로운 모험의 결말을 밝혀내셨습니다!";
+
+  if (endingId === "ending-happy") endingImg = "assets/images/scene_ending_happy.png";
+  else if (endingId === "ending-detective") endingImg = "assets/images/scene_ending_detective.png";
+  else if (endingId === "ending-toy") endingImg = "assets/images/scene_ending_toy.png";
+  else if (endingId === "ending-ghost") endingImg = "assets/images/scene_ending_ghost.png";
+
+  celImageEl.src = endingImg;
+  celEndingNameEl.textContent = `🔑 ${endingTitle}`;
+
+  if (isAllCompleted) {
+    celTitleEl.textContent = "🏆 축! 전설의 마스터 칭호 획득!";
+    celDescEl.textContent = "대단해요! 도서관의 4가지 비밀 엔딩을 모두 수집하여 [전설의 꼬마 탐정 마스터]가 되셨습니다!🎉";
+  } else {
+    celTitleEl.textContent = "🎉 새로운 엔딩 도감 해금!";
+    celDescEl.textContent = endingDesc;
+  }
+
+  // 폭죽 팡팡 연출
+  launchConfetti();
+
+  // 모달 표시
+  celModalEl.classList.remove("hidden");
+}
+
+// 6-2. Canvas 마법 컨페티 폭죽 팡팡 연출
+function launchConfetti() {
+  const canvas = document.getElementById("confetti-canvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = [];
+  const colors = ["#ff758f", "#70d6ff", "#ffd166", "#e0aaff", "#ffffff", "#ff9eb5"];
+
+  for (let i = 0; i < 130; i++) {
+    particles.push({
+      x: canvas.width / 2 + (Math.random() * 200 - 100),
+      y: canvas.height / 3 + (Math.random() * 100 - 50),
+      vx: (Math.random() - 0.5) * 14,
+      vy: Math.random() * -12 - 4,
+      size: Math.random() * 9 + 5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rotation: Math.random() * 360,
+      rSpeed: Math.random() * 12 - 6,
+      opacity: 1
+    });
+  }
+
+  const startTime = Date.now();
+  function render() {
+    const elapsed = Date.now() - startTime;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.3; // 중력
+      p.rotation += p.rSpeed;
+      if (elapsed > 1600) p.opacity -= 0.02;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rotation * Math.PI) / 180);
+      ctx.globalAlpha = Math.max(0, p.opacity);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+      ctx.restore();
+    });
+
+    if (elapsed < 3000) {
+      requestAnimationFrame(render);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+  requestAnimationFrame(render);
 }
 
 // 7. 도감 UI 업데이트
@@ -288,22 +395,53 @@ function resetStory() {
 }
 
 // 9. 이벤트 리스너 설정
+const btnCloseCelEl = document.getElementById("btn-close-cel");
+if (btnCloseCelEl) {
+  btnCloseCelEl.addEventListener("click", () => {
+    if (window.soundManager) window.soundManager.playClick();
+    document.getElementById("celebration-modal").classList.add("hidden");
+    // 축하 모달 닫힌 후 바로 도감 앨범 열어주기!
+    albumModalEl.classList.remove("hidden");
+  });
+}
+
+const btnBgmEl = document.getElementById("btn-bgm");
+if (btnBgmEl) {
+  btnBgmEl.addEventListener("click", () => {
+    if (window.soundManager) {
+      window.soundManager.playClick();
+      const isPlaying = window.soundManager.toggleBgm();
+      if (isPlaying) {
+        btnBgmEl.textContent = "🎵 음악 ON";
+        btnBgmEl.classList.remove("off");
+      } else {
+        btnBgmEl.textContent = "🔇 음악 OFF";
+        btnBgmEl.classList.add("off");
+      }
+    }
+  });
+}
+
 btnAlbumEl.addEventListener("click", () => {
+  if (window.soundManager) window.soundManager.playClick();
   albumModalEl.classList.remove("hidden");
 });
 
 btnCloseAlbumEl.addEventListener("click", () => {
+  if (window.soundManager) window.soundManager.playClick();
   albumModalEl.classList.add("hidden");
 });
 
 // 바깥 영역 클릭 시 모달 닫기
 albumModalEl.addEventListener("click", (e) => {
   if (e.target === albumModalEl) {
+    if (window.soundManager) window.soundManager.playClick();
     albumModalEl.classList.add("hidden");
   }
 });
 
 btnResetStoryEl.addEventListener("click", () => {
+  if (window.soundManager) window.soundManager.playClick();
   if (confirm("정말 처음부터 모험을 다시 시작할까요? (앨범 도감 기록은 유지됩니다)")) {
     resetStory();
   }

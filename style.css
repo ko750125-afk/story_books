@@ -92,17 +92,32 @@ body {
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.header-controls {
+  display: flex;
+  gap: 8px;
+}
+
 .btn-icon {
   font-family: 'Jua', sans-serif;
   background: linear-gradient(135deg, #b5179e 0%, #7209b7 100%);
   border: none;
   color: white;
-  padding: 8px 16px;
-  font-size: 1rem;
+  padding: 8px 14px;
+  font-size: 0.95rem;
   border-radius: 12px;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(114, 9, 183, 0.4);
   transition: all 0.3s ease;
+}
+
+.btn-bgm {
+  background: linear-gradient(135deg, #3a0ca3 0%, #4361ee 100%);
+  box-shadow: 0 4px 10px rgba(67, 97, 238, 0.4);
+}
+
+.btn-bgm.off {
+  background: linear-gradient(135deg, #4a4e69 0%, #22223b 100%);
+  opacity: 0.7;
 }
 
 .btn-icon:hover {
@@ -199,6 +214,112 @@ body {
 
 .btn-choice:active {
   transform: translateY(-1px);
+}
+
+/* 마법 폭죽 컨페티 캔버스 */
+#confetti-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 200;
+}
+
+/* 엔딩 해금 축하 팝업 카드 */
+.celebration-card {
+  background: linear-gradient(135deg, #2b1055 0%, #7597de 100%);
+  border: 3px solid var(--accent-yellow);
+  border-radius: 28px;
+  width: 90%;
+  max-width: 480px;
+  padding: 30px 24px;
+  text-align: center;
+  box-shadow: 0 0 50px rgba(255, 209, 102, 0.7), 0 20px 60px rgba(0, 0, 0, 0.8);
+  position: relative;
+  animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.3) rotate(-5deg); opacity: 0; }
+  70% { transform: scale(1.08) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.sparkle-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, #ff758f, #ffd166);
+  color: #1a1a2e;
+  font-weight: 800;
+  font-size: 0.9rem;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(255, 209, 102, 0.5);
+  animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); }
+  100% { transform: scale(1.05); }
+}
+
+.cel-title {
+  font-family: 'Jua', sans-serif;
+  font-size: 1.8rem;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  margin-bottom: 15px;
+}
+
+.cel-image-box {
+  width: 100%;
+  height: 200px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  margin-bottom: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.cel-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cel-ending-name {
+  font-family: 'Jua', sans-serif;
+  font-size: 1.4rem;
+  color: var(--accent-yellow);
+  margin-bottom: 8px;
+}
+
+.cel-desc {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #e2e2e2;
+  margin-bottom: 20px;
+}
+
+.btn-cel-confirm {
+  font-family: 'Jua', sans-serif;
+  width: 100%;
+  padding: 14px;
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, #ffd166 0%, #ff758f 100%);
+  color: #1a1a2e;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255, 209, 102, 0.5);
+  transition: all 0.3s ease;
+}
+
+.btn-cel-confirm:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(255, 209, 102, 0.7);
 }
 
 /* 모달 스타일 (도감) */
