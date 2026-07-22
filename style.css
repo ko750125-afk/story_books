@@ -110,6 +110,35 @@ body {
   transition: all 0.3s ease;
 }
 
+.story-selector-container {
+  display: inline-block;
+}
+
+.story-select {
+  background: linear-gradient(135deg, #7209b7 0%, #4361ee 100%);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 4px 12px rgba(67, 97, 238, 0.4);
+  transition: all 0.3s ease;
+}
+
+.story-select:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(67, 97, 238, 0.6);
+}
+
+.story-select option {
+  background: #1e1b4b;
+  color: white;
+  padding: 8px;
+}
+
 .btn-reset-hdr {
   background: linear-gradient(135deg, #2b9348 0%, #55a630 100%);
   box-shadow: 0 4px 10px rgba(43, 147, 72, 0.4);
