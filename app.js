@@ -455,21 +455,17 @@ function resetStory() {
   renderNode("start");
 }
 
-// 10. 현재 노드 TTS 낭독 시작 함수 (지우 멘트 포함)
+// 10. 현재 스토리 노드 TTS 낭독 시작 함수 (순수 동화 본문만 낭독)
 function startTTSForCurrentNode() {
   if (!window.soundManager) return;
 
-  let fullTextToRead = storyTextEl.textContent;
-  const currentChoices = storyData[currentNodeId]?.choices;
-  if (currentChoices && currentChoices.length > 0) {
-    fullTextToRead += "\n\n지우야, 어떤 길을 선택할래?";
-  }
+  const textToRead = storyTextEl.textContent;
 
   window.soundManager.speakText(
-    fullTextToRead,
+    textToRead,
     () => updateTTSUI(true),  // 낭독 시작 시 UI 변경
     () => {
-      // 낭독 완료되더라도 자동 모드가 켜져 있다면 ON 상태 유지
+      // 낭독 완료되더라도 자동 모드가 켜져 있다면 다음 클릭 전까지 UI 상태 유지
       if (isAutoTTSMode) {
         updateTTSUI(true);
       } else {
