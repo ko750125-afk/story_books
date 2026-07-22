@@ -746,3 +746,36 @@ body {
     height: 100px;
   }
 }
+
+/* 도감 모달 하단 버튼 영역 */
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding-top: 10px;
+}
+
+/* 전체 기록 초기화 위험 버튼 */
+.btn-danger {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: linear-gradient(135deg, #d00000 0%, #9d0208 100%);
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(208, 0, 0, 0.35);
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #e5383b 0%, #d00000 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(208, 0, 0, 0.5);
+}
+
+.btn-danger:active {
+  transform: translateY(0);
+}

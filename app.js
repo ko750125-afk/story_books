@@ -60,9 +60,9 @@ const story1Data = {
     image: "assets/images/scene_start.png",
     progress: 5,
     choices: [
-      { text: "🚪 삐걱거리는 오래된 도서관의 육중한 나무 문을 조심조심 열어본다.", nextNode: "library_door" },
       { text: "🪟 덩굴풀에 가려진 작고 먼지 쌓인 지하 창고 창문으로 들어간다.", nextNode: "basement_window" },
-      { text: "🌿 덩굴 사다리를 타고 올라가 2층 지붕 테라스 정원으로 들어간다.", nextNode: "rooftop_garden" }
+      { text: "🌿 덩굴 사다리를 타고 올라가 2층 지붕 테라스 정원으로 들어간다.", nextNode: "rooftop_garden" },
+      { text: "🚪 삐걱거리는 오래된 도서관의 육중한 나무 문을 조심조심 열어본다.", nextNode: "library_door" }
     ]
   },
   library_door: {
@@ -70,8 +70,8 @@ const story1Data = {
     image: "assets/images/scene_bookshelf.png",
     progress: 30,
     choices: [
-      { text: "✨ 노란빛이 새어 나오는 비밀 책장 틈새를 향해 살금살금 걸어간다.", nextNode: "glowing_bookshelf" },
-      { text: "🕰️ 째깍째깍 소리가 들려오는 웅장한 시계탑 홀 안쪽으로 가본다.", nextNode: "clock_tower_hall" }
+      { text: "🕰️ 째깍째깍 소리가 들려오는 웅장한 시계탑 홀 안쪽으로 가본다.", nextNode: "clock_tower_hall" },
+      { text: "✨ 노란빛이 새어 나오는 비밀 책장 틈새를 향해 살금살금 걸어간다.", nextNode: "glowing_bookshelf" }
     ]
   },
   basement_window: {
@@ -104,8 +104,8 @@ const story1Data = {
     image: "assets/images/scene_pong.png",
     progress: 60,
     choices: [
-      { text: "🤝 \"안녕 퐁이! 난 꼬마 탐정 지우야. 내가 같이 열쇠를 찾아줄게!\"", nextNode: "friend_ghost" },
-      { text: "🔍 \"걱정 마 퐁이! 우선 책장 주변의 별가루 단서부터 돋보기로 수색할게!\"", nextNode: "search_clues" }
+      { text: "🔍 \"걱정 마 퐁이! 우선 책장 주변의 별가루 단서부터 돋보기로 수색할게!\"", nextNode: "search_clues" },
+      { text: "🤝 \"안녕 퐁이! 난 꼬마 탐정 지우야. 내가 같이 열쇠를 찾아줄게!\"", nextNode: "friend_ghost" }
     ]
   },
   blue_box: {
@@ -185,8 +185,8 @@ const story2Data = {
     image: "assets/images/scene_story2_start.png",
     progress: 10,
     choices: [
-      { text: "🍫 달콤한 바삭바삭 쿠키 문을 조심스럽게 밀고 들어간다.", nextNode: "cookie_gate" },
-      { text: "🍭 무지개 사탕 나무가 무성한 성 뒷길 산책로로 향한다.", nextNode: "candy_path" }
+      { text: "🍭 무지개 사탕 나무가 무성한 성 뒷길 산책로로 향한다.", nextNode: "candy_path" },
+      { text: "🍫 달콤한 바삭바삭 쿠키 문을 조심스럽게 밀고 들어간다.", nextNode: "cookie_gate" }
     ]
   },
   cookie_gate: {
@@ -256,8 +256,8 @@ const story3Data = {
     image: "assets/images/scene_story3_palace.png",
     progress: 50,
     choices: [
-      { text: "🐢 \"안녕 부기야! 내가 바닷속 돋보기로 같이 찾아줄게!\"", nextNode: "boogi_friend" },
-      { text: "🔍 \"산호초 사이의 빛나는 야광 조개 단서부터 추리해볼게!\"", nextNode: "search_ocean_clues" }
+      { text: "🔍 \"산호초 사이의 빛나는 야광 조개 단서부터 추리해볼게!\"", nextNode: "search_ocean_clues" },
+      { text: "🐢 \"안녕 부기야! 내가 바닷속 돋보기로 같이 찾아줄게!\"", nextNode: "boogi_friend" }
     ]
   },
   coral_garden: {
@@ -301,8 +301,8 @@ const story4Data = {
     image: "assets/images/scene_story4_start.png",
     progress: 10,
     choices: [
-      { text: "🚀 장난감 우주선의 조종석 조종대를 잡고 은하수로 나아간다.", nextNode: "space_cockpit" },
-      { text: "🪐 토성의 반짝이는 띠 미끄럼틀을 타고 별빛 정원으로 내려간다.", nextNode: "saturn_ring" }
+      { text: "🪐 토성의 반짝이는 띠 미끄럼틀을 타고 별빛 정원으로 내려간다.", nextNode: "saturn_ring" },
+      { text: "🚀 장난감 우주선의 조종석 조종대를 잡고 은하수로 나아간다.", nextNode: "space_cockpit" }
     ]
   },
   space_cockpit: {
@@ -825,6 +825,51 @@ albumModalEl.addEventListener("click", (e) => {
 btnResetStoryEl.addEventListener("click", () => {
   resetStory();
 });
+
+// 전체 기록 초기화
+function resetAllData() {
+  const confirmed = confirm("⚠️ 정말로 모든 탐험 기록을 초기화할까요?\n\n4대 코스의 점수, 도감 뱃지, 진행 상태가 모두 삭제됩니다.\n이 작업은 되돌릴 수 없습니다.");
+  if (!confirmed) return;
+
+  // 로컬스토리지 전체 삭제
+  localStorage.clear();
+
+  // 메모리 상태 초기화
+  courseScoresMap = {
+    story1: { endingId: null, score: 0 },
+    story2: { endingId: null, score: 0 },
+    story3: { endingId: null, score: 0 },
+    story4: { endingId: null, score: 0 }
+  };
+  currentStoryKey = "story1";
+  currentNodeId = "start";
+  isAutoTTSMode = false;
+
+  if (storySelectEl) storySelectEl.value = "story1";
+
+  // UI 전체 갱신
+  updateTotalScoreUI();
+  updateAlbumUI();
+
+  // 모달 닫기
+  albumModalEl.classList.add("hidden");
+  const celModalEl = document.getElementById("celebration-modal");
+  if (celModalEl) celModalEl.classList.add("hidden");
+
+  if (window.soundManager) {
+    window.soundManager.stopSpeech();
+    window.soundManager.playClick();
+  }
+
+  renderNode("start");
+}
+
+const btnResetAllEl = document.getElementById("btn-reset-all");
+if (btnResetAllEl) {
+  btnResetAllEl.addEventListener("click", () => {
+    resetAllData();
+  });
+}
 
 // 최초 시작
 window.addEventListener("DOMContentLoaded", () => {
