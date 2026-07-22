@@ -978,12 +978,34 @@ if (btnResetHeaderEl) {
   });
 }
 
+// 축하 모달 닫기 및 도감 이동 이벤트 처리
+function closeCelebrationAndOpenAlbum() {
+  if (window.soundManager) window.soundManager.playClick();
+  const celModalEl = document.getElementById("celebration-modal");
+  if (celModalEl) celModalEl.classList.add("hidden");
+  if (albumModalEl) albumModalEl.classList.remove("hidden");
+}
+
 const btnCloseCelEl = document.getElementById("btn-close-cel");
 if (btnCloseCelEl) {
-  btnCloseCelEl.addEventListener("click", () => {
-    if (window.soundManager) window.soundManager.playClick();
-    document.getElementById("celebration-modal").classList.add("hidden");
-    albumModalEl.classList.remove("hidden");
+  btnCloseCelEl.addEventListener("click", (e) => {
+    e.stopPropagation();
+    closeCelebrationAndOpenAlbum();
+  });
+}
+
+const btnCloseCelXEl = document.getElementById("btn-close-cel-x");
+if (btnCloseCelXEl) {
+  btnCloseCelXEl.addEventListener("click", (e) => {
+    e.stopPropagation();
+    closeCelebrationAndOpenAlbum();
+  });
+}
+
+const celModalEl = document.getElementById("celebration-modal");
+if (celModalEl) {
+  celModalEl.addEventListener("click", () => {
+    closeCelebrationAndOpenAlbum();
   });
 }
 
