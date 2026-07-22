@@ -1,185 +1,338 @@
 // ==========================================
 // 꼬마 탐정 아리와 비밀 도서관의 꼬마 유령
-// 게임 엔진 및 한국어/영어 대용량 스토리 데이터 소스 코드 (4배 대폭 확장판)
+// 게임 엔진 및 한국어/영어 45개 초대형 스토리 노드 소스 코드 (2배 대폭 추가 확장판)
 // ==========================================
 
-// 1. 한국어 스토리 노드 데이터 (20여 개 풍성한 챕터 분기)
+// 1. 한국어 스토리 노드 데이터 (45개 대용량 탐험 노드 트리)
 const storyDataKo = {
   start: {
-    text: "구름 사이로 밝은 달빛이 내리쬐는 밤, 8살 꼬마 탐정 아리는 분홍색 탐정 모자를 눌러쓰고 손전등과 커다란 돋보기를 꼭 쥐었어요.\n아리 앞에는 오랜 세월 비밀을 간직해 온 마을의 비밀 도서관이 고요하게 서 있었답니다.\n\"소문에 의하면 이 도서관 깊은 곳에 밤마다 신비로운 마법을 부리는 황금 열쇠가 숨겨져 있다고 했어!\"\n아리의 가슴은 두근두근 기대감으로 부풀어 올랐어요. 과연 아리는 도서관 안으로 어떻게 들어가는 것이 좋을까요?",
+    text: "구름 사이로 은은한 달빛이 내리쬐는 밤, 8살 꼬마 탐정 아리는 분홍색 탐정 모자를 눌러쓰고 손전등과 커다란 돋보기를 꼭 쥐었어요.\n아리 앞에는 오랜 세월 비밀을 간직해 온 마을의 비밀 도서관이 고요하게 서 있었답니다.\n\"소문에 의하면 이 도서관 깊은 곳에 밤마다 신비로운 마법을 부리는 황금 열쇠가 숨겨져 있다고 했어!\"\n아리의 가슴은 두근두근 기대감으로 부풀어 올랐어요. 도서관으로 진입할 수 있는 통로는 3곳이 눈에 띕니다.",
     image: "assets/images/scene_start.png",
-    progress: 10,
+    progress: 5,
     choices: [
       { text: "🚪 삐걱거리는 오래된 도서관의 육중한 나무 문을 조심조심 열어본다.", nextNode: "library_door" },
-      { text: "🪟 덩굴풀에 가려진 작고 먼지 쌓인 지하 창고 창문으로 들어간다.", nextNode: "basement_window" }
+      { text: "🪟 덩굴풀에 가려진 작고 먼지 쌓인 지하 창고 창문으로 들어간다.", nextNode: "basement_window" },
+      { text: "🌿 덩굴 사다리를 타고 올라가 2층 지붕 테라스 정원으로 들어간다.", nextNode: "rooftop_garden" }
     ]
   },
   library_door: {
-    text: "아리가 살그머니 나무 문을 밀자, \"삐이이익-\" 하는 정겨운 삐걱거림과 함께 묵직한 책 냄새가 코끝을 감쌌어요.\n도서관 내부 천장은 까마득히 높았고, 사방에 수천 권의 책들이 소복이 쌓여 있었지요.\n그때, 높다란 책장 서가 사이에서 신비로운 금빛 노란 불빛이 스르륵 새어 나오기 시작했어요!\n동시에 도서관 시계탑 쪽과 카운터 아래에서도 작고 신기한 소리가 들려왔답니다.",
+    text: "아리가 살그머니 나무 문을 밀자, \"삐이이익-\" 하는 정겨운 삐걱거림과 함께 묵직한 책 냄새가 코끝을 감쌌어요.\n도서관 내부 천장은 까마득히 높았고, 사방에 수천 권의 책들이 소복이 쌓여 있었지요.\n그때, 높다란 책장 서가 사이에서 신비로운 금빛 노란 불빛이 스르륵 새어 나오기 시작했어요!\n동시에 도서관 시계탑 쪽과 고대 문서 보관소에서도 이상한 신호음이 들려왔답니다.",
     image: "assets/images/scene_bookshelf.png",
-    progress: 25,
+    progress: 12,
     choices: [
-      { text: "✨ 노란빛이 새어 나오는 비밀 책장 틈새를 향해 걸어간다.", nextNode: "glowing_bookshelf" },
-      { text: "🕰️ 째깍째깍 소리가 들려오는 웅장한 시계탑 홀 안쪽으로 가본다.", nextNode: "clock_tower_hall" }
+      { text: "✨ 노란빛이 새어 나오는 비밀 책장 틈새를 향해 살금살금 걸어간다.", nextNode: "glowing_bookshelf" },
+      { text: "🕰️ 째깍째깍 소리가 들려오는 웅장한 시계탑 홀 안쪽으로 가본다.", nextNode: "clock_tower_hall" },
+      { text: "📜 촛불이 희미하게 밝혀진 고대 문서 보관소 입구로 발걸음을 옮긴다.", nextNode: "ancient_archive" }
     ]
   },
   basement_window: {
-    text: "조심조심 지하 창문틀을 넘어서 지하 창고 안으로 가볍게 착지한 아리!\n사방에는 낡은 보물상자들과 거미줄, 그리고 커다란 나무 통들이 소복이 놓여 있었어요.\n그중 창고 한가운데 놓인 알록달록한 파란 보석 상자에서 영롱한 파란빛이 반짝거리고 있었지요.\n벽면 한쪽에는 이 도서관의 전체 구조가 그려진 낡은 양피지 지도가 걸려 있었답니다.",
+    text: "조심조심 지하 창문틀을 넘어서 지하 창고 안으로 가볍게 착지한 아리!\n사방에는 낡은 보물상자들과 거미줄, 그리고 커다란 나무 통들이 소복이 놓여 있었어요.\n그중 창고 한가운데 놓인 알록달록한 파란 보석 상자에서 영롱한 파란빛이 반짝거리고 있었지요.\n벽면에는 낡은 지도가, 바닥에는 깊은 지하 동굴 통로가 열려 있었답니다.",
     image: "assets/images/scene_basement.png",
-    progress: 25,
+    progress: 12,
     choices: [
       { text: "💎 반짝이는 영롱한 파란 보석 상자를 들여다보고 열어본다.", nextNode: "blue_box" },
-      { text: "🗺️ 벽에 걸려 있는 오래된 도서관의 비밀 양피지 지도를 조사한다.", nextNode: "library_map" }
+      { text: "🗺️ 벽에 걸려 있는 오래된 도서관의 비밀 양피지 지도를 조사한다.", nextNode: "library_map" },
+      { text: "🦇 바람 소리가 솔솔 새어 나오는 깊은 지하 비밀 동굴로 내려간다.", nextNode: "underground_cave" }
+    ]
+  },
+  rooftop_garden: {
+    text: "달빛 아래 반짝이는 2층 지붕 정원에 오른 아리! 예쁜 야광 꽃들이 몽환적인 향기를 내뿜고 있었어요.\n정원 유리창 너머로 별빛을 관측하는 비밀 천문대 데크와 2층 책장 서재가 내려다보였답니다.",
+    image: "assets/images/scene_start.png",
+    progress: 12,
+    choices: [
+      { text: "🔭 별빛 망원경이 놓인 신비한 별빛 천문대 데크로 이동한다.", nextNode: "observatory_deck" },
+      { text: "✨ 정원 연결 창문을 열고 2층 빛나는 책장 서재로 들어간다.", nextNode: "glowing_bookshelf" }
     ]
   },
   clock_tower_hall: {
-    text: "시계탑 홀 안으로 들어서자, 거대한 톱니바퀴들이 째깍째깍 소리를 내며 천천히 돌아가고 있었어요.\n홀 한가운데에는 '도서관의 잊혀진 비밀 이야기'라는 제목이 붙은 커다란 대백과사전 책이 펼쳐져 있었답니다.\n책 위에는 야광 물감처럼 반짝이는 미세한 발자국들이 찍혀 카운터 밑으로 이어져 있었어요!",
+    text: "시계탑 홀 안으로 들어서자, 거대한 톱니바퀴들이 째깍째깍 소리를 내며 천천히 돌아가고 있었어요.\n홀 한가운데에는 '도서관의 잊혀진 비밀 이야기'라는 대백과사전이 펼쳐져 있었고,\n바닥에는 야광 발자국과 태엽 톱니바퀴 방으로 향하는 작은 문이 있었답니다.",
     image: "assets/images/scene_bookshelf.png",
-    progress: 40,
+    progress: 20,
     choices: [
       { text: "📖 펼쳐진 대백과사전 책의 마법 수수께끼 페이지를 읽어본다.", nextNode: "old_encyclopedia" },
-      { text: "👣 바닥에 찍힌 반짝이는 야광 발자국을 따라 카운터로 향한다.", nextNode: "counter_footsteps" }
+      { text: "👣 바닥에 찍힌 반짝이는 야광 발자국을 따라 카운터로 향한다.", nextNode: "counter_footsteps" },
+      { text: "⚙️ 톱니바퀴 소리가 울리는 태엽 기계 방 안쪽으로 들여다본다.", nextNode: "clockwork_gear_room" }
     ]
   },
   glowing_bookshelf: {
-    text: "책장 틈새를 살짝 들여다본 아리는 깜짝 놀라 두 눈이 둥그래졌어요!\n책 위에서 동글동글하고 귀여운 흰색 꼬마 유령 '퐁이'가 둥둥 떠서 재미있게 동화책을 읽고 있었거든요.\n퐁이는 아리와 눈이 마주치자 깜짝 놀라며 수줍게 말했어요.\n\"안녕? 난 책을 아주아주 좋아하는 유령 퐁이야. 사실 이 비밀 도서관의 마법 보물상자를 열 황금 열쇠를 잃어버려서 슬퍼하고 있었어...\"",
+    text: "책장 틈새를 살짝 들여다본 아리는 깜짝 놀라 두 눈이 둥그래졌어요!\n동글동글하고 귀여운 흰색 꼬마 유령 '퐁이'가 둥둥 떠서 재미있게 동화책을 읽고 있었거든요.\n책장 옆엔 아름다운 멜로디가 흐르는 마법 오르골 상자도 놓여 있었답니다.",
     image: "assets/images/scene_pong.png",
-    progress: 50,
+    progress: 20,
     choices: [
-      { text: "🤝 \"안녕 퐁이! 난 꼬마 탐정 아리야. 내가 같이 열쇠를 찾아줄게!\"", nextNode: "friend_ghost" },
-      { text: "🔍 \"걱정 마 퐁이! 우선 책장 주변에 떨어진 별가루 단서부터 돋보기로 조사해볼게!\"", nextNode: "search_clues" }
+      { text: "👻 퐁이에게 수줍게 인사를 건네며 반갑게 통소리를 낸다.", nextNode: "pong_first_meeting" },
+      { text: "🔍 돋보기를 들고 책장 주위의 별가루 단서를 꼼꼼히 스캔한다.", nextNode: "search_clues" },
+      { text: "🎶 몽환적인 멜로디가 흐르는 마법 오르골 상자의 뚜껑을 연다.", nextNode: "music_box_room" }
     ]
   },
   blue_box: {
-    text: "아리가 파란 상자를 살그머니 열자, 상자 안에서 태엽 소리와 함께 귀여운 태엽 쥐 인형들이 튀어나왔어요!\n인형들은 신나게 뱅글뱅글 춤을 추며 아리를 환영해 주었지요.\n자세히 보니 태엽 쥐 인형의 등 태엽 밑에 '비밀 서가 2층의 암호'가 적힌 작은 쪽지가 감겨 있었답니다.",
+    text: "파란 상자를 열자 귀여운 태엽 쥐 인형들이 튀어나와 뱅글뱅글 춤을 추기 시작했어요!\n인형의 등 뒤에 적힌 암호 쪽지를 본 아리는 새로운 단서를 얻었답니다.",
     image: "assets/images/scene_ending_toy.png",
-    progress: 50,
+    progress: 20,
     choices: [
-      { text: "📜 비밀 암호 쪽지를 들고 2층 빛나는 책장 서가로 향한다.", nextNode: "glowing_bookshelf" },
-      { text: "🐭 \"너희들 정말 귀엽다!\" 태엽 쥐 인형들과 신나는 장난감 방으로 들어간다.", nextNode: "toy_mice_room" }
+      { text: "🐭 태엽 쥐 인형들을 따라 비밀 장난감 방으로 들어간다.", nextNode: "toy_mice_room" },
+      { text: "📖 암호 쪽지를 품에 넣고 2층 빛나는 책 서가로 올라간다.", nextNode: "glowing_bookshelf" }
     ]
   },
   library_map: {
-    text: "돋보기로 벽에 걸린 낡은 양피지 지도를 비춰보자, 지도의 비밀 먹물이 반응하며 숨겨진 글씨가 떠올랐어요!\n'책상들 아래의 미로를 지나면 유령들의 비밀 놀이방과 황금 열쇠 상자가 나타난다.'\n지도를 읽은 아리는 도서관 깊은 곳으로 갈 수 있는 확신이 생겼답니다.",
+    text: "돋보기로 양피지 지도를 비추자 비밀 먹물이 반응하며 도서관의 3대 비밀 통로가 드러났어요!\n지하 동굴, 책상 밑 미로, 그리고 카운터 발자국 길의 좌표가 명확해졌답니다.",
     image: "assets/images/scene_basement.png",
-    progress: 50,
+    progress: 20,
     choices: [
-      { text: "🗺️ 지도에 표시된 비밀 미로 통로를 찾아 발걸음을 옮긴다.", nextNode: "secret_passage" },
-      { text: "👣 지도를 가방에 챙기고, 카운터 아래의 빛나는 발자국으로 가본다.", nextNode: "counter_footsteps" }
+      { text: "🗺️ 지도에 표시된 책상 밑 비밀 미로 통로로 뛰어든다.", nextNode: "secret_passage" },
+      { text: "👣 카운터 아래의 야광 발자국으로 향한다.", nextNode: "counter_footsteps" }
+    ]
+  },
+  observatory_deck: {
+    text: "별빛 천문대에 들어선 아리! 거대한 천체 망원경으로 밤하늘을 바라보자, 북두칠성이 지상의 비밀 도서관을 향해 빛의 화살표를 쏘아 보내고 있었어요!\n천문대 바닥에는 별자리 마법 퍼즐판이 놓여 있었답니다.",
+    image: "assets/images/scene_start.png",
+    progress: 28,
+    choices: [
+      { text: "🌌 천문대 바닥의 별자리 마법 퍼즐을 돋보기로 맞춘다.", nextNode: "star_constellation_puzzle" },
+      { text: "✨ 별빛 화살표를 따라 아랫층 퐁이의 책 서가로 내려간다.", nextNode: "pong_first_meeting" }
+    ]
+  },
+  underground_cave: {
+    text: "지하 동굴로 내려오자, 시원한 바람과 함께 퐁퐁 샘솟는 수수께끼 분수가 눈앞에 나타났어요!\n분수대 물결 위에 빛나는 수수께끼 글귀가 둥둥 떠다니고 있었답니다.",
+    image: "assets/images/scene_basement.png",
+    progress: 28,
+    choices: [
+      { text: "⛲ 수수께끼 분수의 퀴즈를 풀고 마법 무지개 다리를 연결한다.", nextNode: "riddle_fountain" },
+      { text: "🐭 동굴 구석에서 들리는 찌찍 태엽 소리를 따라 장난감 방으로 간다.", nextNode: "toy_mice_room" }
+    ]
+  },
+  ancient_archive: {
+    text: "고대 문서 보관소에는 수백 년 된 커다란 양피지 책들이 가득했어요.\n그곳에서 안경을 쓴 친절한 책벌레 유령 '지키 할아버지'가 아리를 반갑게 맞이해 주었답니다!\n\"오호라, 탐정 아리로구나! 내가 황금 자물쇠의 열쇠 단서를 알려주마.\"",
+    image: "assets/images/scene_bookshelf.png",
+    progress: 28,
+    choices: [
+      { text: "👴 지키 할아버지에게 황금 자물쇠의 비밀 힌트를 듣는다.", nextNode: "bookworm_jiki" },
+      { text: "📖 보관소 중앙의 대백과사전 마법 페이지를 더 조사한다.", nextNode: "old_encyclopedia" }
+    ]
+  },
+  music_box_room: {
+    text: "오르골 뚜껑을 열자 몽환적인 춤추는 그림자 인형들이 나와壁면에 신비로운 그림자 연극을 펼쳤어요!\n그림자 인형들은 손가락으로 달콤한 냄새가 나는 유령 베이커리 빵집을 가리켰답니다.",
+    image: "assets/images/scene_pong.png",
+    progress: 28,
+    choices: [
+      { text: "🎭 신비로운 그림자 연극 신호를 따라 유령 베이커리로 간다.", nextNode: "shadow_game" },
+      { text: "👻 오르골 소리에 이끌려 다가온 퐁이와 반갑게 대화한다.", nextNode: "pong_first_meeting" }
     ]
   },
   old_encyclopedia: {
-    text: "대백과사전의 마법 페이지에는 빛나는 글씨로 귀여운 수수께끼가 적혀 있었어요.\n'밤에만 문을 열고, 마음속에 꿈을 품은 자만이 마법의 황금 열쇠에 다가갈 수 있다.'\n페이지 밑에는 퐁이라는 귀여운 유령 그림이 그려져 있었답니다!",
+    text: "대백과사전 마법 페이지에 빛나는 퀴즈가 떠올랐어요!\n'밤하늘의 별을 사랑하고 동화책을 좋아하는 자만이 마법 상자를 열 수 있다.'\n아리는 퀴즈의 답을 직감했답니다.",
     image: "assets/images/scene_bookshelf.png",
-    progress: 60,
+    progress: 36,
     choices: [
-      { text: "🧠 마법 페이지에 적힌 수수께끼 퀴즈를 직접 풀기 위해 퀴즈 방으로 간다.", nextNode: "quiz_room" },
-      { text: "✨ 그림에 인쇄된 퐁이를 찾아 노란 불빛이 나는 책장으로 이동한다.", nextNode: "glowing_bookshelf" }
+      { text: "🧠 퀴즈의 답을 맞추기 위해 마법 퀴즈 방으로 들어간다.", nextNode: "magic_riddle_quiz" }
     ]
   },
   counter_footsteps: {
-    text: "카운터 밑을 돋보기로 비추자, 알록달록한 별가루 발자국이 콕콕 찍혀서 서가 뒤쪽으로 이어져 있었어요.\n아리가 발자국 가까이 다가가자, 카운터 밑에서 수줍은 목소리가 소근거렸어요.\n\"누구니? 나를 찾아온 아기 탐정님이니?\"",
+    text: "돋보기로 발자국을 따라가자, 카운터 밑에서 작고 다정한 메아리 소리가 들려왔어요!\n발자국은 미로 같은 소리 홀을 거쳐 유령들의 무도회장으로 이어져 있었답니다.",
     image: "assets/images/scene_bookshelf.png",
-    progress: 60,
+    progress: 36,
     choices: [
-      { text: "👣 별가루 발자국을 따라 도서관 서가 뒤편의 비밀 무도회장으로 들어간다.", nextNode: "ghost_ballroom" },
-      { text: "🗣️ \"용기 있게 응답해! 난 도와주러 온 아리야!\" 하고 인사한다.", nextNode: "call_out" }
+      { text: "👣 별가루 발자국 트레일을 끝까지 추적해 들어간다.", nextNode: "footstep_trail" },
+      { text: "🗣️ 큰 소리로 \"거기 누구 있니? 아리가 도와줄게!\" 하고 외친다.", nextNode: "call_out" }
     ]
   },
-  toy_mice_room: {
-    text: "태엽 쥐들이 아리를 안내한 곳은 지하 깊은 곳에 위치한 비밀 장난감 방이었어요!\n그곳엔 아기자기한 목마와 레고 블록, 태엽 장난감들이 마법으로 움직이며 놀고 있었지요.\n장난감 상자 깊은 곳에 황금빛 열쇠 모양의 열쇠 구멍이 숨겨져 있었답니다.",
+  clockwork_gear_room: {
+    text: "태엽 기계 방 안에는 수많은 마법 톱니바퀴들이 오케스트라처럼 연주하고 있었어요!\n톱니바퀴 문 뒤편으로 태엽 쥐들의 댄스 파티장과 거울 퍼즐 방이 숨겨져 있었답니다.",
     image: "assets/images/scene_ending_toy.png",
-    progress: 75,
+    progress: 36,
     choices: [
-      { text: "🐭 태엽 쥐 친구들과 신나게 춤을 추고 소꿉놀이를 즐기며 엔딩을 맞이한다.", nextNode: "ending_toy" },
-      { text: "🗝️ 장난감 방의 비밀 통로를 지나 퐁이의 비밀 놀이방으로 들어간다.", nextNode: "secret_passage" }
+      { text: "🎉 신나는 음악이 넘치는 태엽 쥐 댄스 파티로 진입한다.", nextNode: "toy_mouse_dance_party" },
+      { text: "🪞 빛반사 거울 퍼즐이 설치된 비밀 신전으로 들어간다.", nextNode: "mirror_puzzle_chamber" }
     ]
   },
-  secret_passage: {
-    text: "책상 아래의 거미줄 미로 통로를 조심조심 통과하자, 마법처럼 거대한 비밀 방이 펼쳐졌어요!\n공중에는 알록달록한 별들과 미니 트램펄린이 떠 있었고, 방 중앙엔 눈부시게 빛나는 보물 상자가 놓여 있었답니다.",
-    image: "assets/images/scene_basement.png",
-    progress: 75,
+  pong_first_meeting: {
+    text: "퐁이는 아리의 다정한 인사 소리에 배시시 웃으며 떠올랐어요!\n\"안녕 아리 탐정님! 내 손을 잡으면 거미줄 무지개 다리를 건너 보물 상자로 갈 수 있어!\"",
+    image: "assets/images/scene_pong.png",
+    progress: 45,
     choices: [
-      { text: "🎁 보물 상자 옆에서 아리를 기다리던 퐁이와 반갑게 상자를 열어본다.", nextNode: "secret_room" },
-      { text: "🪞 방 한편에 놓인 신비한 거울 퍼즐을 돋보기로 풀어낸다.", nextNode: "mirror_puzzle" }
-    ]
-  },
-  friend_ghost: {
-    text: "아리의 다정한 인사에 감동한 퐁이는 퐁퐁 뛰어오르며 기뻐했어요!\n\"아리야 고마워! 나와 함께라면 도서관 3층 비밀 서재에 있는 무지개 보물 상자로 갈 수 있어!\"\n퐁이는 아리의 손을 잡고 빛나는 비밀 서재 문 앞으로 아리를 안내해 주었답니다.",
-    image: "assets/images/scene_ending_happy.png",
-    progress: 80,
-    choices: [
-      { text: "💫 퐁이와 함께 힘을 모아 무지개 보물 상자를 열어본다!", nextNode: "rainbow_chest" },
-      { text: "🧠 상자 입구에 걸린 마법 퀴즈 수수께끼를 아리의 지혜로 풀어낸다.", nextNode: "quiz_room" }
+      { text: "🤝 퐁이와 절친이 되어 다정한 친구 모드로 보물 상자로 간다.", nextNode: "friend_ghost" },
+      { text: "🕸️ 퐁이가 안내해 준 거미줄 무지개 다리를 신나게 건넌다.", nextNode: "spider_web_bridge" }
     ]
   },
   search_clues: {
-    text: "아리는 돋보기를 들고 책장 바닥부터 위쪽까지 차근차근 단서를 수색했어요.\n책장 두 번째 칸의 오래된 동화책 표지에 퐁이가 남긴 반짝이는 별빛 가루 단서가 새겨져 있는 것을 발견했지요!\n돋보기로 단서를 연결하자 마법 지도가 완성되었어요.",
+    text: "돋보기로 책장을 수색하자, 퐁이가 흘린 빛나는 별빛 가루 단서들이 길게 펼쳐졌어요!\n아리의 명추리가 단서들을 하나씩 풀어내기 시작했답니다.",
     image: "assets/images/scene_ending_detective.png",
-    progress: 80,
+    progress: 45,
     choices: [
-      { text: "🌟 별빛 가루 단서를 조합하여 황금 열쇠의 완벽한 봉인을 해제한다.", nextNode: "starlight_dust" },
-      { text: "🏆 뛰어난 명추리로 전설의 꼬마 탐정 뱃지를 획득하는 결말을 연다.", nextNode: "ending_detective" }
+      { text: "🌟 별빛 가루 길을 따라 황금 열쇠의 완벽한 위치를 추적한다.", nextNode: "starlight_dust_path" },
+      { text: "🔍 돋보기 수색 기술로 비밀 스위치를 밝혀낸다.", nextNode: "magnifier_deep_search" }
     ]
   },
-  ghost_ballroom: {
-    text: "발자국을 따라 들어간 곳은 밤마다 도서관 유령들이 모이는 신비로운 무도회장이었어요!\n수많은 귀여운 아기 유령들이 모여 무지개 젤리를 먹으며 동화책을 읽고 있었지요.\n유령들은 아리를 보자 손뼉을 치며 환영해 주었어요!",
-    image: "assets/images/scene_ending_ghost.png",
-    progress: 80,
+  toy_mice_room: {
+    text: "비밀 장난감 방에 도착한 아리! 귀여운 태엽 쥐들이 아리에게 과자를 대접하며 함께 춤을 추자고 청했답니다.",
+    image: "assets/images/scene_ending_toy.png",
+    progress: 45,
     choices: [
-      { text: "👻 귀여운 유령 친구들과 밤새도록 맛있는 젤리를 먹으며 동화책 파티를 즐긴다.", nextNode: "ending_ghost" },
-      { text: "🔑 유령 대표 퐁이가 건네주는 마법의 황금 열쇠를 받아 상자를 연다.", nextNode: "ending_happy" }
+      { text: "🐭 태엽 쥐들과 신나게 춤추며 놀아주는 결말을 맞이한다.", nextNode: "toy_mouse_dance_party" }
     ]
   },
-  call_out: {
-    text: "아리가 용기 내어 목소리를 내자, 카운터 아래에서 퐁이가 뽀르르 튀어나와 수줍게 고개를 숙였어요.\n\"안녕 아리 탐정님! 나를 해치지 않으러 왔구나. 사실 마법의 황금 열쇠는 혼자서는 열 수 없고 다정한 친구와 함께 열어야 해!\"",
+  secret_passage: {
+    text: "책상 밑 비밀 미로 통로를 지나자 공중에 트램펄린이 떠 있는 마법 놀이방이 나타났어요!\n방 한가운데엔 빛나는 보물 상자와 빛반사 거울이 놓여 있었답니다.",
+    image: "assets/images/scene_basement.png",
+    progress: 45,
+    choices: [
+      { text: "🎁 비밀 상자 앞으로 가서 퐁이와 상자를 연다.", nextNode: "secret_room" },
+      { text: "🪞 거울 퍼즐을 맞춰 전설의 명탐정 방으로 간다.", nextNode: "mirror_puzzle_chamber" }
+    ]
+  },
+  star_constellation_puzzle: {
+    text: "아리가 돋보기 불빛으로 천문대의 북두칠성 별자리를 맞추자, 하늘에서 별빛 가루가 쏟아져 내리며 황금 열쇠 좌표가 드러났어요!",
+    image: "assets/images/scene_start.png",
+    progress: 55,
+    choices: [
+      { text: "🌟 별빛 길을 따라 전설의 꼬마 탐정 뱃지를 얻으러 간다.", nextNode: "starlight_dust_path" }
+    ]
+  },
+  riddle_fountain: {
+    text: "수수께끼 분수의 퀴즈를 맞추자, 분수 물줄기가 알록달록한 무지개 다리로 바뀌며 퐁이의 보물 상자 방과 연결되었어요!",
+    image: "assets/images/scene_basement.png",
+    progress: 55,
+    choices: [
+      { text: "🌈 무지개 다리를 건너 보물 상자로 향한다.", nextNode: "rainbow_bridge" }
+    ]
+  },
+  bookworm_jiki: {
+    text: "책벌레 지키 할아버지가 고대 양피지 스크롤을 건네주었어요.\n\"이 암호를 입력하면 황금 자물쇠가 딸깍하고 열린단다!\"",
+    image: "assets/images/scene_bookshelf.png",
+    progress: 55,
+    choices: [
+      { text: "🔑 지키 할아버지의 암호 스크롤을 들고 자물쇠 방으로 간다.", nextNode: "golden_lock_chamber" }
+    ]
+  },
+  shadow_game: {
+    text: "그림자 연극을 지나 유령 베이커리에 도착한 아리! 갓 구운 달콤한 무지개 빵 냄새가 온 도서관에 퍼져 있었어요.",
     image: "assets/images/scene_pong.png",
-    progress: 80,
+    progress: 55,
     choices: [
-      { text: "🤝 \"당연하지 퐁이야! 우리 같이 보물 상자를 열러 가자!\"", nextNode: "friend_ghost" },
-      { text: "🔍 \"좋았어! 우선 보물 상자가 있는 통로를 돋보기로 수색해볼게!\"", nextNode: "search_clues" }
+      { text: "🧁 유령 베이커리에서 빵을 나눠먹고 유령 무도회장으로 간다.", nextNode: "ghost_bakery" }
+    ]
+  },
+  magic_riddle_quiz: {
+    text: "마법 퀴즈 방의 문이 딸깍 열리며 눈부신 황금 보물 상자가 모습을 나타냈어요!",
+    image: "assets/images/scene_ending_happy.png",
+    progress: 65,
+    choices: [
+      { text: "🔑 황금 열쇠를 들고 무지개 보물 상자를 연다.", nextNode: "rainbow_chest" }
+    ]
+  },
+  footstep_trail: {
+    text: "발자국 트레일을 지나자 메아리 홀이 나타났고, 그 너머로 수많은 아기 유령들이 환영 잔치를 벌이고 있었어요!",
+    image: "assets/images/scene_bookshelf.png",
+    progress: 65,
+    choices: [
+      { text: "🎶 메아리 홀을 지나 유령 무도회장으로 들어간다.", nextNode: "echo_hall" }
+    ]
+  },
+  toy_mouse_dance_party: {
+    text: "아리는 태엽 쥐 인형들과 신나게 춤을 추며 세상에서 가장 유쾌한 밤을 보냈답니다!\n[장난감 친구 엔딩] 태엽 쥐들과 언제든 소꿉놀이를 할 수 있게 되었습니다!",
+    image: "assets/images/scene_ending_toy.png",
+    progress: 100,
+    endingId: "ending-toy",
+    choices: []
+  },
+  spider_web_bridge: {
+    text: "무지개 거미줄 다리를 건너자 눈부신 무지개 보물 상자가 아리를 기다리고 있었어요!",
+    image: "assets/images/scene_ending_happy.png",
+    progress: 75,
+    choices: [
+      { text: "💫 퐁이와 함께 힘껏 보물 상자를 열어젖힌다.", nextNode: "rainbow_chest" }
+    ]
+  },
+  starlight_dust_path: {
+    text: "별빛 가루 길 끝에서 아리는 전설의 꼬마 탐정 뱃지와 황금 열쇠를 동시에 발굴해냈습니다!",
+    image: "assets/images/scene_ending_detective.png",
+    progress: 85,
+    choices: [
+      { text: "🏆 명예의 전당으로 가서 전설의 탐정 엔딩을 맞이한다.", nextNode: "master_badge_ceremony" }
+    ]
+  },
+  magnifier_deep_search: {
+    text: "아리의 정밀한 돋보기 수색 덕분에 도서관의 숨겨진 모든 마법 장치가 풀어졌어요!",
+    image: "assets/images/scene_ending_detective.png",
+    progress: 85,
+    choices: [
+      { text: "🌟 명예의 전당 수여식으로 이동한다.", nextNode: "master_badge_ceremony" }
     ]
   },
   secret_room: {
-    text: "비밀 방 중앙의 보물 상자 앞에 선 아리와 퐁이!\n상자 위에는 황금 열쇠가 은은하게 빛나고 있었어요.\n아리와 퐁이가 손을 맞잡고 상자 열쇠구멍에 열쇠를 넣자 눈부신 빛이 퍼져 나왔답니다!",
+    text: "비밀 방 중앙의 황금 자물쇠 앞에 선 아리와 퐁이! 손을 모아 열쇠를 돌렸어요.",
     image: "assets/images/scene_ending_happy.png",
-    progress: 90,
+    progress: 85,
     choices: [
-      { text: "🔑 황금 열쇠를 완전히 돌려 마법 책들을 봉인 해제하는 최고의 결말로 간다.", nextNode: "ending_happy" }
+      { text: "🔑 황금 자물쇠를 완벽하게 해제한다.", nextNode: "golden_lock_chamber" }
     ]
   },
-  mirror_puzzle: {
-    text: "아리는 돋보기와 손전등 불빛을 거울 퍼즐에 반사시켜 비밀 문을 정확히 비추었어요!\n딸깍하는 소리와 함께 거울 문이 열리며 전설의 탐정 뱃지와 황금 열쇠가 드러났지요.\n아리의 뛰어난 직관과 추리력이 빛을 발한 순간이었어요!",
+  mirror_puzzle_chamber: {
+    text: "돋보기 불빛을 반사시켜 거울 퍼즐을 풀자 전설의 꼬마 탐정 수여식이 열렸습니다!",
     image: "assets/images/scene_ending_detective.png",
-    progress: 90,
+    progress: 85,
     choices: [
-      { text: "🌟 전설의 탐정 뱃지를 가슴에 달고 모험을 성공적으로 완수한다.", nextNode: "ending_detective" }
+      { text: "🏆 전설의 탐정 뱃지를 가슴에 다는 엔딩으로 간다.", nextNode: "master_badge_ceremony" }
     ]
   },
-  starlight_dust: {
-    text: "아리가 별빛 가루 단서들을 차례대로 연결하자, 공중에 무지개빛 마법 문이 열렸어요!\n문 안쪽에서 퐁이가 반갑게 손을 흔들며 마법 황금 열쇠를 아리에게 전달해 주었답니다.",
+  rainbow_bridge: {
+    text: "무지개 다리를 건너 무지개 보물 상자 앞에 무사히 도착했어요!",
+    image: "assets/images/scene_ending_happy.png",
+    progress: 85,
+    choices: [
+      { text: "🌈 보물 상자를 열고 도서관 수호자가 된다.", nextNode: "rainbow_chest" }
+    ]
+  },
+  golden_lock_chamber: {
+    text: "지키 할아버지의 암호 스크롤대로 자물쇠를 돌리자 마법 책들이 모두 해금되었어요!",
     image: "assets/images/scene_ending_happy.png",
     progress: 90,
     choices: [
-      { text: "🔑 퐁이와 함께 황금 열쇠로 도서관의 마법 보물상자를 해금한다.", nextNode: "ending_happy" }
+      { text: "🔑 마법 상자 봉인을 풀어낸다.", nextNode: "secret_chest_unsealing" }
     ]
   },
-  quiz_room: {
-    text: "퀴즈 방에 도착한 아리! 마법 벽면에 귀여운 문제가 빛나고 있었어요.\n'도서관에서 가장 책을 사랑하고 지혜로운 탐정의 이름은 누구일까요?'\n아리는 밝게 웃으며 손을 들었어요. \"그건 바로 책을 사랑하는 꼬마 탐정 아리야!\"\n그 순간 마법 문이 열리며 화려한 보상이 쏟아졌답니다!",
-    image: "assets/images/scene_ending_happy.png",
-    progress: 90,
+  ghost_bakery: {
+    text: "유령 베이커리 빵집에서 따뜻한 무지개 빵을 먹은 뒤 모닥불 동화 파티장으로 향했어요!",
+    image: "assets/images/scene_ending_ghost.png",
+    progress: 85,
     choices: [
-      { text: "🔑 퀴즈 정답 보상으로 황금 열쇠를 높이 들고 도서관 수호자가 된다.", nextNode: "ending_happy" },
-      { text: "👻 퐁이와 밤새 재미있는 수수께끼 퀴즈 놀이를 하며 유령 파티를 즐긴다.", nextNode: "ending_ghost" }
+      { text: "🔥 유령 친구들과 모닥불에 둘러앉아 동화책을 읽는다.", nextNode: "ghost_story_campfire" }
     ]
+  },
+  echo_hall: {
+    text: "메아리 홀을 지나자 유령들의 왁자지껄한 모닥불 동화 파티가 시작되었습니다!",
+    image: "assets/images/scene_ending_ghost.png",
+    progress: 85,
+    choices: [
+      { text: "👻 유령 무도회 파티 엔딩으로 들어간다.", nextNode: "ghost_story_campfire" }
+    ]
+  },
+  ghost_story_campfire: {
+    text: "아리는 밤마다 도서관 모닥불에 유령 친구들과 모여 무지개 젤리를 먹으며 재미있는 동화책을 읽게 되었어요!\n[왁자지껄 유령 파티 엔딩] 착한 유령 친구들과 영원한 독서 동반자가 되었습니다!",
+    image: "assets/images/scene_ending_ghost.png",
+    progress: 100,
+    endingId: "ending-ghost",
+    choices: []
   },
   rainbow_chest: {
-    text: "아리와 퐁이가 무지개 보물 상자 앞에 섰어요.\n둘이 힘을 모아 \"하나, 둘, 셋!\" 하고 상자 뚜껑을 열자, 눈부신 무지개 빛과 함께 마법 황금 열쇠가 솟아올랐어요!\n도서관의 모든 책들이 행복하게 반짝이기 시작했답니다.",
+    text: "무지개 보물 상자가 열리며 비밀 도서관의 마법 이야기책들이 모두 해금되었습니다!\n[도서관 수호자 엔딩] 아리는 퐁이와 함께 언제나 신나는 마법 동화책 모험을 즐기게 되었습니다. 해피엔딩!",
     image: "assets/images/scene_ending_happy.png",
-    progress: 95,
-    choices: [
-      { text: "🌈 도서관 수호자 엔딩으로 진입하여 모험을 마친다.", nextNode: "ending_happy" }
-    ]
+    progress: 100,
+    endingId: "ending-happy",
+    choices: []
+  },
+  secret_chest_unsealing: {
+    text: "아리와 퐁이는 마법 보물상자를 해금하여 동화책 속 주인공들과 매일 밤 즐거운 이야기를 나누게 되었답니다!\n[도서관 수호자 엔딩] 해피엔딩!",
+    image: "assets/images/scene_ending_happy.png",
+    progress: 100,
+    endingId: "ending-happy",
+    choices: []
+  },
+  master_badge_ceremony: {
+    text: "아리는 돋보기와 탁월한 명추리로 도서관의 모든 수수께끼를 해결하여 '전설의 명탐정 뱃지'를 가슴에 달았습니다!\n[전설의 꼬마 탐정 엔딩] 마을 최고의 탐정 아리 만세!",
+    image: "assets/images/scene_ending_detective.png",
+    progress: 100,
+    endingId: "ending-detective",
+    choices: []
   },
   ending_happy: {
     text: "아리와 퐁이는 마법의 황금 열쇠로 도서관의 보물상자를 열어 비밀 도서관의 마법 책들을 모두 해금했어요!\n이제 밤마다 도서관의 동화책 속 마법 주인공들이 튀어나와 아리와 퐁이에게 세상에서 가장 재미있는 옛날이야기를 들려준답니다.\n\n[도서관 수호자 엔딩] 아리는 퐁이와 영원한 친구가 되어 언제나 신나는 동화책 모험을 떠날 수 있게 되었습니다. 해피엔딩!",
@@ -211,186 +364,339 @@ const storyDataKo = {
   }
 };
 
-// 2. 영어 스토리 노드 데이터 (4배 확장판 English Story Edition)
+// 2. 영어 스토리 노드 데이터 (45개 대용량 탐험 노드 트리 English Edition)
 const storyDataEn = {
   start: {
-    text: "On a moonlit night, 8-year-old little detective Ari adjusted her pink detective hat and gripped her flashlight and large magnifying glass tightly.\nIn front of her stood the old town secret library, holding deep mysteries for centuries.\n\"Rumors say a golden magical key that casts magical spells every night is hidden deep inside!\"\nAri's heart fluttered with excitement. How should Ari enter the mysterious library?",
+    text: "On a moonlit night, 8-year-old little detective Ari adjusted her pink detective hat and gripped her flashlight and magnifying glass tightly.\nIn front of her stood the old secret library holding deep mysteries for centuries.\n\"Rumors say a golden magical key that casts magical spells every night is hidden deep inside!\"\nAri's heart fluttered with excitement. Three secret entrances lead into the library.",
     image: "assets/images/scene_start.png",
-    progress: 10,
+    progress: 5,
     choices: [
       { text: "🚪 Gently push open the heavy creaky old wooden library door.", nextNode: "library_door" },
-      { text: "🪟 Crawl into the small dusty basement window hidden behind ivy vines.", nextNode: "basement_window" }
+      { text: "🪟 Crawl into the small dusty basement window hidden behind ivy vines.", nextNode: "basement_window" },
+      { text: "🌿 Climb the ivy ladder onto the 2nd floor rooftop terrace garden.", nextNode: "rooftop_garden" }
     ]
   },
   library_door: {
-    text: "As Ari gently pushed the door, a friendly creak echoed, and the cozy smell of old paper wrapped around her.\nThe ceiling was towering high, with thousands of books neatly stacked on endless shelves.\nSuddenly, a mysterious golden light streamed out from between the tall bookshelves!\nAt the same time, curious sounds echoed near the clock tower hall and under the counter.",
+    text: "As Ari gently pushed the door, a friendly creak echoed, and the cozy smell of old paper wrapped around her.\nThe ceiling was towering high, with thousands of books neatly stacked on endless shelves.\nSuddenly, a golden light streamed out from between the tall bookshelves!\nAt the same time, strange sounds echoed near the clock tower hall and ancient archive.",
     image: "assets/images/scene_bookshelf.png",
-    progress: 25,
+    progress: 12,
     choices: [
       { text: "✨ Walk toward the glowing golden light between the secret bookshelves.", nextNode: "glowing_bookshelf" },
-      { text: "🕰️ Head into the grand clock tower hall where ticking sounds resonate.", nextNode: "clock_tower_hall" }
+      { text: "🕰️ Head into the grand clock tower hall where ticking sounds resonate.", nextNode: "clock_tower_hall" },
+      { text: "📜 Step into the candlelight of the ancient archive entrance.", nextNode: "ancient_archive" }
     ]
   },
   basement_window: {
-    text: "Ari carefully climbed through the window frame and landed softly in the basement storage room!\nOld treasure chests, cobwebs, and large wooden barrels filled the cozy space.\nIn the middle, a shiny blue gem chest was sparkling with magical blue light.\nOn the wall hung an ancient parchment map showing the entire library structure.",
+    text: "Ari carefully climbed through the window frame and landed softly in the basement storage room!\nOld treasure chests, cobwebs, and large wooden barrels filled the cozy space.\nIn the middle, a shiny blue gem chest was sparkling with magical blue light.\nAn ancient map hung on the wall, and a deep underground cave passage opened in the floor.",
     image: "assets/images/scene_basement.png",
-    progress: 25,
+    progress: 12,
     choices: [
       { text: "💎 Inspect and open the sparkling blue gem chest.", nextNode: "blue_box" },
-      { text: "🗺️ Examine the secret parchment map hanging on the basement wall.", nextNode: "library_map" }
+      { text: "🗺️ Examine the secret parchment map hanging on the wall.", nextNode: "library_map" },
+      { text: "🦇 Descend into the deep underground secret cave.", nextNode: "underground_cave" }
+    ]
+  },
+  rooftop_garden: {
+    text: "Standing in the moonlit 2nd floor terrace garden, night-blooming glowing flowers emitted a dreamlike scent.\nThrough the glass windows, Ari could see the starry observatory deck and the 2nd floor library study.",
+    image: "assets/images/scene_start.png",
+    progress: 12,
+    choices: [
+      { text: "🔭 Move onto the mysterious observatory deck equipped with a telescope.", nextNode: "observatory_deck" },
+      { text: "✨ Open the garden window and step into the glowing 2nd floor study.", nextNode: "glowing_bookshelf" }
     ]
   },
   clock_tower_hall: {
-    text: "Inside the clock tower hall, giant gears were turning slowly with steady ticking sounds.\nIn the center lay a giant encyclopedia open to a page titled 'Forgotten Secret Tales of the Library'.\nOn the page were glowing footprint dots leading down toward the library counter!",
+    text: "Inside the clock tower hall, giant gears were turning slowly with steady ticking sounds.\nIn the center lay a giant encyclopedia open to 'Forgotten Secret Tales of the Library'.\nOn the floor were glowing footprint dots and a door leading to the clockwork gear room.",
     image: "assets/images/scene_bookshelf.png",
-    progress: 40,
+    progress: 20,
     choices: [
       { text: "📖 Read the magical riddle page inside the open encyclopedia.", nextNode: "old_encyclopedia" },
-      { text: "👣 Follow the sparkling footprint dots toward the main counter.", nextNode: "counter_footsteps" }
+      { text: "👣 Follow the sparkling footprint dots toward the main counter.", nextNode: "counter_footsteps" },
+      { text: "⚙️ Look inside the clockwork gear machine chamber.", nextNode: "clockwork_gear_room" }
     ]
   },
   glowing_bookshelf: {
-    text: "Peeking through the books, Ari's eyes widened in amazement!\nA cute chubby white baby ghost named Pong was floating in the air, happily reading a storybook.\nPong gasped softly and said, \"Hi! I'm Pong the book-loving ghost. I lost the golden key to the magic chest...\"",
+    text: "Peeking through the books, Ari's eyes widened in amazement!\nA cute chubby white baby ghost named Pong was floating in the air, happily reading a storybook.\nBeside the shelf sat a magical music box playing a dreamlike melody.",
     image: "assets/images/scene_pong.png",
-    progress: 50,
+    progress: 20,
     choices: [
-      { text: "🤝 \"Hi Pong! I'm detective Ari. I'll help you find the key!\"", nextNode: "friend_ghost" },
-      { text: "🔍 \"Don't worry Pong! Let me inspect the starlight clues with my magnifying glass!\"", nextNode: "search_clues" }
+      { text: "👻 Greet Pong shyly with a warm hello.", nextNode: "pong_first_meeting" },
+      { text: "🔍 Scan the starlight dust clues around the shelf with a magnifying glass.", nextNode: "search_clues" },
+      { text: "🎶 Open the lid of the magical music box playing sweet melodies.", nextNode: "music_box_room" }
     ]
   },
   blue_box: {
-    text: "Opening the blue chest, cute mechanical clockwork toy mice popped out with cheerful winding sounds!\nThe mice danced in circles to welcome Ari warmly.\nAri noticed a tiny secret note tucked under the key winding gears of the lead mouse.",
+    text: "Opening the blue chest, cute mechanical clockwork toy mice popped out with cheerful winding sounds!\nSeeing a secret code note under their winding gears, Ari gained a new clue.",
     image: "assets/images/scene_ending_toy.png",
-    progress: 50,
+    progress: 20,
     choices: [
-      { text: "📜 Take the secret code note to the 2nd floor glowing bookshelf.", nextNode: "glowing_bookshelf" },
-      { text: "🐭 \"You guys are adorable!\" Enter the secret toy playroom with the mice.", nextNode: "toy_mice_room" }
+      { text: "🐭 Follow the toy mice into the secret toy playroom.", nextNode: "toy_mice_room" },
+      { text: "📖 Carry the secret code note up to the 2nd floor glowing bookshelf.", nextNode: "glowing_bookshelf" }
     ]
   },
   library_map: {
-    text: "Shining her magnifying glass on the parchment map, secret magic ink revealed hidden letters!\n'Pass through the maze under the desks to find the Secret Ghost Playroom and the Golden Key Chest.'\nAri felt confident about navigating deep into the library.",
+    text: "Shining her magnifying glass on the parchment map, secret magic ink revealed three major hidden paths!\nThe coordinates for the underground cave, desk maze, and counter footsteps became clear.",
     image: "assets/images/scene_basement.png",
-    progress: 50,
+    progress: 20,
     choices: [
-      { text: "🗺️ Follow the secret maze path shown on the map.", nextNode: "secret_passage" },
-      { text: "👣 Put the map in her bag and follow the footprints under the counter.", nextNode: "counter_footsteps" }
+      { text: "🗺️ Dive into the secret desk maze path marked on the map.", nextNode: "secret_passage" },
+      { text: "👣 Head toward the glowing footprints under the counter.", nextNode: "counter_footsteps" }
+    ]
+  },
+  observatory_deck: {
+    text: "Stepping onto the starry observatory deck, Ari looked through the giant telescope!\nThe Big Dipper was shooting light arrows down toward the secret library below.\nA constellation magic puzzle board lay on the deck floor.",
+    image: "assets/images/scene_start.png",
+    progress: 28,
+    choices: [
+      { text: "🌌 Solve the constellation magic puzzle with her magnifying glass.", nextNode: "star_constellation_puzzle" },
+      { text: "✨ Follow the light arrows down to Pong's bookshelf.", nextNode: "pong_first_meeting" }
+    ]
+  },
+  underground_cave: {
+    text: "Descending into the cool underground cave, a bubbling riddle fountain appeared!\nGlowing riddle sentences were floating gently on the water waves.",
+    image: "assets/images/scene_basement.png",
+    progress: 28,
+    choices: [
+      { text: "⛲ Solve the fountain riddle to connect the magic rainbow bridge.", nextNode: "riddle_fountain" },
+      { text: "🐭 Follow winding clockwork sounds into the toy room.", nextNode: "toy_mice_room" }
+    ]
+  },
+  ancient_archive: {
+    text: "The ancient archive was filled with hundreds of years old parchment scrolls.\nKind old bookworm ghost 'Grandpa Jiki' wearing glasses welcomed Ari warmly!\n\"Aha! Detective Ari! I shall share the key clue to the golden lock.\"",
+    image: "assets/images/scene_bookshelf.png",
+    progress: 28,
+    choices: [
+      { text: "👴 Listen to Grandpa Jiki's secret hint for the golden lock.", nextNode: "bookworm_jiki" },
+      { text: "📖 Inspect the encyclopedia magic page in the center.", nextNode: "old_encyclopedia" }
+    ]
+  },
+  music_box_room: {
+    text: "Opening the music box, dancing shadow dolls performed a magical puppet show on the wall!\nThe shadow dolls pointed toward a sweet-smelling Ghost Bakery.",
+    image: "assets/images/scene_pong.png",
+    progress: 28,
+    choices: [
+      { text: "🎭 Follow the shadow puppet signal to the Ghost Bakery.", nextNode: "shadow_game" },
+      { text: "👻 Talk warmly with Pong who floated over attracted by the music.", nextNode: "pong_first_meeting" }
     ]
   },
   old_encyclopedia: {
-    text: "The magic encyclopedia page displayed a glowing riddle:\n'Only those who enter by night and hold dreams in their hearts can approach the Golden Key.'\nA cute illustration of Pong the ghost was drawn at the bottom!",
+    text: "A glowing riddle appeared on the magic page:\n'Only those who love stars and fairytales can open the magic chest.'\nAri instantly sensed the answer.",
     image: "assets/images/scene_bookshelf.png",
-    progress: 60,
+    progress: 36,
     choices: [
-      { text: "🧠 Go to the Quiz Room to solve the magical riddle.", nextNode: "quiz_room" },
-      { text: "✨ Head to the glowing bookshelf where Pong is waiting.", nextNode: "glowing_bookshelf" }
+      { text: "🧠 Step into the Magic Quiz Room to solve the riddle.", nextNode: "magic_riddle_quiz" }
     ]
   },
   counter_footsteps: {
-    text: "Shining her magnifying glass under the counter, Ari saw colorful starlight footprints leading behind the stacks.\nAs Ari stepped closer, a gentle voice whispered from below:\n\"Who is there? Are you the little detective come to help?\"",
+    text: "Following the footprints, gentle echo sounds whispered from under the counter!\nThe footprints led through the Echo Hall toward the ghost ballroom.",
     image: "assets/images/scene_bookshelf.png",
-    progress: 60,
+    progress: 36,
     choices: [
-      { text: "👣 Follow the starlight footprints into the secret ghost ballroom.", nextNode: "ghost_ballroom" },
-      { text: "🗣️ Courageously reply, \"I'm Ari! I'm here to help!\"", nextNode: "call_out" }
+      { text: "👣 Track the starlight footprint trail to the end.", nextNode: "footstep_trail" },
+      { text: "🗣️ Courageously shout, \"Is anyone there? Ari is here to help!\"", nextNode: "call_out" }
     ]
   },
-  toy_mice_room: {
-    text: "The toy mice led Ari to a secret playroom deep in the basement!\nToy horses, building blocks, and wind-up dolls were playing magically together.\nDeep inside a toy chest lay a keyhole glowing with golden light.",
+  clockwork_gear_room: {
+    text: "Inside the gear chamber, magic gears played like an orchestra!\nBehind the gear door lay the toy mice dance floor and mirror puzzle chamber.",
     image: "assets/images/scene_ending_toy.png",
-    progress: 75,
+    progress: 36,
     choices: [
-      { text: "🐭 Dance and play house with the toy mice to unlock the Toy Friends Ending.", nextNode: "ending_toy" },
-      { text: "🗝️ Pass through the secret toy passage into Pong's playroom.", nextNode: "secret_passage" }
+      { text: "🎉 Enter the toy mice dance party filled with cheerful music.", nextNode: "toy_mouse_dance_party" },
+      { text: "🪞 Enter the secret temple fitted with light reflecting mirrors.", nextNode: "mirror_puzzle_chamber" }
     ]
   },
-  secret_passage: {
-    text: "Carefully navigating the cobweb maze under the desks, a grand magical room unfolded!\nColorful stars and mini trampolines floated in the air, with a radiant chest glowing in the center.",
-    image: "assets/images/scene_basement.png",
-    progress: 75,
+  pong_first_meeting: {
+    text: "Pong smiled sweetly at Ari's warm greeting!\n\"Hi Detective Ari! Hold my hand, and we can cross the cobweb rainbow bridge to the chest!\"",
+    image: "assets/images/scene_pong.png",
+    progress: 45,
     choices: [
-      { text: "🎁 Meet Pong near the chest and open the treasure box together.", nextNode: "secret_room" },
-      { text: "🪞 Solve the mysterious mirror puzzle on the wall with the magnifying glass.", nextNode: "mirror_puzzle" }
-    ]
-  },
-  friend_ghost: {
-    text: "Touched by Ari's kindness, Pong floated happily!\n\"Thank you Ari! With you, we can reach the rainbow chest in the 3rd floor secret study!\"\nPong gently held Ari's hand and guided her to the glowing study door.",
-    image: "assets/images/scene_ending_happy.png",
-    progress: 80,
-    choices: [
-      { text: "💫 Combine forces with Pong to open the rainbow chest!", nextNode: "rainbow_chest" },
-      { text: "🧠 Solve the magic quiz lock on the chest with Ari's wisdom.", nextNode: "quiz_room" }
+      { text: "🤝 Become best friends with Pong and head to the treasure chest.", nextNode: "friend_ghost" },
+      { text: "🕸️ Cross the cobweb rainbow bridge guided by Pong.", nextNode: "spider_web_bridge" }
     ]
   },
   search_clues: {
-    text: "Ari searched every shelf carefully from top to bottom with her magnifying glass.\nOn a fairytale book cover on the second shelf, she found starlight dust left by Pong!\nConnecting the dust dots revealed a magical map.",
+    text: "Scanning the shelves with her magnifying glass, starlight dust clues left by Pong stretched far!\nAri's brilliant deduction began solving the clues one by one.",
     image: "assets/images/scene_ending_detective.png",
-    progress: 80,
+    progress: 45,
     choices: [
-      { text: "🌟 Combine starlight clues to unlock the golden key seal.", nextNode: "starlight_dust" },
-      { text: "🏆 Complete the Legendary Detective Ending with brilliant deduction.", nextNode: "ending_detective" }
+      { text: "🌟 Track the starlight dust path to locate the golden key.", nextNode: "starlight_dust_path" },
+      { text: "🔍 Reveal the hidden magic switch using magnifying search techniques.", nextNode: "magnifier_deep_search" }
     ]
   },
-  ghost_ballroom: {
-    text: "The footprints led to a magnificent ballroom where ghost friends gather every night!\nDozens of baby ghosts were sitting together, eating rainbow jellies and reading storybooks.\nThey clapped happily to welcome Ari!",
-    image: "assets/images/scene_ending_ghost.png",
-    progress: 80,
+  toy_mice_room: {
+    text: "Arriving at the secret toy room, cute mechanical mice offered snacks and invited Ari to dance!",
+    image: "assets/images/scene_ending_toy.png",
+    progress: 45,
     choices: [
-      { text: "👻 Join the ghost friends for a night of jellies and storybook fun.", nextNode: "ending_ghost" },
-      { text: "🔑 Receive the golden key from Pong to unlock the chest.", nextNode: "ending_happy" }
+      { text: "🐭 Dance happily with the toy mice to reach the Toy Ending.", nextNode: "toy_mouse_dance_party" }
     ]
   },
-  call_out: {
-    text: "Hearing Ari's brave voice, Pong popped out shyly from under the counter.\n\"Hi Detective Ari! The golden key is in the magic chest, but we must open it together!\"",
+  secret_passage: {
+    text: "Passing through the desk maze, a magical playroom with floating trampolines appeared!\nA glowing chest and light reflecting mirrors lay in the center.",
+    image: "assets/images/scene_basement.png",
+    progress: 45,
+    choices: [
+      { text: "🎁 Go to the secret chest and open it with Pong.", nextNode: "secret_room" },
+      { text: "🪞 Align the mirror puzzle to enter the Master Detective Room.", nextNode: "mirror_puzzle_chamber" }
+    ]
+  },
+  star_constellation_puzzle: {
+    text: "As Ari aligned the Big Dipper constellation with her magnifying glass light, starlight dust showered down, revealing the golden key coordinates!",
+    image: "assets/images/scene_start.png",
+    progress: 55,
+    choices: [
+      { text: "🌟 Follow the starlight path to earn the Master Detective Badge.", nextNode: "starlight_dust_path" }
+    ]
+  },
+  riddle_fountain: {
+    text: "Solving the fountain riddle transformed the water stream into a rainbow bridge connected to Pong's chest room!",
+    image: "assets/images/scene_basement.png",
+    progress: 55,
+    choices: [
+      { text: "🌈 Cross the rainbow bridge toward the treasure chest.", nextNode: "rainbow_bridge" }
+    ]
+  },
+  bookworm_jiki: {
+    text: "Grandpa Jiki handed over an ancient parchment scroll.\n\"Enter this code, and the golden lock will click open!\"",
+    image: "assets/images/scene_bookshelf.png",
+    progress: 55,
+    choices: [
+      { text: "🔑 Take Grandpa Jiki's code scroll to the lock chamber.", nextNode: "golden_lock_chamber" }
+    ]
+  },
+  shadow_game: {
+    text: "Passing the shadow play into the Ghost Bakery, warm smells of freshly baked rainbow bread filled the library!",
     image: "assets/images/scene_pong.png",
-    progress: 80,
+    progress: 55,
     choices: [
-      { text: "🤝 \"Of course Pong! Let's go open the chest together!\"", nextNode: "friend_ghost" },
-      { text: "🔍 \"Great! Let me inspect the path with my magnifying glass first!\"", nextNode: "search_clues" }
+      { text: "🧁 Share bread at the bakery and head to the ghost ballroom.", nextNode: "ghost_bakery" }
+    ]
+  },
+  magic_riddle_quiz: {
+    text: "The Magic Quiz door clicked open, revealing a radiant golden chest!",
+    image: "assets/images/scene_ending_happy.png",
+    progress: 65,
+    choices: [
+      { text: "🔑 Open the rainbow treasure chest with the golden key.", nextNode: "rainbow_chest" }
+    ]
+  },
+  footstep_trail: {
+    text: "Following the footprint trail, the Echo Hall appeared, leading to a grand party hosted by baby ghosts!",
+    image: "assets/images/scene_bookshelf.png",
+    progress: 65,
+    choices: [
+      { text: "🎶 Pass through the Echo Hall into the ghost ballroom.", nextNode: "echo_hall" }
+    ]
+  },
+  toy_mouse_dance_party: {
+    text: "Ari danced happily with the toy mice, enjoying the most delightful night ever!\n[Toy Friends Ending] Ari made secret toy friends forever in the basement!",
+    image: "assets/images/scene_ending_toy.png",
+    progress: 100,
+    endingId: "ending-toy",
+    choices: []
+  },
+  spider_web_bridge: {
+    text: "Crossing the rainbow cobweb bridge, a dazzling treasure chest awaited Ari!",
+    image: "assets/images/scene_ending_happy.png",
+    progress: 75,
+    choices: [
+      { text: "💫 Push open the treasure chest together with Pong.", nextNode: "rainbow_chest" }
+    ]
+  },
+  starlight_dust_path: {
+    text: "At the end of the starlight dust path, Ari discovered the Master Detective Badge and Golden Key!",
+    image: "assets/images/scene_ending_detective.png",
+    progress: 85,
+    choices: [
+      { text: "🏆 Enter the Hall of Fame for the Legendary Detective Ending.", nextNode: "master_badge_ceremony" }
+    ]
+  },
+  magnifier_deep_search: {
+    text: "Thanks to Ari's precise magnifying search, every hidden magic mechanism unlocked!",
+    image: "assets/images/scene_ending_detective.png",
+    progress: 85,
+    choices: [
+      { text: "🌟 Move to the Master Badge Award Ceremony.", nextNode: "master_badge_ceremony" }
     ]
   },
   secret_room: {
-    text: "Ari and Pong stood in front of the center treasure chest!\nThe golden key shone softly on top. As Ari and Pong turned the key together, brilliant light showered the room!",
+    text: "Standing before the golden lock in the secret room, Ari and Pong turned the key together.",
     image: "assets/images/scene_ending_happy.png",
-    progress: 90,
+    progress: 85,
     choices: [
-      { text: "🔑 Turn the key completely to unlock all magical storybooks!", nextNode: "ending_happy" }
+      { text: "🔑 Unlock the golden lock completely.", nextNode: "golden_lock_chamber" }
     ]
   },
-  mirror_puzzle: {
-    text: "Ari reflected her flashlight off the mirror puzzle using her magnifying glass!\nWith a click, the mirror door opened, revealing the Legendary Detective Badge and Golden Key.\nAri's deduction shone brilliantly!",
+  mirror_puzzle_chamber: {
+    text: "Reflecting light through the mirror puzzle opened the Master Detective Ceremony!",
     image: "assets/images/scene_ending_detective.png",
-    progress: 90,
+    progress: 85,
     choices: [
-      { text: "🌟 Wear the Legendary Detective Badge proudly to finish the quest.", nextNode: "ending_detective" }
+      { text: "🏆 Wear the Legendary Detective Badge for the ending.", nextNode: "master_badge_ceremony" }
     ]
   },
-  starlight_dust: {
-    text: "As Ari connected the starlight dust, a rainbow portal opened in the air!\nPong reached out from the portal and handed Ari the golden key with a happy smile.",
+  rainbow_bridge: {
+    text: "Crossing the rainbow bridge, Ari arrived safely before the rainbow treasure chest!",
+    image: "assets/images/scene_ending_happy.png",
+    progress: 85,
+    choices: [
+      { text: "🌈 Open the chest and become the Library Guardian.", nextNode: "rainbow_chest" }
+    ]
+  },
+  golden_lock_chamber: {
+    text: "Turning the lock according to Grandpa Jiki's scroll unlocked all magical books!",
     image: "assets/images/scene_ending_happy.png",
     progress: 90,
     choices: [
-      { text: "🔑 Unlock the library treasure chest with Pong.", nextNode: "ending_happy" }
+      { text: "🔑 Unseal the magical treasure chest.", nextNode: "secret_chest_unsealing" }
     ]
   },
-  quiz_room: {
-    text: "Arriving at the Quiz Room, glowing letters shone on the wall:\n'Who is the smartest book-loving detective in the library?'\nAri smiled brightly and raised her hand, \"That's me, Little Detective Ari!\"\nThe magic door opened with wonderful rewards!",
-    image: "assets/images/scene_ending_happy.png",
-    progress: 90,
+  ghost_bakery: {
+    text: "After eating warm rainbow bread at the bakery, Ari headed to the campfire story ground!",
+    image: "assets/images/scene_ending_ghost.png",
+    progress: 85,
     choices: [
-      { text: "🔑 Claim the golden key reward and become the Library Guardian.", nextNode: "ending_happy" },
-      { text: "👻 Stay up all night solving fun riddles with Pong.", nextNode: "ending_ghost" }
+      { text: "🔥 Sit around the campfire with ghost friends to read storybooks.", nextNode: "ghost_story_campfire" }
     ]
+  },
+  echo_hall: {
+    text: "Passing the Echo Hall, a jolly ghost campfire story party began!",
+    image: "assets/images/scene_ending_ghost.png",
+    progress: 85,
+    choices: [
+      { text: "👻 Enter the Ghost Party Ending.", nextNode: "ghost_story_campfire" }
+    ]
+  },
+  ghost_story_campfire: {
+    text: "Every night, Ari joins ghost friends around the campfire to eat rainbow jellies and read storybooks!\n[Jolly Ghost Party Ending] Ari gained warm reading companions forever!",
+    image: "assets/images/scene_ending_ghost.png",
+    progress: 100,
+    endingId: "ending-ghost",
+    choices: []
   },
   rainbow_chest: {
-    text: "Ari and Pong stood before the rainbow chest.\nCounting \"One, two, three!\", they opened the lid together, and the golden key rose with dazzling rainbow light!\nAll books in the library started sparkling happily.",
+    text: "The rainbow chest opened, unsealing all magical storybooks in the library!\n[Library Guardian Ending] Ari and Pong enjoy endless fairytale adventures together. Happy Ending!",
     image: "assets/images/scene_ending_happy.png",
-    progress: 95,
-    choices: [
-      { text: "🌈 Enter the Library Guardian Ending to finish the adventure.", nextNode: "ending_happy" }
-    ]
+    progress: 100,
+    endingId: "ending-happy",
+    choices: []
+  },
+  secret_chest_unsealing: {
+    text: "Ari and Pong unsealed the chest, enjoying joyful bedtime stories with fairytale characters every night!\n[Library Guardian Ending] Happy Ending!",
+    image: "assets/images/scene_ending_happy.png",
+    progress: 100,
+    endingId: "ending-happy",
+    choices: []
+  },
+  master_badge_ceremony: {
+    text: "Ari solved all library riddles with her magnifying glass and deduction, wearing the 'Master Detective Badge' proudly!\n[Legendary Detective Ending] Long live Detective Ari!",
+    image: "assets/images/scene_ending_detective.png",
+    progress: 100,
+    endingId: "ending-detective",
+    choices: []
   },
   ending_happy: {
-    text: "Ari and Pong unlocked the library treasure chest with the golden key, freeing all magical storybooks!\nNow every night, storybook characters come alive and read wonderful tales to Ari and Pong.\n\n[Library Guardian Ending] Ari and Pong became lifelong friends, ready for endless magical adventures. Happy Ending!",
+    text: "Ari and Pong unlocked the library treasure chest with the golden key, freeing all magical storybooks!\nEvery night, storybook characters come alive and read wonderful tales to Ari and Pong.\n\n[Library Guardian Ending] Ari and Pong became lifelong friends, ready for endless magical adventures. Happy Ending!",
     image: "assets/images/scene_ending_happy.png",
     progress: 100,
     endingId: "ending-happy",
@@ -513,7 +819,7 @@ function renderNode(nodeId) {
 
   // 특수 노드 사운드 효과 트리거
   if (window.soundManager) {
-    if (nodeId === "glowing_bookshelf" || nodeId === "friend_ghost" || nodeId === "search_clues") {
+    if (nodeId === "glowing_bookshelf" || nodeId === "friend_ghost" || nodeId === "search_clues" || nodeId === "observatory_deck") {
       window.soundManager.playMagicChime();
     } else if (node.choices && node.choices.length === 0) {
       window.soundManager.playEndingFanfare();
