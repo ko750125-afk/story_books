@@ -91,7 +91,20 @@
         </div>
         <div class="modal-footer">
           <button id="btn-reset-story" class="btn-secondary">🔄 처음부터 다시 도전하기</button>
-          <button id="btn-reset-all" class="btn-danger">🗑️ 모든 기록 초기화</button>
+          <button id="btn-reset-all" class="btn-danger" onclick="showResetConfirmModal()">🗑️ 모든 기록 초기화</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 초기화 경고 확인 모달 -->
+    <div id="confirm-modal" class="modal hidden">
+      <div class="confirm-card">
+        <h2 class="confirm-title">⚠️ 정말 초기화할까요?</h2>
+        <p class="confirm-desc">4대 코스의 <strong>탐험 점수, 도감 뱃지, 진행 상태</strong>가<br>모두 삭제됩니다.</p>
+        <p class="confirm-warning">🚨 이 작업은 되돌릴 수 없습니다!</p>
+        <div class="confirm-buttons">
+          <button id="btn-confirm-cancel" class="btn-confirm-cancel" onclick="closeConfirmModal()">❌ 취소</button>
+          <button id="btn-confirm-ok" class="btn-confirm-ok" onclick="executeResetAll()">🗑️ 초기화 실행</button>
         </div>
       </div>
     </div>

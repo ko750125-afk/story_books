@@ -826,11 +826,20 @@ btnResetStoryEl.addEventListener("click", () => {
   resetStory();
 });
 
-// 전체 기록 초기화
-function resetAllData() {
-  const confirmed = confirm("⚠️ 정말로 모든 탐험 기록을 초기화할까요?\n\n4대 코스의 점수, 도감 뱃지, 진행 상태가 모두 삭제됩니다.\n이 작업은 되돌릴 수 없습니다.");
-  if (!confirmed) return;
+// 전체 기록 초기화 - 커스텀 경고 모달 흐름
+function showResetConfirmModal() {
+  if (window.soundManager) window.soundManager.playClick();
+  const confirmModal = document.getElementById("confirm-modal");
+  if (confirmModal) confirmModal.classList.remove("hidden");
+}
 
+function closeConfirmModal() {
+  if (window.soundManager) window.soundManager.playClick();
+  const confirmModal = document.getElementById("confirm-modal");
+  if (confirmModal) confirmModal.classList.add("hidden");
+}
+
+function executeResetAll() {
   // 로컬스토리지 전체 삭제
   localStorage.clear();
 
@@ -851,7 +860,9 @@ function resetAllData() {
   updateTotalScoreUI();
   updateAlbumUI();
 
-  // 모달 닫기
+  // 모달 전부 닫기
+  const confirmModal = document.getElementById("confirm-modal");
+  if (confirmModal) confirmModal.classList.add("hidden");
   albumModalEl.classList.add("hidden");
   const celModalEl = document.getElementById("celebration-modal");
   if (celModalEl) celModalEl.classList.add("hidden");
@@ -862,13 +873,6 @@ function resetAllData() {
   }
 
   renderNode("start");
-}
-
-const btnResetAllEl = document.getElementById("btn-reset-all");
-if (btnResetAllEl) {
-  btnResetAllEl.addEventListener("click", () => {
-    resetAllData();
-  });
 }
 
 // 최초 시작
