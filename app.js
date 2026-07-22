@@ -148,6 +148,7 @@ const btnResetStoryEl = document.getElementById("btn-reset-story");
 // 3. 상태 관리 변수
 let currentNodeId = "start";
 let unlockedEndings = [];
+let isAutoTTSMode = false; // 연속 자동 낭독 모드 플래그
 
 // 4. 로컬 스토리지 초기화 및 로드
 function loadGameData() {
@@ -254,7 +255,12 @@ function renderNode(nodeId) {
       illustrationEl.parentElement.classList.remove("fade-in");
       storyTextEl.parentElement.classList.remove("fade-in");
       choiceContainerEl.classList.remove("fade-in");
-    }, 500);
+
+      // 만약 자동 낭독 모드가 켜져 있다면 새로운 스토리 페이지도 자동 연속 낭독!
+      if (isAutoTTSMode) {
+        startTTSForCurrentNode();
+      }
+    }, 520);
 
   }, 400);
 }
@@ -426,7 +432,14 @@ function updateAlbumUI() {
 // 8. 처음부터 시작 로직
 function resetStory() {
   currentNodeId = "start";
+  isAutoTTSMode = false; // 자동 낭독 모드 OFF
   localStorage.setItem("currentStoryNode", "start");
+
+  // 진행 중인 낭독 중지
+  if (window.soundManager) {
+    window.soundManager.stopSpeech();
+    updateTTSUI(false);
+  }
 
   // 모달 닫기
   albumModalEl.classList.add("hidden");
@@ -449,28 +462,40 @@ if (btnTtsEl) {
   btnTtsEl.addEventListener("click", () => {
     if (!window.soundManager) return;
 
-    if (window.soundManager.isSpeaking()) {
+    if (isAutoTTSMode || window.soundManager.isSpeaking()) {
+      // 자동 낭독 모드 끄기 & 음성 중지
+      isAutoTTSMode = false;
       window.soundManager.stopSpeech();
       updateTTSUI(false);
     } else {
+      // 자동 낭독 모드 켜기 & 첫 낭독 시작
+      isAutoTTSMode = true;
       window.soundManager.playClick();
-
-      // 동화 본문 텍스트 낭독
-      let fullTextToRead = storyTextEl.textContent;
-
-      // 선택지 노드인 경우 본문을 다 읽은 후 지우를 다정하게 부르는 멘트만 추가
-      const currentChoices = storyData[currentNodeId]?.choices;
-      if (currentChoices && currentChoices.length > 0) {
-        fullTextToRead += "\n\n지우야, 어떤 길을 선택할래?";
-      }
-
-      window.soundManager.speakText(
-        fullTextToRead,
-        () => updateTTSUI(true),  // 낭독 시작 시 UI 변경
-        () => updateTTSUI(false)  // 낭독 완료 시 UI 복구
-      );
+      startTTSForCurrentNode();
     }
   });
+}
+
+// 현재 스토리 노드 TTS 낭독 시작 함수
+function startTTSForCurrentNode() {
+  if (!window.soundManager) return;
+
+  let fullTextToRead = storyTextEl.textContent;
+  const currentChoices = storyData[currentNodeId]?.choices;
+  if (currentChoices && currentChoices.length > 0) {
+    fullTextToRead += "\n\n지우야, 어떤 길을 선택할래?";
+  }
+
+  window.soundManager.speakText(
+    fullTextToRead,
+    () => updateTTSUI(true),  // 낭독 시작 시 UI 변경
+    () => {
+      // 낭독 완료되더라도 자동 모드가 켜져 있다면 다음 클릭 전까지 온/오프 상태 관리
+      if (!isAutoTTSMode) {
+        updateTTSUI(false);
+      }
+    }
+  );
 }
 
 function updateTTSUI(isSpeaking) {
@@ -478,7 +503,7 @@ function updateTTSUI(isSpeaking) {
   const storyCard = document.getElementById("story-card");
   if (!btnTts) return;
 
-  if (isSpeaking) {
+  if (isSpeaking || isAutoTTSMode) {
     btnTts.textContent = "🛑 읽기 중지";
     btnTts.classList.add("speaking");
     if (storyCard) storyCard.classList.add("speaking");
