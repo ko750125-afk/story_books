@@ -145,12 +145,23 @@ const albumModalEl = document.getElementById("album-modal");
 const btnCloseAlbumEl = document.getElementById("btn-close-album");
 const btnResetStoryEl = document.getElementById("btn-reset-story");
 
-// 3. 상태 관리 변수
+// 3. 전역 상태 변수
 let currentNodeId = "start";
 let unlockedEndings = [];
-let isAutoTTSMode = false; // 연속 자동 낭독 모드 플래그
+let isAutoTTSMode = false; // 연속 자동 낭독 모드
 
-// 4. 로컬 스토리지 초기화 및 로드
+// 4. 헬퍼 함수: 엔딩 이름 반환 (최상단 명시 선언)
+function getEndingName(endingId) {
+  switch (endingId) {
+    case "ending-happy": return "도서관 수호자 엔딩";
+    case "ending-detective": return "전설의 꼬마 탐정 엔딩";
+    case "ending-toy": return "장난감 친구 엔딩";
+    case "ending-ghost": return "왁자지껄 유령 파티 엔딩";
+    default: return "도서관 수호자 엔딩";
+  }
+}
+
+// 5. 로컬 스토리지 데이터 로드
 function loadGameData() {
   const savedNode = localStorage.getItem("currentStoryNode");
   if (savedNode && storyData[savedNode]) {
@@ -170,15 +181,17 @@ function loadGameData() {
   updateAlbumUI();
 }
 
-// 5. 화면 렌더링 함수
+// 6. 메인 화면 렌더링 함수
 function renderNode(nodeId) {
   const node = storyData[nodeId];
   if (!node) return;
 
-  // 이전 진행 중이던 TTS 낭독 중지 및 UI 초기화
+  // 이전 진행 중이던 음성 중지 (UI 상태는 isAutoTTSMode 유지)
   if (window.soundManager) {
     window.soundManager.stopSpeech();
-    updateTTSUI(false);
+    if (!isAutoTTSMode) {
+      updateTTSUI(false);
+    }
   }
 
   // 특수 노드 사운드 효과 트리거
@@ -241,7 +254,7 @@ function renderNode(nodeId) {
       }
     }
 
-    // 페이드 인 및 fade-out 클래스 완벽 제거 (선택지 가시성 복구)
+    // 페이드 인 및 fade-out 클래스 완벽 제거
     illustrationEl.parentElement.classList.remove("fade-out");
     storyTextEl.parentElement.classList.remove("fade-out");
     choiceContainerEl.classList.remove("fade-out");
@@ -250,13 +263,13 @@ function renderNode(nodeId) {
     storyTextEl.parentElement.classList.add("fade-in");
     choiceContainerEl.classList.add("fade-in");
 
-    // 0.5초 뒤 트랜지션 클래스 정리
+    // 0.5초 뒤 트랜지션 클래스 정리 및 자동 연속 낭독 실행!
     setTimeout(() => {
       illustrationEl.parentElement.classList.remove("fade-in");
       storyTextEl.parentElement.classList.remove("fade-in");
       choiceContainerEl.classList.remove("fade-in");
 
-      // 만약 자동 낭독 모드가 켜져 있다면 새로운 스토리 페이지도 자동 연속 낭독!
+      // 만약 자동 낭독 모드(isAutoTTSMode)가 켜져 있다면 다음 페이지도 자동 연속 낭독!
       if (isAutoTTSMode) {
         startTTSForCurrentNode();
       }
@@ -265,18 +278,7 @@ function renderNode(nodeId) {
   }, 400);
 }
 
-// 엔딩 이름 매핑 헬퍼
-function getEndingName(endingId) {
-  switch (endingId) {
-    case "ending-happy": return "도서관 수호자 엔딩";
-    case "ending-detective": return "전설의 꼬마 탐정 엔딩";
-    case "ending-toy": return "장난감 친구 엔딩";
-    case "ending-ghost": return "왁자지껄 유령 파티 엔딩";
-    default: return "도서관 수호자 엔딩";
-  }
-}
-
-// 6. 엔딩 해금 및 축하 이벤트 로직
+// 7. 엔딩 해금 및 축하 이벤트 로직
 function unlockEnding(endingId) {
   const isNew = !unlockedEndings.includes(endingId);
   if (isNew) {
@@ -291,7 +293,7 @@ function unlockEnding(endingId) {
   }, 300);
 }
 
-// 6-1. 마법 축하 모달 및 컨페티 폭죽 엔진
+// 7-1. 마법 축하 모달 및 컨페티 폭죽 엔진
 function showCelebrationModal(endingId) {
   const celModalEl = document.getElementById("celebration-modal");
   const celTitleEl = document.getElementById("cel-title");
@@ -316,7 +318,6 @@ function showCelebrationModal(endingId) {
   const allEndings = ["ending-happy", "ending-detective", "ending-toy", "ending-ghost"];
   const isAllCompleted = allEndings.every(id => unlockedEndings.includes(id));
 
-  // 해당 노드의 이미지 및 설명 매핑
   let endingImg = "assets/images/scene_ending_happy.png";
   let endingTitle = getEndingName(endingId);
   let endingDesc = "아리와 함께 동화 속 새로운 모험의 결말을 밝혀내셨습니다!";
@@ -340,12 +341,12 @@ function showCelebrationModal(endingId) {
   // 폭죽 팡팡 연출 실행
   launchConfetti();
 
-  // 모달 표시 (도감 모달이 열려있다면 닫고 축하 모달 표시)
+  // 모달 표시
   albumModalEl.classList.add("hidden");
   celModalEl.classList.remove("hidden");
 }
 
-// 6-2. Canvas 마법 폭죽 컨페티 연출 엔진 (보강)
+// 7-2. Canvas 마법 폭죽 컨페티 연출 엔진
 function launchConfetti() {
   const canvas = document.getElementById("confetti-canvas");
   if (!canvas) return;
@@ -357,7 +358,6 @@ function launchConfetti() {
   const particles = [];
   const colors = ["#ff758f", "#70d6ff", "#ffd166", "#e0aaff", "#ffffff", "#ff9eb5", "#06d6a0"];
 
-  // 180개의 폭죽 조각 생성
   for (let i = 0; i < 180; i++) {
     particles.push({
       x: canvas.width / 2 + (Math.random() * 300 - 150),
@@ -380,7 +380,7 @@ function launchConfetti() {
     particles.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
-      p.vy += 0.35; // 중력 적용
+      p.vy += 0.35;
       p.rotation += p.rSpeed;
       if (elapsed > 1800) p.opacity -= 0.025;
 
@@ -402,7 +402,7 @@ function launchConfetti() {
   requestAnimationFrame(render);
 }
 
-// 7. 도감 UI 업데이트 및 클릭 재시청 이벤트
+// 8. 도감 UI 업데이트 및 클릭 재시청 이벤트
 function updateAlbumUI() {
   const endingIds = ["ending-happy", "ending-detective", "ending-toy", "ending-ghost"];
   endingIds.forEach(id => {
@@ -413,7 +413,6 @@ function updateAlbumUI() {
         const statusEl = itemEl.querySelector(".album-status");
         if (statusEl) statusEl.textContent = "🎉 획득 (클릭하여 감상)";
         
-        // 클릭 시 축하 애니메이션 재시청 이벤트
         itemEl.onclick = () => {
           showCelebrationModal(id);
         };
@@ -429,7 +428,7 @@ function updateAlbumUI() {
   });
 }
 
-// 8. 처음부터 시작 로직
+// 9. 처음부터 시작 로직
 function resetStory() {
   currentNodeId = "start";
   isAutoTTSMode = false; // 자동 낭독 모드 OFF
@@ -456,27 +455,7 @@ function resetStory() {
   renderNode("start");
 }
 
-// 9. 이벤트 리스너 설정
-const btnTtsEl = document.getElementById("btn-tts");
-if (btnTtsEl) {
-  btnTtsEl.addEventListener("click", () => {
-    if (!window.soundManager) return;
-
-    if (isAutoTTSMode || window.soundManager.isSpeaking()) {
-      // 자동 낭독 모드 끄기 & 음성 중지
-      isAutoTTSMode = false;
-      window.soundManager.stopSpeech();
-      updateTTSUI(false);
-    } else {
-      // 자동 낭독 모드 켜기 & 첫 낭독 시작
-      isAutoTTSMode = true;
-      window.soundManager.playClick();
-      startTTSForCurrentNode();
-    }
-  });
-}
-
-// 현재 스토리 노드 TTS 낭독 시작 함수
+// 10. 현재 노드 TTS 낭독 시작 함수 (지우 멘트 포함)
 function startTTSForCurrentNode() {
   if (!window.soundManager) return;
 
@@ -490,14 +469,17 @@ function startTTSForCurrentNode() {
     fullTextToRead,
     () => updateTTSUI(true),  // 낭독 시작 시 UI 변경
     () => {
-      // 낭독 완료되더라도 자동 모드가 켜져 있다면 다음 클릭 전까지 온/오프 상태 관리
-      if (!isAutoTTSMode) {
+      // 낭독 완료되더라도 자동 모드가 켜져 있다면 ON 상태 유지
+      if (isAutoTTSMode) {
+        updateTTSUI(true);
+      } else {
         updateTTSUI(false);
       }
     }
   );
 }
 
+// 11. TTS UI 상태 업데이트 함수
 function updateTTSUI(isSpeaking) {
   const btnTts = document.getElementById("btn-tts");
   const storyCard = document.getElementById("story-card");
@@ -514,6 +496,7 @@ function updateTTSUI(isSpeaking) {
   }
 }
 
+// 12. 이벤트 리스너 설정
 const btnResetHeaderEl = document.getElementById("btn-reset-header");
 if (btnResetHeaderEl) {
   btnResetHeaderEl.addEventListener("click", () => {
@@ -526,7 +509,6 @@ if (btnCloseCelEl) {
   btnCloseCelEl.addEventListener("click", () => {
     if (window.soundManager) window.soundManager.playClick();
     document.getElementById("celebration-modal").classList.add("hidden");
-    // 축하 모달 닫힌 후 바로 도감 앨범 열어주기!
     albumModalEl.classList.remove("hidden");
   });
 }
@@ -548,6 +530,25 @@ if (btnBgmEl) {
   });
 }
 
+const btnTtsEl = document.getElementById("btn-tts");
+if (btnTtsEl) {
+  btnTtsEl.addEventListener("click", () => {
+    if (!window.soundManager) return;
+
+    if (isAutoTTSMode || window.soundManager.isSpeaking()) {
+      // 자동 낭독 모드 끄기 & 음성 중지
+      isAutoTTSMode = false;
+      window.soundManager.stopSpeech();
+      updateTTSUI(false);
+    } else {
+      // 자동 낭독 모드 켜기 & 첫 낭독 시작
+      isAutoTTSMode = true;
+      window.soundManager.playClick();
+      startTTSForCurrentNode();
+    }
+  });
+}
+
 btnAlbumEl.addEventListener("click", () => {
   if (window.soundManager) window.soundManager.playClick();
   albumModalEl.classList.remove("hidden");
@@ -558,7 +559,6 @@ btnCloseAlbumEl.addEventListener("click", () => {
   albumModalEl.classList.add("hidden");
 });
 
-// 바깥 영역 클릭 시 모달 닫기
 albumModalEl.addEventListener("click", (e) => {
   if (e.target === albumModalEl) {
     if (window.soundManager) window.soundManager.playClick();
@@ -570,7 +570,7 @@ btnResetStoryEl.addEventListener("click", () => {
   resetStory();
 });
 
-// 10. 게임 최초 시작
+// 13. 게임 최초 시작
 window.addEventListener("DOMContentLoaded", () => {
   loadGameData();
   renderNode(currentNodeId);
