@@ -134,7 +134,7 @@ const story1Data = {
 const story2Data = {
   start: {
     text: "어느 달콤한 햇살 아래, 꼬마 탐정 아리는 분홍색 탐정 모자를 쓰고 과자 향기가 솔솔 풍기는 '달콤한 과자 왕국'에 도착했어요!\n알록달록한 젤리 나무와 초콜릿 문 뒤로 웅장한 과자 성이 서 있었지요.\n\"소문에 의하면 과자 왕국의 잃어버린 '마법 젤리 왕관'이 성 안 어딘가에 숨겨져 있대!\"\n아리는 달콤한 과자 성 안으로 진입할 길을 찾아봅니다.",
-    image: "assets/images/scene_start.png",
+    image: "assets/images/scene_story2_start.png",
     progress: 10,
     choices: [
       { text: "🍫 달콤한 바삭바삭 쿠키 문을 조심스럽게 밀고 들어간다.", nextNode: "cookie_gate" },
@@ -143,7 +143,7 @@ const story2Data = {
   },
   cookie_gate: {
     text: "쿠키 문을 열고 성 안으로 들어서자, 사방에 초콜릿 기둥과 바삭한 팝콘 바닥이 펼쳐졌어요!\n그때, 푹신푹신한 곰돌이 젤리 기사가 달려와 엉엉 울며 말했어요.\n\"탐정 아리님! 장난꾸러기 쿠키 몬스터가 우리의 마법 젤리 왕관을 가져갔어요! 함께 찾아주세요!\"",
-    image: "assets/images/scene_pong.png",
+    image: "assets/images/scene_story2_cookie.png",
     progress: 40,
     choices: [
       { text: "🧸 \"울지 마 곰돌이 기사야! 내가 함께 젤리 왕관을 찾아줄게!\"", nextNode: "jelly_knight" },
@@ -161,7 +161,7 @@ const story2Data = {
   },
   jelly_knight: {
     text: "곰돌이 젤리 기사는 신이 나서 아리를 과자 성의 비밀 보물방 앞으로 안내해 주었어요!\n\"이 상자 안에 잃어버린 마법 젤리 왕관이 들어 있어요! 함께 뚜껑을 열어요!\"",
-    image: "assets/images/scene_ending_happy.png",
+    image: "assets/images/scene_story2_cookie.png",
     progress: 80,
     choices: [
       { text: "👑 곰돌이 기사와 함께 젤리 왕관 상자를 힘차게 열어젖힌다!", nextNode: "ending_sweet" }
@@ -183,7 +183,7 @@ const story2Data = {
   },
   ending_sweet: {
     text: "아리와 곰돌이 기사는 마법 젤리 왕관을 찾아서 과자 왕국을 되찾았어요!\n매일 밤 과자 성에서 달콤한 과자 동화 파티가 열리게 되었답니다.\n\n[과자 왕국 수호자 엔딩] 해피엔딩!",
-    image: "assets/images/scene_ending_happy.png",
+    image: "assets/images/scene_story2_ending.png",
     progress: 100,
     endingId: "ending-happy",
     choices: []
@@ -196,7 +196,7 @@ const story2Data = {
 const story3Data = {
   start: {
     text: "푸른 바닷물이 투명하게 빛나는 해변, 꼬마 탐정 아리는 마법 스노클링 잠수경을 착용하고 에메랄드빛 바닷속으로 조심스레 헤엄쳐 들어갔어요.\n물속 깊은 곳에 환상적인 마법 산호초로 둘러싸인 '해저 용궁 도시'가 웅장하게 서 있었답니다!\n\"용궁의 보물인 '무지개 여의주'가 잃어버려졌다고 들었어! 부기와 함께 찾아볼까?\"",
-    image: "assets/images/scene_start.png",
+    image: "assets/images/scene_story3_start.png",
     progress: 10,
     choices: [
       { text: "🐚 반짝이는 진주 조개 문을 통해 해저 용궁 내부로 들어간다.", nextNode: "dragon_palace" },
@@ -205,7 +205,7 @@ const story3Data = {
   },
   dragon_palace: {
     text: "용궁 안으로 들어오자, 둥글둥글 귀여운 아기 거북이 '부기'가 헤엄쳐 나와 아리를 반겼어요!\n\"안녕 탐정 아리야! 용왕님의 무지개 여의주를 잃어버려서 슬퍼하고 있었어... 함께 찾아줄래?\"",
-    image: "assets/images/scene_pong.png",
+    image: "assets/images/scene_story3_palace.png",
     progress: 50,
     choices: [
       { text: "🐢 \"안녕 부기야! 내가 바닷속 돋보기로 같이 찾아줄게!\"", nextNode: "boogi_friend" },
