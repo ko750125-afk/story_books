@@ -16,6 +16,9 @@
     <header class="header">
       <div class="title-area">
         <h1 id="app-title">🔍 꼬마 탐정 지우의 마법 모험 시리즈</h1>
+        <div class="score-banner">
+          <span id="total-score-badge" class="total-score-badge">🏆 탐험 점수: 0점 / 400점 만점</span>
+        </div>
         <div class="progress-bar-container">
           <div id="progress" class="progress-bar"></div>
         </div>
@@ -76,12 +79,15 @@
     <div id="album-modal" class="modal hidden">
       <div class="modal-content">
         <div class="modal-header">
-          <h2 id="album-title">🏆 마법 엔딩 도감</h2>
+          <h2 id="album-title">🏆 4대 동화 모험 명예의 전당 도감</h2>
           <button id="btn-close-album" class="btn-close">&times;</button>
         </div>
-        <p id="album-desc" class="album-desc">모험을 통해 4가지 엔딩을 모두 모아보세요!</p>
+        <div class="album-score-header">
+          <span id="modal-total-score" class="modal-total-score">🌟 총 탐험 점수: 0점 / 400점 만점</span>
+        </div>
+        <p id="album-desc" class="album-desc">각 동화 코스별로 달성한 최고 탐험 점수(100점/80점/60점/40점) 뱃지 1개가 등록됩니다!</p>
         <div id="album-grid" class="album-grid">
-          <!-- JS에서 동화 코스에 맞춰 4개 맞춤 엔딩 카드가 동적으로 자동 생성됨 -->
+          <!-- JS에서 4개 동화 코스별 대표 뱃지 카드가 동적으로 자동 생성됨 -->
         </div>
         <div class="modal-footer">
           <button id="btn-reset-story" class="btn-secondary">🔄 처음부터 다시 도전하기</button>

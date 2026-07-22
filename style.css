@@ -139,9 +139,47 @@ body {
   padding: 8px;
 }
 
-.btn-reset-hdr {
-  background: linear-gradient(135deg, #2b9348 0%, #55a630 100%);
-  box-shadow: 0 4px 10px rgba(43, 147, 72, 0.4);
+.score-banner {
+  margin-top: 6px;
+}
+
+.total-score-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #ffb703 0%, #fb8500 100%);
+  color: #1a1a2e;
+  font-weight: 800;
+  font-size: 0.88rem;
+  padding: 4px 14px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(251, 133, 0, 0.4);
+  letter-spacing: 0.5px;
+}
+
+.album-score-header {
+  margin: 10px 0 6px 0;
+  text-align: center;
+}
+
+.modal-total-score {
+  display: inline-block;
+  background: linear-gradient(135deg, #7209b7 0%, #f72585 100%);
+  color: white;
+  font-weight: 800;
+  font-size: 1.02rem;
+  padding: 6px 16px;
+  border-radius: 20px;
+  box-shadow: 0 4px 14px rgba(247, 37, 133, 0.5);
+}
+
+.album-item .score-tag {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 10px;
+  background: #ffb703;
+  color: #000;
+  font-weight: 800;
+  font-size: 0.82rem;
+  border-radius: 12px;
 }
 
 .btn-bgm {
