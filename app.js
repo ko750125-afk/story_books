@@ -174,6 +174,12 @@ function renderNode(nodeId) {
   const node = storyData[nodeId];
   if (!node) return;
 
+  // 이전 진행 중이던 TTS 낭독 중지 및 UI 초기화
+  if (window.soundManager) {
+    window.soundManager.stopSpeech();
+    updateTTSUI(false);
+  }
+
   // 특수 노드 사운드 효과 트리거
   if (window.soundManager) {
     if (nodeId === "glowing_bookshelf" || nodeId === "friend_ghost" || nodeId === "search_clues") {
@@ -237,7 +243,7 @@ function renderNode(nodeId) {
     // 페이드 인
     illustrationEl.parentElement.classList.remove("fade-out");
     storyTextEl.parentElement.classList.remove("fade-out");
-    choiceContainerEl.classList.remove("fade-out");
+    choiceContainerEl.classList.add("fade-in");
     illustrationEl.parentElement.classList.add("fade-in");
     storyTextEl.parentElement.classList.add("fade-in");
     choiceContainerEl.classList.add("fade-in");
@@ -437,6 +443,57 @@ function resetStory() {
 }
 
 // 9. 이벤트 리스너 설정
+const btnTtsEl = document.getElementById("btn-tts");
+if (btnTtsEl) {
+  btnTtsEl.addEventListener("click", () => {
+    if (!window.soundManager) return;
+
+    if (window.soundManager.isSpeaking()) {
+      window.soundManager.stopSpeech();
+      updateTTSUI(false);
+    } else {
+      window.soundManager.playClick();
+
+      // 본문 텍스트 조합
+      let fullTextToRead = storyTextEl.textContent;
+
+      // 선택지까지 포함하여 음성으로 맛깔나게 연결 낭독
+      const currentChoices = storyData[currentNodeId]?.choices;
+      if (currentChoices && currentChoices.length > 0) {
+        fullTextToRead += "\n\n아리의 선택!";
+        currentChoices.forEach((choice, idx) => {
+          // 특수 기호 이모지 제거하고 낭독용 텍스트 다듬기
+          const cleanChoiceText = choice.text.replace(/[\u{1F300}-\u{1F6FF}\u{2600}-\u{26FF}]/gu, '');
+          fullTextToRead += `\n${idx + 1}번, ${cleanChoiceText}.`;
+        });
+        fullTextToRead += "\n대표님, 어떤 길을 선택할까요?";
+      }
+
+      window.soundManager.speakText(
+        fullTextToRead,
+        () => updateTTSUI(true),  // 낭독 시작 시 UI 변경
+        () => updateTTSUI(false)  // 낭독 완료 시 UI 복구
+      );
+    }
+  });
+}
+
+function updateTTSUI(isSpeaking) {
+  const btnTts = document.getElementById("btn-tts");
+  const storyCard = document.getElementById("story-card");
+  if (!btnTts) return;
+
+  if (isSpeaking) {
+    btnTts.textContent = "🛑 읽기 중지";
+    btnTts.classList.add("speaking");
+    if (storyCard) storyCard.classList.add("speaking");
+  } else {
+    btnTts.textContent = "🔊 동화 읽어주기";
+    btnTts.classList.remove("speaking");
+    if (storyCard) storyCard.classList.remove("speaking");
+  }
+}
+
 const btnResetHeaderEl = document.getElementById("btn-reset-header");
 if (btnResetHeaderEl) {
   btnResetHeaderEl.addEventListener("click", () => {

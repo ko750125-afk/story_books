@@ -197,6 +197,53 @@ class SoundManager {
       this.bgmTimer = null;
     }
   }
+
+  // 6. 동화 본문 TTS 음성 낭독 엔진 (맛깔난 억양)
+  speakText(text, onStartCallback, onEndCallback) {
+    if (!('speechSynthesis' in window)) {
+      console.warn("이 브라우저는 음성 낭독(Speech Synthesis)을 지원하지 않습니다.");
+      return;
+    }
+
+    // 진행 중인 이전 낭독 즉시 취소
+    this.stopSpeech();
+
+    // 동화책 특수문자 및 불필요한 기호 정리
+    const cleanText = text.replace(/[\"\"\[\]\(\)]/g, '').replace(/Node\d+/g, '');
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.lang = 'ko-KR';
+
+    // 동화 읽어주기 맞춤 설정 (다정한 톤 & 또박또박 속도)
+    utterance.pitch = 1.22; // 약간 높은 친근한 동화 선생님/언니 톤
+    utterance.rate = 0.92;  // 초2 어린이가 이해하기 좋은 가독 속도
+    utterance.volume = 1.0;
+
+    // 한국어 음성 우선 선택
+    const voices = window.speechSynthesis.getVoices();
+    const koVoice = voices.find(v => v.lang.includes('ko') || v.lang.includes('KO'));
+    if (koVoice) {
+      utterance.voice = koVoice;
+    }
+
+    if (onStartCallback) utterance.onstart = onStartCallback;
+    if (onEndCallback) {
+      utterance.onend = onEndCallback;
+      utterance.onerror = onEndCallback;
+    }
+
+    window.speechSynthesis.speak(utterance);
+  }
+
+  stopSpeech() {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+  }
+
+  isSpeaking() {
+    return 'speechSynthesis' in window && window.speechSynthesis.speaking;
+  }
 }
 
 // 싱글톤 인스턴스 전역 제공
