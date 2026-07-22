@@ -38,7 +38,7 @@ const storyAlbumMeta = {
       { id: "ending-happy", title: "🌌 은하수 우주 수호자 엔딩", icon: "🌌", img: "assets/images/scene_ending_happy.png" },
       { id: "ending-detective", title: "🏆 전설의 우주 명탐정 엔딩", icon: "🏆", img: "assets/images/scene_ending_detective.png" },
       { id: "ending-toy", title: "🤖 우주 로봇 파티 엔딩", icon: "🤖", img: "assets/images/scene_ending_toy.png" },
-      { id: "ending-ghost", title: "🪐 토성 띠 우주 파티 엔딩", icon: "🪐", img: "assets/images/scene_start.png" }
+      { id: "ending-ghost", title: "🪐 토성 띠 우주 파티 엔딩", icon: "🪐", img: "assets/images/scene_story4_start.png" }
     ]
   }
 };
@@ -290,7 +290,7 @@ const story3Data = {
 const story4Data = {
   start: {
     text: "별들이 보석처럼 쏟아지는 밤, 꼬마 탐정 아리는 마법 헬멧을 쓰고 밤하늘로 솟구쳐 오른 비밀 장난감 우주선 '알록달록 호'에 탑승했어요!\n창밖으로는 몽환적인 핑크색 은하수와 별자리들이 아리를 환영해 주었지요.\n\"은하수 너머에서 떨어진 '잃어버린 별빛 조각'을 모아 우주를 밝혀야 해!\"",
-    image: "assets/images/scene_start.png",
+    image: "assets/images/scene_story4_start.png",
     progress: 10,
     choices: [
       { text: "🚀 장난감 우주선의 조종석 조종대를 잡고 은하수로 나아간다.", nextNode: "space_cockpit" },
