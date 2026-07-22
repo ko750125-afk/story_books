@@ -198,7 +198,33 @@ class SoundManager {
     }
   }
 
-  // 6. 동화 본문 TTS 음성 낭독 엔진 (맛깔난 억양)
+  // 한국어 프리미엄 이야기꾼(Natural/Neural) 음성 탐색기
+  getBestKoreanVoice() {
+    if (!('speechSynthesis' in window)) return null;
+    const voices = window.speechSynthesis.getVoices();
+    const koVoices = voices.filter(v => v.lang.includes('ko') || v.lang.includes('KO') || v.lang === 'ko_KR');
+
+    if (koVoices.length === 0) return null;
+
+    // 1순위: Edge/Chrome의 프리미엄 신경망 성우 음성 (Natural, Neural, Online, Sun-Hi, InJoon)
+    const naturalVoice = koVoices.find(v => 
+      v.name.includes('Natural') || 
+      v.name.includes('Neural') || 
+      v.name.includes('Online') ||
+      v.name.includes('Sun-Hi') ||
+      v.name.includes('InJoon')
+    );
+    if (naturalVoice) return naturalVoice;
+
+    // 2순위: Google 고품질 한국어 음성
+    const googleVoice = koVoices.find(v => v.name.includes('Google'));
+    if (googleVoice) return googleVoice;
+
+    // 3순위: 기본 한국어 음성
+    return koVoices[0];
+  }
+
+  // 6. 동화 본문 TTS 음성 낭독 엔진 (이야기꾼 성우 억양 최적화)
   speakText(text, onStartCallback, onEndCallback) {
     if (!('speechSynthesis' in window)) {
       console.warn("이 브라우저는 음성 낭독(Speech Synthesis)을 지원하지 않습니다.");
@@ -209,22 +235,24 @@ class SoundManager {
     this.stopSpeech();
 
     // 동화책 특수문자 및 불필요한 기호 정리
-    const cleanText = text.replace(/[\"\"\[\]\(\)]/g, '').replace(/Node\d+/g, '');
+    const cleanText = text
+      .replace(/[\"\"\[\]\(\)]/g, '')
+      .replace(/Node\d+/g, '')
+      .replace(/\n+/g, ' ');
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.lang = 'ko-KR';
 
-    // 동화 읽어주기 맞춤 설정 (다정한 톤 & 또박또박 속도)
-    utterance.pitch = 1.22; // 약간 높은 친근한 동화 선생님/언니 톤
-    utterance.rate = 0.92;  // 초2 어린이가 이해하기 좋은 가독 속도
-    utterance.volume = 1.0;
-
-    // 한국어 음성 우선 선택
-    const voices = window.speechSynthesis.getVoices();
-    const koVoice = voices.find(v => v.lang.includes('ko') || v.lang.includes('KO'));
-    if (koVoice) {
-      utterance.voice = koVoice;
+    // 프리미엄 신경망 이야기꾼 음성 적용
+    const bestVoice = this.getBestKoreanVoice();
+    if (bestVoice) {
+      utterance.voice = bestVoice;
     }
+
+    // 이야기꾼 성우 톤 설정 (목소리가 튀지 않고 따뜻하고 부드러운 호흡)
+    utterance.pitch = 1.15; // 다정하고 맑은 동화 선생님 톤
+    utterance.rate = 0.88;  // 로봇처럼 빠르지 않게 감정을 실어 낭독하는 또박또박한 속도
+    utterance.volume = 1.0;
 
     if (onStartCallback) utterance.onstart = onStartCallback;
     if (onEndCallback) {
@@ -248,3 +276,10 @@ class SoundManager {
 
 // 싱글톤 인스턴스 전역 제공
 window.soundManager = new SoundManager();
+
+// 음성 인공지능 보이스 엔진 사전 로딩
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.onvoiceschanged = () => {
+    window.soundManager.getBestKoreanVoice();
+  };
+}
