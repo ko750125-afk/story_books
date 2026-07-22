@@ -419,11 +419,31 @@ function updateAlbumUI() {
 // 8. 처음부터 시작 로직
 function resetStory() {
   currentNodeId = "start";
-  renderNode(currentNodeId);
+  localStorage.setItem("currentStoryNode", "start");
+
+  // 모달 닫기
   albumModalEl.classList.add("hidden");
+  const celModalEl = document.getElementById("celebration-modal");
+  if (celModalEl) celModalEl.classList.add("hidden");
+
+  // 효과음 재생
+  if (window.soundManager) {
+    window.soundManager.playClick();
+    window.soundManager.playPageTurn();
+  }
+
+  // 화면 렌더링
+  renderNode("start");
 }
 
 // 9. 이벤트 리스너 설정
+const btnResetHeaderEl = document.getElementById("btn-reset-header");
+if (btnResetHeaderEl) {
+  btnResetHeaderEl.addEventListener("click", () => {
+    resetStory();
+  });
+}
+
 const btnCloseCelEl = document.getElementById("btn-close-cel");
 if (btnCloseCelEl) {
   btnCloseCelEl.addEventListener("click", () => {
@@ -470,10 +490,7 @@ albumModalEl.addEventListener("click", (e) => {
 });
 
 btnResetStoryEl.addEventListener("click", () => {
-  if (window.soundManager) window.soundManager.playClick();
-  if (confirm("정말 처음부터 모험을 다시 시작할까요? (앨범 도감 기록은 유지됩니다)")) {
-    resetStory();
-  }
+  resetStory();
 });
 
 // 10. 게임 최초 시작
