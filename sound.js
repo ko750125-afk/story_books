@@ -224,43 +224,81 @@ class SoundManager {
     return koVoices[0];
   }
 
-  // 6. 동화 본문 TTS 음성 낭독 엔진 (이야기꾼 성우 억양 최적화)
-  speakText(text, onStartCallback, onEndCallback) {
-    if (!('speechSynthesis' in window)) {
-      console.warn("이 브라우저는 음성 낭독(Speech Synthesis)을 지원하지 않습니다.");
-      return;
+  // 동화 구연용 대사/해설 분라 파서
+  parseStorySegments(text) {
+    const cleanText = text.replace(/Node\d+/g, '');
+    const regex = /("[^"]*")|([^"]+)/g;
+    const segments = [];
+    let match;
+    while ((match = regex.exec(cleanText)) !== null) {
+      if (match[1]) {
+        // 큰따옴표 대사 (아리/퐁이 캐릭터 대사)
+        segments.push({ text: match[1], isDialogue: true });
+      } else if (match[2]) {
+        // 해설 부분은 마침표/줄바꿈 문장 단위로 분할하여 자연스러운 숨쉬기 부여
+        const sentences = match[2].split(/([.!?\n]+)/);
+        for (let i = 0; i < sentences.length; i += 2) {
+          const s = (sentences[i] + (sentences[i + 1] || '')).trim();
+          if (s) segments.push({ text: s, isDialogue: false });
+        }
+      }
     }
+    return segments;
+  }
 
-    // 진행 중인 이전 낭독 즉시 취소
+  // 6. 동화 본문 TTS 음성 낭독 엔진 (구연동화 성우 캐릭터 연기 & 호흡 낭독)
+  speakText(text, onStartCallback, onEndCallback) {
+    if (!('speechSynthesis' in window)) return;
     this.stopSpeech();
 
-    // 동화책 특수문자 및 불필요한 기호 정리
-    const cleanText = text
-      .replace(/[\"\"\[\]\(\)]/g, '')
-      .replace(/Node\d+/g, '')
-      .replace(/\n+/g, ' ');
+    const segments = this.parseStorySegments(text);
+    let index = 0;
 
-    const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = 'ko-KR';
+    const playNextSegment = () => {
+      if (index >= segments.length) {
+        if (onEndCallback) onEndCallback();
+        return;
+      }
 
-    // 프리미엄 신경망 이야기꾼 음성 적용
-    const bestVoice = this.getBestKoreanVoice();
-    if (bestVoice) {
-      utterance.voice = bestVoice;
-    }
+      const seg = segments[index++];
+      const currentText = seg.text.replace(/[\"\"\[\]\(\)]/g, '').trim();
 
-    // 이야기꾼 성우 톤 설정 (목소리가 튀지 않고 따뜻하고 부드러운 호흡)
-    utterance.pitch = 1.15; // 다정하고 맑은 동화 선생님 톤
-    utterance.rate = 0.88;  // 로봇처럼 빠르지 않게 감정을 실어 낭독하는 또박또박한 속도
-    utterance.volume = 1.0;
+      if (!currentText) {
+        playNextSegment();
+        return;
+      }
 
-    if (onStartCallback) utterance.onstart = onStartCallback;
-    if (onEndCallback) {
-      utterance.onend = onEndCallback;
-      utterance.onerror = onEndCallback;
-    }
+      const utterance = new SpeechSynthesisUtterance(currentText);
+      utterance.lang = 'ko-KR';
 
-    window.speechSynthesis.speak(utterance);
+      const bestVoice = this.getBestKoreanVoice();
+      if (bestVoice) utterance.voice = bestVoice;
+
+      // 구연동화 캐릭터 연기 피치/속도 다원화
+      if (seg.isDialogue) {
+        // 따옴표 대사 (아리/퐁이): 조금 더 맑고 기분 좋은 톤
+        utterance.pitch = 1.30;
+        utterance.rate = 0.90;
+      } else {
+        // 동화 해설: 따뜻하고 조근조근한 이야기꾼 톤
+        utterance.pitch = 1.10;
+        utterance.rate = 0.85;
+      }
+
+      utterance.onend = () => {
+        // 문장과 문장 사이 220ms 문장 숨쉬기 휴식 시간 부여 (자연스러움 극대화)
+        setTimeout(playNextSegment, 220);
+      };
+      utterance.onerror = () => {
+        setTimeout(playNextSegment, 100);
+      };
+
+      if (index === 1 && onStartCallback) onStartCallback();
+
+      window.speechSynthesis.speak(utterance);
+    };
+
+    playNextSegment();
   }
 
   stopSpeech() {
