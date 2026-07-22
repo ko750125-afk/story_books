@@ -1,10 +1,10 @@
 // ==========================================
 // 꼬마 탐정 아리와 비밀 도서관의 꼬마 유령
-// 게임 엔진 및 스토리 데이터 소스 코드
+// 게임 엔진 및 한국어/영어 스토리 데이터 소스 코드
 // ==========================================
 
-// 1. 스토리 노드 정의
-const storyData = {
+// 1. 한국어 스토리 노드 데이터
+const storyDataKo = {
   start: {
     text: "어두운 밤, 꼬마 탐정 아리는 돋보기와 전등을 챙겨 들고 비밀 도서관 앞에 도착했어요.\n\"여기 어딘가에 마법의 황금 열쇠가 숨겨져 있을 거야!\"\n도서관 안으로 들어갈 방법은 두 가지가 있어요.",
     image: "assets/images/scene_start.png",
@@ -134,7 +134,138 @@ const storyData = {
   }
 };
 
-// 2. DOM 요소 취득
+// 2. 영어 스토리 노드 데이터 (English Version)
+const storyDataEn = {
+  start: {
+    text: "On a dark night, little detective Ari reached the secret library with her magnifying glass and flashlight.\n\"The golden magical key must be hidden around here!\"\nThere are two ways to enter the library.",
+    image: "assets/images/scene_start.png",
+    progress: 15,
+    choices: [
+      { text: "🚪 Gently open the creaky old wooden library door.", nextNode: "library_door" },
+      { text: "🪟 Crawl into the small dusty basement window.", nextNode: "basement_window" }
+    ]
+  },
+  library_door: {
+    text: "Stepping inside, the cozy smell of old books welcomed Ari. The library was dark, but a magical golden light was glowing between the distant bookshelves!\nAt the same time, a rustling sound came from under the counter.",
+    image: "assets/images/scene_bookshelf.png",
+    progress: 35,
+    choices: [
+      { text: "✨ Peek through the glowing secret bookshelf crack.", nextNode: "glowing_bookshelf" },
+      { text: "👣 Search under the library counter with a magnifying glass.", nextNode: "counter_footsteps" }
+    ]
+  },
+  basement_window: {
+    text: "Ari sneaked down into the basement storage room! Mysterious wooden chests were stacked everywhere. One blue gem chest was shining brightly in the center.\nAn old library map was hanging on the wall.",
+    image: "assets/images/scene_basement.png",
+    progress: 35,
+    choices: [
+      { text: "💎 Open the sparkling blue gem box.", nextNode: "blue_box" },
+      { text: "🗺️ Examine the old library map on the wall.", nextNode: "library_map" }
+    ]
+  },
+  glowing_bookshelf: {
+    text: "Peeking through the books, Ari saw a cute chubby white baby ghost named Pong floating over a storybook!\nPong gasped softly and said, \"Hi! I'm Pong, the book-loving ghost. I lost the golden key to the secret treasure room...\"",
+    image: "assets/images/scene_pong.png",
+    progress: 60,
+    choices: [
+      { text: "🤝 \"Hi Pong! I'm detective Ari. I'll help you find the key!\"", nextNode: "friend_ghost" },
+      { text: "🔍 \"Don't worry, Pong! Let me search for footprint clues first!\"", nextNode: "search_clues" }
+    ]
+  },
+  counter_footsteps: {
+    text: "Shining her magnifying glass under the counter, Ari found glowing footprint dots like magical starry powder!\nThe footprints led deep into the library stacks.",
+    image: "assets/images/scene_bookshelf.png",
+    progress: 60,
+    choices: [
+      { text: "👣 Follow the glowing footprints carefully.", nextNode: "follow_footsteps" },
+      { text: "🗣️ Courageously shout, \"Is anyone there? Ari is here to help!\"", nextNode: "call_out" }
+    ]
+  },
+  blue_box: {
+    text: "Opening the blue box, cute mechanical clockwork toy mice popped out and started dancing in circles! Ari found a secret passcode written on their backs.",
+    image: "assets/images/scene_ending_toy.png",
+    progress: 65,
+    choices: [
+      { text: "📖 Carry the secret note up to the 2nd floor library stacks.", nextNode: "glowing_bookshelf" },
+      { text: "🐭 \"You guys are so cute!\" Dance and play with the toy mice.", nextNode: "ending_toy" }
+    ]
+  },
+  library_map: {
+    text: "Unfolding the old map, Ari found a secret hidden passage under the desks leading directly to the 'Secret Ghost Playroom'!",
+    image: "assets/images/scene_basement.png",
+    progress: 65,
+    choices: [
+      { text: "🗺️ Run straight toward the Secret Playroom.", nextNode: "secret_room" },
+      { text: "👣 Put the map in her pocket and head toward the counter footprints.", nextNode: "counter_footsteps" }
+    ]
+  },
+  friend_ghost: {
+    text: "Touched by Ari's warm greeting, Pong took Ari's hand and led her to a secret rainbow treasure chest behind a huge bookshelf!\n\"The golden key is inside! But there's a magical riddle on the lock.\"",
+    image: "assets/images/scene_ending_happy.png",
+    progress: 85,
+    choices: [
+      { text: "💫 Push open the rainbow treasure chest together!", nextNode: "ending_happy" },
+      { text: "🧠 Solve the colorful magic quiz written on the chest.", nextNode: "quiz_room" }
+    ]
+  },
+  search_clues: {
+    text: "Using her magnifying glass, Ari found shiny star dust left by Pong on the top shelf book!\nTouching the star dust, the bookshelf slid open, revealing the golden key glowing softly!\n\nAri successfully found the golden key with her brilliant deduction!",
+    image: "assets/images/scene_ending_detective.png",
+    progress: 100,
+    endingId: "ending-detective",
+    choices: []
+  },
+  follow_footsteps: {
+    text: "Following the glowing footprints, Ari discovered a grand party hosted by many cute baby ghosts!\nThe ghosts cheered and presented the golden key to Ari as a special gift.\n\nAri became the best friend of the ghosts and the VIP of the library!",
+    image: "assets/images/scene_ending_ghost.png",
+    progress: 100,
+    endingId: "ending-ghost",
+    choices: []
+  },
+  call_out: {
+    text: "Hearing Ari's voice, Pong popped out from under the counter and bowed shyly.\n\"You came to help me! The golden key is in the magic chest, but we have to open it together!\"",
+    image: "assets/images/scene_pong.png",
+    progress: 80,
+    choices: [
+      { text: "🤝 \"Of course! Let's open the secret chest together, Pong!\"", nextNode: "friend_ghost" },
+      { text: "🔍 \"Wait! Let me inspect the path with my magnifying glass first.\"", nextNode: "search_clues" }
+    ]
+  },
+  secret_room: {
+    text: "Arriving at the Secret Playroom, Ari saw Pong and baby ghost friends jumping on trampolines while reading books! The magic treasure chest was shining beautifully in the middle.",
+    image: "assets/images/scene_ending_ghost.png",
+    progress: 80,
+    choices: [
+      { text: "🎁 Shake hands with Pong and open the golden key chest.", nextNode: "ending_happy" },
+      { text: "👻 \"Yay! Can I play too?\" Read storybooks and play with ghost friends.", nextNode: "ending_ghost" }
+    ]
+  },
+  quiz_room: {
+    text: "The riddle on the chest was very cute.\n\"Who is the smartest and cutest little detective in the library?\"\nAri smiled and shouted, \"That's me, Little Detective Ari!\"\nWith a click, the chest opened with a brilliant golden shine!",
+    image: "assets/images/scene_ending_happy.png",
+    progress: 90,
+    choices: [
+      { text: "🔑 Raise the golden key high to celebrate victory!", nextNode: "ending_happy" },
+      { text: "🎨 Stay up all night playing more fun quizzes with Pong.", nextNode: "ending_ghost" }
+    ]
+  },
+  ending_happy: {
+    text: "Ari and Pong opened the chest together, found the golden key, and unlocked all magical books in the secret library!\nEvery night, storybook characters came alive and read wonderful stories to Ari and Pong.\n\n[Library Guardian Ending] Ari and Pong can now read magical books anytime. Happy Ending!",
+    image: "assets/images/scene_ending_happy.png",
+    progress: 100,
+    endingId: "ending-happy",
+    choices: []
+  },
+  ending_toy: {
+    text: "Instead of searching for the key, Ari spent the night playing and dancing happily with the mechanical toy mice in the basement.\nIt was the most thrilling and playful night ever!\n\n[Toy Friends Ending] Ari made secret toy mouse friends forever in the basement!",
+    image: "assets/images/scene_ending_toy.png",
+    progress: 100,
+    endingId: "ending-toy",
+    choices: []
+  }
+};
+
+// 3. DOM 요소 취득
 const illustrationEl = document.getElementById("illustration");
 const storyTextEl = document.getElementById("story-text");
 const choiceContainerEl = document.getElementById("choice-container");
@@ -145,26 +276,48 @@ const albumModalEl = document.getElementById("album-modal");
 const btnCloseAlbumEl = document.getElementById("btn-close-album");
 const btnResetStoryEl = document.getElementById("btn-reset-story");
 
-// 3. 전역 상태 변수
+// 4. 전역 상태 변수
 let currentNodeId = "start";
 let unlockedEndings = [];
-let isAutoTTSMode = false; // 연속 자동 낭독 모드
+let isAutoTTSMode = false;
+let currentLang = "ko"; // 기본 언어: 'ko' | 'en'
 
-// 4. 헬퍼 함수: 엔딩 이름 반환 (최상단 명시 선언)
+// 활성화된 언어 스토리 데이터 취득 헬퍼
+function getActiveStoryData() {
+  return currentLang === "en" ? storyDataEn : storyDataKo;
+}
+
+// 헬퍼 함수: 엔딩 이름 반환 (다국어)
 function getEndingName(endingId) {
-  switch (endingId) {
-    case "ending-happy": return "도서관 수호자 엔딩";
-    case "ending-detective": return "전설의 꼬마 탐정 엔딩";
-    case "ending-toy": return "장난감 친구 엔딩";
-    case "ending-ghost": return "왁자지껄 유령 파티 엔딩";
-    default: return "도서관 수호자 엔딩";
+  if (currentLang === "en") {
+    switch (endingId) {
+      case "ending-happy": return "Library Guardian Ending";
+      case "ending-detective": return "Legendary Detective Ending";
+      case "ending-toy": return "Toy Friends Ending";
+      case "ending-ghost": return "Jolly Ghost Party Ending";
+      default: return "Library Guardian Ending";
+    }
+  } else {
+    switch (endingId) {
+      case "ending-happy": return "도서관 수호자 엔딩";
+      case "ending-detective": return "전설의 꼬마 탐정 엔딩";
+      case "ending-toy": return "장난감 친구 엔딩";
+      case "ending-ghost": return "왁자지껄 유령 파티 엔딩";
+      default: return "도서관 수호자 엔딩";
+    }
   }
 }
 
 // 5. 로컬 스토리지 데이터 로드
 function loadGameData() {
+  const savedLang = localStorage.getItem("storyLang");
+  if (savedLang === "en" || savedLang === "ko") {
+    currentLang = savedLang;
+  }
+
+  const activeData = getActiveStoryData();
   const savedNode = localStorage.getItem("currentStoryNode");
-  if (savedNode && storyData[savedNode]) {
+  if (savedNode && activeData[savedNode]) {
     currentNodeId = savedNode;
   } else {
     currentNodeId = "start";
@@ -178,15 +331,25 @@ function loadGameData() {
       unlockedEndings = [];
     }
   }
+  updateLangUI();
   updateAlbumUI();
+}
+
+// 언어 UI 업데이트
+function updateLangUI() {
+  const btnLangEl = document.getElementById("btn-lang");
+  if (btnLangEl) {
+    btnLangEl.textContent = currentLang === "en" ? "🇰🇷 한국어" : "🇺🇸 English";
+  }
 }
 
 // 6. 메인 화면 렌더링 함수
 function renderNode(nodeId) {
-  const node = storyData[nodeId];
+  const activeData = getActiveStoryData();
+  const node = activeData[nodeId];
   if (!node) return;
 
-  // 이전 진행 중이던 음성 중지 (UI 상태는 isAutoTTSMode 유지)
+  // 이전 진행 중이던 음성 중지
   if (window.soundManager) {
     window.soundManager.stopSpeech();
     if (!isAutoTTSMode) {
@@ -203,8 +366,9 @@ function renderNode(nodeId) {
     }
   }
 
-  // 로컬스토리지에 현재 노드 저장
+  // 로컬스토리지에 현재 노드 및 언어 저장
   localStorage.setItem("currentStoryNode", nodeId);
+  localStorage.setItem("storyLang", currentLang);
 
   // 진행률 업데이트
   progressEl.style.width = `${node.progress}%`;
@@ -241,20 +405,21 @@ function renderNode(nodeId) {
       const btnReset = document.createElement("button");
       btnReset.className = "btn-choice";
       btnReset.style.background = "linear-gradient(135deg, #7209b7 0%, #b5179e 100%)";
-      btnReset.textContent = "📖 모험을 성공적으로 마쳤어요! 처음부터 다시 읽기";
+      btnReset.textContent = currentLang === "en" 
+        ? "📖 Adventure Complete! Read from the Start" 
+        : "📖 모험을 성공적으로 마쳤어요! 처음부터 다시 읽기";
       btnReset.addEventListener("click", () => {
         if (window.soundManager) window.soundManager.playClick();
         resetStory();
       });
       choiceContainerEl.appendChild(btnReset);
 
-      // 엔딩 해금 저장 및 알림
       if (node.endingId) {
         unlockEnding(node.endingId);
       }
     }
 
-    // 페이드 인 및 fade-out 클래스 완벽 제거
+    // 페이드 인 및 fade-out 클래스 제거
     illustrationEl.parentElement.classList.remove("fade-out");
     storyTextEl.parentElement.classList.remove("fade-out");
     choiceContainerEl.classList.remove("fade-out");
@@ -263,13 +428,12 @@ function renderNode(nodeId) {
     storyTextEl.parentElement.classList.add("fade-in");
     choiceContainerEl.classList.add("fade-in");
 
-    // 0.5초 뒤 트랜지션 클래스 정리 및 자동 연속 낭독 실행!
+    // 0.5초 뒤 트랜지션 클래스 정리 및 자동 연속 낭독 실행
     setTimeout(() => {
       illustrationEl.parentElement.classList.remove("fade-in");
       storyTextEl.parentElement.classList.remove("fade-in");
       choiceContainerEl.classList.remove("fade-in");
 
-      // 만약 자동 낭독 모드(isAutoTTSMode)가 켜져 있다면 다음 페이지도 자동 연속 낭독!
       if (isAutoTTSMode) {
         startTTSForCurrentNode();
       }
@@ -287,7 +451,6 @@ function unlockEnding(endingId) {
     updateAlbumUI();
   }
   
-  // 이미 획득한 엔딩이라도 엔딩에 도달하면 무조건 화려한 축하 애니메이션과 폭죽 연출 실행!
   setTimeout(() => {
     showCelebrationModal(endingId);
   }, 300);
@@ -301,26 +464,22 @@ function showCelebrationModal(endingId) {
   const celEndingNameEl = document.getElementById("cel-ending-name");
   const celDescEl = document.getElementById("cel-desc");
 
-  // 팬파레 사운드 재생
   if (window.soundManager) {
     window.soundManager.playEndingFanfare();
   }
 
-  // 카드 팝업 애니메이션 재시작 (Reflow 적용)
   const cardEl = celModalEl.querySelector(".celebration-card");
   if (cardEl) {
     cardEl.style.animation = "none";
-    void cardEl.offsetWidth; // Trigger reflow
+    void cardEl.offsetWidth;
     cardEl.style.animation = "popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards";
   }
 
-  // 4개 엔딩 올 클리어 여부 확인
   const allEndings = ["ending-happy", "ending-detective", "ending-toy", "ending-ghost"];
   const isAllCompleted = allEndings.every(id => unlockedEndings.includes(id));
 
   let endingImg = "assets/images/scene_ending_happy.png";
   let endingTitle = getEndingName(endingId);
-  let endingDesc = "아리와 함께 동화 속 새로운 모험의 결말을 밝혀내셨습니다!";
 
   if (endingId === "ending-happy") endingImg = "assets/images/scene_ending_happy.png";
   else if (endingId === "ending-detective") endingImg = "assets/images/scene_ending_detective.png";
@@ -331,17 +490,19 @@ function showCelebrationModal(endingId) {
   celEndingNameEl.textContent = `🔑 ${endingTitle}`;
 
   if (isAllCompleted) {
-    celTitleEl.textContent = "🏆 축! 전설의 마스터 칭호 획득!";
-    celDescEl.textContent = "대단해요! 도서관의 4가지 비밀 엔딩을 모두 수집하여 [전설의 꼬마 탐정 마스터]가 되셨습니다! 🎉";
+    celTitleEl.textContent = currentLang === "en" ? "🏆 Master Title Unlocked!" : "🏆 축! 전설의 마스터 칭호 획득!";
+    celDescEl.textContent = currentLang === "en"
+      ? "Amazing! You collected all 4 secret endings and became the [Legendary Master Detective]! 🎉"
+      : "대단해요! 도서관의 4가지 비밀 엔딩을 모두 수집하여 [전설의 꼬마 탐정 마스터]가 되셨습니다! 🎉";
   } else {
-    celTitleEl.textContent = "🎉 새로운 엔딩 도감 해금!";
-    celDescEl.textContent = endingDesc;
+    celTitleEl.textContent = currentLang === "en" ? "🎉 New Ending Unlocked!" : "🎉 새로운 엔딩 도감 해금!";
+    celDescEl.textContent = currentLang === "en"
+      ? "Congratulations! You revealed a new ending with Ari!"
+      : "아리와 함께 동화 속 새로운 모험의 결말을 밝혀내셨습니다!";
   }
 
-  // 폭죽 팡팡 연출 실행
   launchConfetti();
 
-  // 모달 표시
   albumModalEl.classList.add("hidden");
   celModalEl.classList.remove("hidden");
 }
@@ -402,16 +563,19 @@ function launchConfetti() {
   requestAnimationFrame(render);
 }
 
-// 8. 도감 UI 업데이트 및 클릭 재시청 이벤트
+// 8. 도감 UI 업데이트
 function updateAlbumUI() {
   const endingIds = ["ending-happy", "ending-detective", "ending-toy", "ending-ghost"];
   endingIds.forEach(id => {
     const itemEl = document.getElementById(id);
     if (itemEl) {
+      const h3El = itemEl.querySelector("h3");
+      if (h3El) h3El.textContent = getEndingName(id);
+
       if (unlockedEndings.includes(id)) {
         itemEl.classList.add("unlocked");
         const statusEl = itemEl.querySelector(".album-status");
-        if (statusEl) statusEl.textContent = "🎉 획득 (클릭하여 감상)";
+        if (statusEl) statusEl.textContent = currentLang === "en" ? "🎉 Unlocked" : "🎉 획득 (클릭하여 감상)";
         
         itemEl.onclick = () => {
           showCelebrationModal(id);
@@ -420,7 +584,7 @@ function updateAlbumUI() {
       } else {
         itemEl.classList.remove("unlocked");
         const statusEl = itemEl.querySelector(".album-status");
-        if (statusEl) statusEl.textContent = "🔒 미획득";
+        if (statusEl) statusEl.textContent = currentLang === "en" ? "🔒 Locked" : "🔒 미획득";
         itemEl.onclick = null;
         itemEl.style.cursor = "default";
       }
@@ -431,31 +595,27 @@ function updateAlbumUI() {
 // 9. 처음부터 시작 로직
 function resetStory() {
   currentNodeId = "start";
-  isAutoTTSMode = false; // 자동 낭독 모드 OFF
+  isAutoTTSMode = false;
   localStorage.setItem("currentStoryNode", "start");
 
-  // 진행 중인 낭독 중지
   if (window.soundManager) {
     window.soundManager.stopSpeech();
     updateTTSUI(false);
   }
 
-  // 모달 닫기
   albumModalEl.classList.add("hidden");
   const celModalEl = document.getElementById("celebration-modal");
   if (celModalEl) celModalEl.classList.add("hidden");
 
-  // 효과음 재생
   if (window.soundManager) {
     window.soundManager.playClick();
     window.soundManager.playPageTurn();
   }
 
-  // 화면 렌더링
   renderNode("start");
 }
 
-// 10. 현재 스토리 노드 TTS 낭독 시작 함수 (순수 동화 본문만 낭독)
+// 10. 현재 스토리 노드 TTS 낭독 시작 함수 (한국어/영어 다국어 분기)
 function startTTSForCurrentNode() {
   if (!window.soundManager) return;
 
@@ -463,9 +623,9 @@ function startTTSForCurrentNode() {
 
   window.soundManager.speakText(
     textToRead,
-    () => updateTTSUI(true),  // 낭독 시작 시 UI 변경
+    currentLang, // 'ko' | 'en'
+    () => updateTTSUI(true),
     () => {
-      // 낭독 완료되더라도 자동 모드가 켜져 있다면 다음 클릭 전까지 UI 상태 유지
       if (isAutoTTSMode) {
         updateTTSUI(true);
       } else {
@@ -482,17 +642,28 @@ function updateTTSUI(isSpeaking) {
   if (!btnTts) return;
 
   if (isSpeaking || isAutoTTSMode) {
-    btnTts.textContent = "🛑 읽기 중지";
+    btnTts.textContent = currentLang === "en" ? "🛑 Stop Speech" : "🛑 읽기 중지";
     btnTts.classList.add("speaking");
     if (storyCard) storyCard.classList.add("speaking");
   } else {
-    btnTts.textContent = "🔊 동화 읽어주기";
+    btnTts.textContent = currentLang === "en" ? "🔊 Read Story" : "🔊 동화 읽어주기";
     btnTts.classList.remove("speaking");
     if (storyCard) storyCard.classList.remove("speaking");
   }
 }
 
 // 12. 이벤트 리스너 설정
+const btnLangEl = document.getElementById("btn-lang");
+if (btnLangEl) {
+  btnLangEl.addEventListener("click", () => {
+    currentLang = currentLang === "ko" ? "en" : "ko";
+    localStorage.setItem("storyLang", currentLang);
+    updateLangUI();
+    updateAlbumUI();
+    renderNode(currentNodeId);
+  });
+}
+
 const btnResetHeaderEl = document.getElementById("btn-reset-header");
 if (btnResetHeaderEl) {
   btnResetHeaderEl.addEventListener("click", () => {
@@ -532,12 +703,10 @@ if (btnTtsEl) {
     if (!window.soundManager) return;
 
     if (isAutoTTSMode || window.soundManager.isSpeaking()) {
-      // 자동 낭독 모드 끄기 & 음성 중지
       isAutoTTSMode = false;
       window.soundManager.stopSpeech();
       updateTTSUI(false);
     } else {
-      // 자동 낭독 모드 켜기 & 첫 낭독 시작
       isAutoTTSMode = true;
       window.soundManager.playClick();
       startTTSForCurrentNode();
