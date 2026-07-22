@@ -252,6 +252,17 @@ function renderNode(nodeId) {
   }, 400);
 }
 
+// 엔딩 이름 매핑 헬퍼
+function getEndingName(endingId) {
+  switch (endingId) {
+    case "ending-happy": return "도서관 수호자 엔딩";
+    case "ending-detective": return "전설의 꼬마 탐정 엔딩";
+    case "ending-toy": return "장난감 친구 엔딩";
+    case "ending-ghost": return "왁자지껄 유령 파티 엔딩";
+    default: return "도서관 수호자 엔딩";
+  }
+}
+
 // 6. 엔딩 해금 및 축하 이벤트 로직
 function unlockEnding(endingId) {
   const isNew = !unlockedEndings.includes(endingId);
@@ -259,12 +270,12 @@ function unlockEnding(endingId) {
     unlockedEndings.push(endingId);
     localStorage.setItem("unlockedEndings", JSON.stringify(unlockedEndings));
     updateAlbumUI();
-    
-    // 축하 애니메이션 팝업 및 컨페티 폭죽 연출!
-    setTimeout(() => {
-      showCelebrationModal(endingId);
-    }, 600);
   }
+  
+  // 이미 획득한 엔딩이라도 엔딩에 도달하면 무조건 화려한 축하 애니메이션과 폭죽 연출 실행!
+  setTimeout(() => {
+    showCelebrationModal(endingId);
+  }, 300);
 }
 
 // 6-1. 마법 축하 모달 및 컨페티 폭죽 엔진
@@ -280,6 +291,14 @@ function showCelebrationModal(endingId) {
     window.soundManager.playEndingFanfare();
   }
 
+  // 카드 팝업 애니메이션 재시작 (Reflow 적용)
+  const cardEl = celModalEl.querySelector(".celebration-card");
+  if (cardEl) {
+    cardEl.style.animation = "none";
+    void cardEl.offsetWidth; // Trigger reflow
+    cardEl.style.animation = "popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards";
+  }
+
   // 4개 엔딩 올 클리어 여부 확인
   const allEndings = ["ending-happy", "ending-detective", "ending-toy", "ending-ghost"];
   const isAllCompleted = allEndings.every(id => unlockedEndings.includes(id));
@@ -287,7 +306,7 @@ function showCelebrationModal(endingId) {
   // 해당 노드의 이미지 및 설명 매핑
   let endingImg = "assets/images/scene_ending_happy.png";
   let endingTitle = getEndingName(endingId);
-  let endingDesc = "아리와 함께 새로운 모험의 결말을 밝혀내셨습니다!";
+  let endingDesc = "아리와 함께 동화 속 새로운 모험의 결말을 밝혀내셨습니다!";
 
   if (endingId === "ending-happy") endingImg = "assets/images/scene_ending_happy.png";
   else if (endingId === "ending-detective") endingImg = "assets/images/scene_ending_detective.png";
@@ -299,20 +318,21 @@ function showCelebrationModal(endingId) {
 
   if (isAllCompleted) {
     celTitleEl.textContent = "🏆 축! 전설의 마스터 칭호 획득!";
-    celDescEl.textContent = "대단해요! 도서관의 4가지 비밀 엔딩을 모두 수집하여 [전설의 꼬마 탐정 마스터]가 되셨습니다!🎉";
+    celDescEl.textContent = "대단해요! 도서관의 4가지 비밀 엔딩을 모두 수집하여 [전설의 꼬마 탐정 마스터]가 되셨습니다! 🎉";
   } else {
     celTitleEl.textContent = "🎉 새로운 엔딩 도감 해금!";
     celDescEl.textContent = endingDesc;
   }
 
-  // 폭죽 팡팡 연출
+  // 폭죽 팡팡 연출 실행
   launchConfetti();
 
-  // 모달 표시
+  // 모달 표시 (도감 모달이 열려있다면 닫고 축하 모달 표시)
+  albumModalEl.classList.add("hidden");
   celModalEl.classList.remove("hidden");
 }
 
-// 6-2. Canvas 마법 컨페티 폭죽 팡팡 연출
+// 6-2. Canvas 마법 폭죽 컨페티 연출 엔진 (보강)
 function launchConfetti() {
   const canvas = document.getElementById("confetti-canvas");
   if (!canvas) return;
@@ -322,18 +342,19 @@ function launchConfetti() {
   canvas.height = window.innerHeight;
 
   const particles = [];
-  const colors = ["#ff758f", "#70d6ff", "#ffd166", "#e0aaff", "#ffffff", "#ff9eb5"];
+  const colors = ["#ff758f", "#70d6ff", "#ffd166", "#e0aaff", "#ffffff", "#ff9eb5", "#06d6a0"];
 
-  for (let i = 0; i < 130; i++) {
+  // 180개의 폭죽 조각 생성
+  for (let i = 0; i < 180; i++) {
     particles.push({
-      x: canvas.width / 2 + (Math.random() * 200 - 100),
-      y: canvas.height / 3 + (Math.random() * 100 - 50),
-      vx: (Math.random() - 0.5) * 14,
-      vy: Math.random() * -12 - 4,
-      size: Math.random() * 9 + 5,
+      x: canvas.width / 2 + (Math.random() * 300 - 150),
+      y: canvas.height / 2.5 + (Math.random() * 100 - 50),
+      vx: (Math.random() - 0.5) * 18,
+      vy: Math.random() * -16 - 5,
+      size: Math.random() * 10 + 6,
       color: colors[Math.floor(Math.random() * colors.length)],
       rotation: Math.random() * 360,
-      rSpeed: Math.random() * 12 - 6,
+      rSpeed: Math.random() * 14 - 7,
       opacity: 1
     });
   }
@@ -346,9 +367,9 @@ function launchConfetti() {
     particles.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
-      p.vy += 0.3; // 중력
+      p.vy += 0.35; // 중력 적용
       p.rotation += p.rSpeed;
-      if (elapsed > 1600) p.opacity -= 0.02;
+      if (elapsed > 1800) p.opacity -= 0.025;
 
       ctx.save();
       ctx.translate(p.x, p.y);
@@ -359,7 +380,7 @@ function launchConfetti() {
       ctx.restore();
     });
 
-    if (elapsed < 3000) {
+    if (elapsed < 3200) {
       requestAnimationFrame(render);
     } else {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -368,7 +389,7 @@ function launchConfetti() {
   requestAnimationFrame(render);
 }
 
-// 7. 도감 UI 업데이트
+// 7. 도감 UI 업데이트 및 클릭 재시청 이벤트
 function updateAlbumUI() {
   const endingIds = ["ending-happy", "ending-detective", "ending-toy", "ending-ghost"];
   endingIds.forEach(id => {
@@ -377,11 +398,19 @@ function updateAlbumUI() {
       if (unlockedEndings.includes(id)) {
         itemEl.classList.add("unlocked");
         const statusEl = itemEl.querySelector(".album-status");
-        if (statusEl) statusEl.textContent = "🎉 획득!";
+        if (statusEl) statusEl.textContent = "🎉 획득 (클릭하여 감상)";
+        
+        // 클릭 시 축하 애니메이션 재시청 이벤트
+        itemEl.onclick = () => {
+          showCelebrationModal(id);
+        };
+        itemEl.style.cursor = "pointer";
       } else {
         itemEl.classList.remove("unlocked");
         const statusEl = itemEl.querySelector(".album-status");
         if (statusEl) statusEl.textContent = "🔒 미획득";
+        itemEl.onclick = null;
+        itemEl.style.cursor = "default";
       }
     }
   });

@@ -224,10 +224,14 @@ body {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 200;
+  z-index: 9999;
 }
 
 /* 엔딩 해금 축하 팝업 카드 */
+#celebration-modal {
+  z-index: 9000;
+}
+
 .celebration-card {
   background: linear-gradient(135deg, #2b1055 0%, #7597de 100%);
   border: 3px solid var(--accent-yellow);
@@ -236,7 +240,7 @@ body {
   max-width: 480px;
   padding: 30px 24px;
   text-align: center;
-  box-shadow: 0 0 50px rgba(255, 209, 102, 0.7), 0 20px 60px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 50px rgba(255, 209, 102, 0.9), 0 20px 60px rgba(0, 0, 0, 0.9);
   position: relative;
   animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
