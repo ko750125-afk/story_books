@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>꼬마 탐정 아리와 비밀 도서관의 꼬마 유령</title>
+  <!-- 네이버 나눔고딕, 주아 폰트 임포트 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app" class="app-container">
+    <!-- 상단 진행 표시 및 헤더 -->
+    <header class="header">
+      <div class="logo">🔍 아리의 도서관 모험</div>
+      <div class="progress-container">
+        <span class="progress-label">탐험도</span>
+        <div class="progress-bar">
+          <div id="progress" class="progress-fill" style="width: 10%;"></div>
+        </div>
+      </div>
+      <button id="btn-album" class="btn-icon" title="엔딩 앨범 열기">🏆 도감</button>
+    </header>
+
+    <!-- 메인 컨텐츠 영역 -->
+    <main class="main-content">
+      <!-- 삽화 카드 -->
+      <div class="illustration-card">
+        <img id="illustration" src="assets/images/scene_start.png" alt="동화 삽화">
+      </div>
+
+      <!-- 이야기 카드 -->
+      <section class="story-card">
+        <div id="story-text" class="story-text">
+          이야기가 곧 시작됩니다...
+        </div>
+      </section>
+
+      <!-- 선택지 버튼 영역 -->
+      <section id="choice-container" class="choice-container">
+        <!-- 동적으로 버튼이 생성됩니다 -->
+      </section>
+    </main>
+
+    <!-- 엔딩 앨범 모달 -->
+    <div id="album-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>🏆 마법 엔딩 도감</h2>
+          <button id="btn-close-album" class="btn-close">&times;</button>
+        </div>
+        <p class="album-desc">모험을 통해 4가지 엔딩을 모두 모아보세요!</p>
+        <div class="album-grid">
+          <div class="album-item" id="ending-happy">
+            <div class="album-status">🔒 미획득</div>
+            <img src="assets/images/scene_ending_happy.png" alt="해피 엔딩">
+            <h3>🔑 도서관 수호자 엔딩</h3>
+          </div>
+          <div class="album-item" id="ending-detective">
+            <div class="album-status">🔒 미획득</div>
+            <img src="assets/images/scene_ending_detective.png" alt="탐정 엔딩">
+            <h3>🌟 전설의 꼬마 탐정 엔딩</h3>
+          </div>
+          <div class="album-item" id="ending-toy">
+            <div class="album-status">🔒 미획득</div>
+            <img src="assets/images/scene_ending_toy.png" alt="장난감 엔딩">
+            <h3>🐭 장난감 친구 엔딩</h3>
+          </div>
+          <div class="album-item" id="ending-ghost">
+            <div class="album-status">🔒 미획득</div>
+            <img src="assets/images/scene_ending_ghost.png" alt="유령 파티 엔딩">
+            <h3>👻 왁자지껄 유령 파티 엔딩</h3>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="btn-reset-story" class="btn-reset">처음부터 다시 읽기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

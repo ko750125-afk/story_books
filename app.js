@@ -1,0 +1,316 @@
+// ==========================================
+// 꼬마 탐정 아리와 비밀 도서관의 꼬마 유령
+// 게임 엔진 및 스토리 데이터 소스 코드
+// ==========================================
+
+// 1. 스토리 노드 정의
+const storyData = {
+  start: {
+    text: "어두운 밤, 꼬마 탐정 아리는 돋보기와 전등을 챙겨 들고 비밀 도서관 앞에 도착했어요.\n\"여기 어딘가에 마법의 황금 열쇠가 숨겨져 있을 거야!\"\n도서관 안으로 들어갈 방법은 두 가지가 있어요.",
+    image: "assets/images/scene_start.png",
+    progress: 15,
+    choices: [
+      { text: "🚪 삐걱거리는 오래된 도서관 나무 문을 살그머니 열어본다.", nextNode: "library_door" },
+      { text: "🪟 옆에 있는 작고 먼지 쌓인 지하 창고 창문으로 들어간다.", nextNode: "basement_window" }
+    ]
+  },
+  library_door: {
+    text: "도서관 안으로 들어오자, 오래된 책 냄새가 아리를 반겼어요. 도서관은 온통 깜깜하지만, 저 멀리 책장 사이에서 신비로운 금빛 노란색 불빛이 흘러나오고 있어요!\n동시에 카운터 아래에서 \"스스슥-\" 소리도 들리네요.",
+    image: "assets/images/scene_bookshelf.png",
+    progress: 35,
+    choices: [
+      { text: "✨ 노란빛이 새어 나오는 비밀 책장 틈새를 들여다본다.", nextNode: "glowing_bookshelf" },
+      { text: "👣 소리가 났던 도서관 카운터 아래를 돋보기로 비추어 본다.", nextNode: "counter_footsteps" }
+    ]
+  },
+  basement_window: {
+    text: "지하 창고로 살그머니 내려온 아리! 사방에 신비로운 나무 상자들이 가득 쌓여 있어요. 그중 한 상자에서 반짝반짝 파란색 빛이 나오고 있네요.\n벽에는 낡아 보이는 도서관 지도가 걸려 있어요.",
+    image: "assets/images/scene_basement.png",
+    progress: 35,
+    choices: [
+      { text: "💎 반짝이는 보석 모양 파란 상자를 열어본다.", nextNode: "blue_box" },
+      { text: "🗺️ 벽에 붙어 있는 오래된 도서관 지도를 자세히 살펴본다.", nextNode: "library_map" }
+    ]
+  },
+  glowing_bookshelf: {
+    text: "책장 틈새를 살짝 들여다보니, 귀엽고 동글동글한 흰색 꼬마 유령 '퐁이'가 책 위에 떠서 책을 읽고 있었어요!\n퐁이는 아리를 보고 깜짝 놀라 숨으려다 머뭇거렸어요.\n\"안녕? 난 유령 퐁이야. 사실 책 창고를 열 황금 열쇠를 잃어버려서 슬퍼하고 있었어...\"",
+    image: "assets/images/scene_pong.png",
+    progress: 60,
+    choices: [
+      { text: "🤝 \"안녕 퐁이! 난 꼬마 탐정 아리야. 내가 같이 열쇠를 찾아줄게!\"", nextNode: "friend_ghost" },
+      { text: "🔍 \"걱정 마, 퐁이! 우선 책장 주변에 떨어진 발자국 단서부터 조사해볼게!\"", nextNode: "search_clues" }
+    ]
+  },
+  counter_footsteps: {
+    text: "카운터 밑을 돋보기로 비추자, 야광 물감처럼 반짝이는 작은 발자국들이 콕콕 찍혀 있었어요!\n발자국은 도서관의 책장 깊숙한 곳으로 향하고 있었어요.",
+    image: "assets/images/scene_bookshelf.png",
+    progress: 60,
+    choices: [
+      { text: "👣 반짝이는 야광 발자국을 따라 조심조심 걸어가본다.", nextNode: "follow_footsteps" },
+      { text: "🗣️ 용기를 내어 큰 소리로 \"거기 누구 있니? 아리가 도와줄게!\" 하고 외쳐본다.", nextNode: "call_out" }
+    ]
+  },
+  blue_box: {
+    text: "파란 상자를 슥 열자, 귀여운 태엽 쥐 인형들이 튀어나와 뱅글뱅글 춤을 추기 시작했어요! 인형의 등에 적힌 은밀한 암호를 발견했어요.\n태엽 쥐들은 함께 놀고 싶어 하는 눈치예요.",
+    image: "assets/images/scene_ending_toy.png",
+    progress: 65,
+    choices: [
+      { text: "📖 암호 쪽지를 들고 불빛이 보였던 2층 도서관 서가로 올라간다.", nextNode: "glowing_bookshelf" },
+      { text: "🐭 \"너희들 정말 귀엽구나!\" 태엽 쥐들과 신나게 춤을 추며 노는데 집중한다.", nextNode: "ending_toy" }
+    ]
+  },
+  library_map: {
+    text: "낡은 도서관 지도를 펼쳐보자, 책상들 아래에 비밀의 비밀 통로가 숨겨져 있다고 표시되어 있어요! 그곳은 '유령들의 비밀 놀이방'으로 연결된대요.",
+    image: "assets/images/scene_basement.png",
+    progress: 65,
+    choices: [
+      { text: "🗺️ 지도에 그려진 비밀 놀이방을 찾아 바로 뛰어간다.", nextNode: "secret_room" },
+      { text: "👣 지도를 주머니에 잘 챙겨 넣고, 야광 발자국이 있던 카운터로 향한다.", nextNode: "counter_footsteps" }
+    ]
+  },
+  friend_ghost: {
+    text: "아리의 다정한 인사에 감동한 퐁이는 아리의 손을 꼭 잡고 거대한 책장 밑 비밀 문으로 안내했어요. 그곳엔 환하게 빛나는 무지개 보물 상자가 놓여 있었지요!\n\"이 상자 안에 황금 열쇠가 있어! 하지만 상자에 수수께끼가 적혀 있네.\"",
+    image: "assets/images/scene_ending_happy.png",
+    progress: 85,
+    choices: [
+      { text: "💫 퐁이와 함께 \"영차!\" 힘껏 무지개 보물 상자를 열어젖힌다.", nextNode: "ending_happy" },
+      { text: "🧠 상자에 적힌 알록달록한 마법 퀴즈를 직접 풀어본다.", nextNode: "quiz_room" }
+    ]
+  },
+  search_clues: {
+    text: "아리는 돋보기를 들고 책을 꼼꼼히 살폈어요. 책장 가장 위 칸 책에 퐁이가 흘린 반짝이는 야광 별가루가 묻어 있는 것을 찾아냈어요!\n그 별가루를 건드리자, 책장이 스르륵 열리며 황금 열쇠가 은은하게 빛나며 나타났어요!\n\n아리는 훌륭한 추리로 황금 열쇠를 완벽하게 찾아냈습니다!",
+    image: "assets/images/scene_ending_detective.png",
+    progress: 100,
+    endingId: "ending-detective",
+    choices: []
+  },
+  follow_footsteps: {
+    text: "야광 발자국을 따라가자, 놀랍게도 밤마다 도서관에 모이는 수많은 아기 유령들이 환영 잔치를 벌이고 있었어요! \n유령들은 아리를 보자 박수를 치며 마법의 황금 열쇠를 선물로 건네주었어요.\n\n아리는 유령들의 최고의 친구이자 도서관의 귀빈이 되었습니다!",
+    image: "assets/images/scene_ending_ghost.png",
+    progress: 100,
+    endingId: "ending-ghost",
+    choices: []
+  },
+  call_out: {
+    text: "아리가 외치자, 카운터 아래에서 퐁이가 뽀르르 튀어나와 수줍게 고개를 숙였어요. \n\"나를 해치지 않으러 왔구나! 사실 황금 열쇠는 마법 상자 안에 들어 있어. 하지만 같이 열어야 열려!\"",
+    image: "assets/images/scene_pong.png",
+    progress: 80,
+    choices: [
+      { text: "🤝 \"당연하지! 우리 같이 비밀 상자를 열어보자, 퐁이야!\"", nextNode: "friend_ghost" },
+      { text: "🔍 \"잠시만! 상자가 있는 안전한 통로인지 먼저 돋보기로 조사해볼게.\"", nextNode: "search_clues" }
+    ]
+  },
+  secret_room: {
+    text: "비밀 놀이방에 도착한 아리! 그곳에는 퐁이와 여러 아기 유령 친구들이 신나게 트램펄린을 뛰며 책을 읽고 있었어요! 방 한가운데엔 마법 보물 상자가 아름답게 빛나고 있었습니다.",
+    image: "assets/images/scene_ending_ghost.png",
+    progress: 80,
+    choices: [
+      { text: "🎁 보물 상자 옆에 둥둥 떠 있는 퐁이와 기쁘게 악수하며 열쇠 상자를 연다.", nextNode: "ending_happy" },
+      { text: "👻 \"와! 나도 같이 놀래!\" 유령 친구들과 함께 동화책을 읽으며 뒹굴거린다.", nextNode: "ending_ghost" }
+    ]
+  },
+  quiz_room: {
+    text: "상자에 적힌 문제는 아주 귀여웠어요.\n\"도서관에서 가장 똑똑하고 귀여운 탐정의 이름은 무엇일까요?\"\n아리는 웃으며 큰 소리로 답을 외쳤어요. \"그건 바로 나, 꼬마 탐정 아리야!\"\n그 순간 상자가 딸깍하고 열리며 눈부신 금빛이 퍼져 나왔어요!",
+    image: "assets/images/scene_ending_happy.png",
+    progress: 90,
+    choices: [
+      { text: "🔑 상자 속에서 나온 황금 열쇠를 높이 들고 승리를 기념한다!", nextNode: "ending_happy" },
+      { text: "🎨 열쇠를 찾는 것보다 퐁이와 더 기발한 퀴즈 놀이를 하며 밤을 지샌다.", nextNode: "ending_ghost" }
+    ]
+  },
+  ending_happy: {
+    text: "아리와 퐁이는 힘을 합쳐 보물 상자를 열었고, 눈부신 황금 열쇠를 찾아내어 비밀 도서관의 마법 이야기책들을 모두 봉인 해제했어요! \n밤마다 도서관의 동화책 속 주인공들이 튀어나와 아리와 퐁이에게 재미있는 이야기를 직접 읽어주게 되었답니다.\n\n[도서관 수호자 엔딩] 아리는 퐁이와 함께 언제나 재밌는 책을 볼 수 있게 되었습니다. 해피엔딩!",
+    image: "assets/images/scene_ending_happy.png",
+    progress: 100,
+    endingId: "ending-happy",
+    choices: []
+  },
+  ending_toy: {
+    text: "아리는 황금 열쇠를 찾는 대신, 지하 창고에서 춤추는 태엽 쥐 인형들과 신나게 춤을 추고 소꿉놀이를 하며 시간 가는 줄 몰랐어요.\n비록 열쇠는 못 찾았지만, 지루할 틈 없이 세상에서 가장 신나는 밤을 보냈답니다!\n\n[장난감 친구 엔딩] 귀여운 태엽 쥐들과 언제든 도서관 지하에서 비밀 소꿉장난을 즐길 수 있게 되었습니다!",
+    image: "assets/images/scene_ending_toy.png",
+    progress: 100,
+    endingId: "ending-toy",
+    choices: []
+  }
+};
+
+// 2. DOM 요소 취득
+const illustrationEl = document.getElementById("illustration");
+const storyTextEl = document.getElementById("story-text");
+const choiceContainerEl = document.getElementById("choice-container");
+const progressEl = document.getElementById("progress");
+
+const btnAlbumEl = document.getElementById("btn-album");
+const albumModalEl = document.getElementById("album-modal");
+const btnCloseAlbumEl = document.getElementById("btn-close-album");
+const btnResetStoryEl = document.getElementById("btn-reset-story");
+
+// 3. 상태 관리 변수
+let currentNodeId = "start";
+let unlockedEndings = [];
+
+// 4. 로컬 스토리지 초기화 및 로드
+function loadGameData() {
+  const savedNode = localStorage.getItem("currentStoryNode");
+  if (savedNode && storyData[savedNode]) {
+    currentNodeId = savedNode;
+  } else {
+    currentNodeId = "start";
+  }
+
+  const savedEndings = localStorage.getItem("unlockedEndings");
+  if (savedEndings) {
+    try {
+      unlockedEndings = JSON.parse(savedEndings);
+    } catch (e) {
+      unlockedEndings = [];
+    }
+  }
+  updateAlbumUI();
+}
+
+// 5. 화면 렌더링 함수
+function renderNode(nodeId) {
+  const node = storyData[nodeId];
+  if (!node) return;
+
+  // 로컬스토리지에 현재 노드 저장
+  localStorage.setItem("currentStoryNode", nodeId);
+
+  // 진행률 업데이트
+  progressEl.style.width = `${node.progress}%`;
+
+  // 페이드 아웃 후 텍스트와 이미지 교체
+  illustrationEl.parentElement.classList.add("fade-out");
+  storyTextEl.parentElement.classList.add("fade-out");
+  choiceContainerEl.classList.add("fade-out");
+
+  setTimeout(() => {
+    // 내용 갱신
+    illustrationEl.src = node.image;
+    storyTextEl.textContent = node.text;
+
+    // 선택지 버튼 생성
+    choiceContainerEl.innerHTML = "";
+    if (node.choices && node.choices.length > 0) {
+      node.choices.forEach(choice => {
+        const btn = document.createElement("button");
+        btn.className = "btn-choice";
+        btn.textContent = choice.text;
+        btn.addEventListener("click", () => {
+          currentNodeId = choice.nextNode;
+          renderNode(currentNodeId);
+        });
+        choiceContainerEl.appendChild(btn);
+      });
+    } else {
+      // 엔딩 노드인 경우 처음으로 가기 버튼 생성
+      const btnReset = document.createElement("button");
+      btnReset.className = "btn-choice";
+      btnReset.style.background = "linear-gradient(135deg, #7209b7 0%, #b5179e 100%)";
+      btnReset.textContent = "📖 모험을 성공적으로 마쳤어요! 처음부터 다시 읽기";
+      btnReset.addEventListener("click", resetStory);
+      choiceContainerEl.appendChild(btnReset);
+
+      // 엔딩 해금 저장 및 알림
+      if (node.endingId) {
+        unlockEnding(node.endingId);
+      }
+    }
+
+    // 페이드 인
+    illustrationEl.parentElement.classList.remove("fade-out");
+    storyTextEl.parentElement.classList.remove("fade-out");
+    choiceContainerEl.classList.remove("fade-out");
+    illustrationEl.parentElement.classList.add("fade-in");
+    storyTextEl.parentElement.classList.add("fade-in");
+    choiceContainerEl.classList.add("fade-in");
+
+    // 0.5초 뒤 클래스 정리
+    setTimeout(() => {
+      illustrationEl.parentElement.classList.remove("fade-in");
+      storyTextEl.parentElement.classList.remove("fade-in");
+      choiceContainerEl.classList.remove("fade-in");
+    }, 500);
+
+  }, 400);
+}
+
+// 6. 엔딩 해금 로직
+function unlockEnding(endingId) {
+  if (!unlockedEndings.includes(endingId)) {
+    unlockedEndings.push(endingId);
+    localStorage.setItem("unlockedEndings", JSON.stringify(unlockedEndings));
+    updateAlbumUI();
+    
+    // 이펙트 효과음 대용 귀여운 텍스트 알람 (초2 감성)
+    setTimeout(() => {
+      alert(`🎉 축하합니다! 새로운 엔딩 [${getEndingName(endingId)}]을(를) 앨범에 등록했어요!`);
+    }, 600);
+  }
+}
+
+// 엔딩 이름 매핑 헬퍼
+function getEndingName(endingId) {
+  switch (endingId) {
+    case "ending-happy": return "도서관 수호자 엔딩";
+    case "ending-detective": return "전설의 꼬마 탐정 엔딩";
+    case "ending-toy": return "장난감 친구 엔딩";
+    case "ending-ghost": return "왁자지껄 유령 파티 엔딩";
+    default: return "미지의 엔딩";
+  }
+}
+
+// 7. 도감 UI 업데이트
+function updateAlbumUI() {
+  const endingIds = ["ending-happy", "ending-detective", "ending-toy", "ending-ghost"];
+  endingIds.forEach(id => {
+    const itemEl = document.getElementById(id);
+    if (itemEl) {
+      if (unlockedEndings.includes(id)) {
+        itemEl.classList.add("unlocked");
+        const statusEl = itemEl.querySelector(".album-status");
+        if (statusEl) statusEl.textContent = "🎉 획득!";
+      } else {
+        itemEl.classList.remove("unlocked");
+        const statusEl = itemEl.querySelector(".album-status");
+        if (statusEl) statusEl.textContent = "🔒 미획득";
+      }
+    }
+  });
+}
+
+// 8. 처음부터 시작 로직
+function resetStory() {
+  currentNodeId = "start";
+  renderNode(currentNodeId);
+  albumModalEl.classList.add("hidden");
+}
+
+// 9. 이벤트 리스너 설정
+btnAlbumEl.addEventListener("click", () => {
+  albumModalEl.classList.remove("hidden");
+});
+
+btnCloseAlbumEl.addEventListener("click", () => {
+  albumModalEl.classList.add("hidden");
+});
+
+// 바깥 영역 클릭 시 모달 닫기
+albumModalEl.addEventListener("click", (e) => {
+  if (e.target === albumModalEl) {
+    albumModalEl.classList.add("hidden");
+  }
+});
+
+btnResetStoryEl.addEventListener("click", () => {
+  if (confirm("정말 처음부터 모험을 다시 시작할까요? (앨범 도감 기록은 유지됩니다)")) {
+    resetStory();
+  }
+});
+
+// 10. 게임 최초 시작
+window.addEventListener("DOMContentLoaded", () => {
+  loadGameData();
+  renderNode(currentNodeId);
+});

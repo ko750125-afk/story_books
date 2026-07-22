@@ -1,0 +1,425 @@
+/* 글로벌 스타일 설정 */
+:root {
+  --primary-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.15);
+  --text-color: #f1f1f6;
+  --accent-color: #ff758f;
+  --accent-secondary: #70d6ff;
+  --accent-yellow: #ffd166;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --border-radius: 24px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Nanum Gothic', sans-serif;
+  background: var(--primary-bg);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+/* 메인 앱 컨테이너 */
+.app-container {
+  width: 100%;
+  max-width: 800px;
+  height: 100vh;
+  max-height: 900px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: relative;
+}
+
+/* 상단 헤더 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  margin-bottom: 15px;
+}
+
+.logo {
+  font-family: 'Jua', sans-serif;
+  font-size: 1.4rem;
+  color: var(--accent-secondary);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-grow: 0.5;
+  justify-content: center;
+}
+
+.progress-label {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-color), #ff9eb5);
+  width: 10%;
+  border-radius: 6px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-icon {
+  font-family: 'Jua', sans-serif;
+  background: linear-gradient(135deg, #b5179e 0%, #7209b7 100%);
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  font-size: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(114, 9, 183, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-icon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(114, 9, 183, 0.6);
+}
+
+/* 메인 스토리 영역 */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+  padding-bottom: 10px;
+}
+
+/* 삽화 액자 */
+.illustration-card {
+  width: 100%;
+  height: 45%;
+  min-height: 250px;
+  background: #000;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  border: 4px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px var(--shadow-color);
+  position: relative;
+  transition: opacity 0.5s ease;
+}
+
+.illustration-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 이야기 카드 (글래스모피즘) */
+.story-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--border-radius);
+  padding: 24px;
+  box-shadow: 0 8px 32px var(--shadow-color);
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+}
+
+.story-text {
+  font-size: 1.25rem;
+  line-height: 1.8;
+  text-align: center;
+  font-weight: 400;
+  word-break: keep-all;
+  white-space: pre-line;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 선택 버튼들 */
+.choice-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn-choice {
+  font-family: 'Jua', sans-serif;
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 1.15rem;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--text-color);
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(5px);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  word-break: keep-all;
+}
+
+.btn-choice:hover {
+  background: linear-gradient(135deg, var(--accent-color) 0%, #ff9eb5 100%);
+  border-color: #ffb3c1;
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 8px 20px rgba(255, 117, 143, 0.4);
+}
+
+.btn-choice:active {
+  transform: translateY(-1px);
+}
+
+/* 모달 스타일 (도감) */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  transition: opacity 0.4s ease;
+}
+
+.modal.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-content {
+  background: #1e1e2f;
+  border: 2px solid var(--card-border);
+  border-radius: var(--border-radius);
+  width: 90%;
+  max-width: 650px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  padding: 24px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 15px;
+}
+
+.modal-header h2 {
+  font-family: 'Jua', sans-serif;
+  color: var(--accent-yellow);
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 2rem;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.btn-close:hover {
+  opacity: 1;
+}
+
+.album-desc {
+  font-size: 0.9rem;
+  margin: 10px 0 20px;
+  opacity: 0.7;
+  text-align: center;
+}
+
+/* 도감 그리드 */
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-right: 5px;
+}
+
+.album-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 12px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.album-item img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+  filter: grayscale(100%) blur(2px);
+  transition: all 0.5s ease;
+}
+
+.album-item h3 {
+  font-family: 'Jua', sans-serif;
+  font-size: 1rem;
+  margin-top: 10px;
+  color: #aaa;
+}
+
+.album-status {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  color: #fff;
+  z-index: 2;
+}
+
+/* 해금되었을 때의 스타일 */
+.album-item.unlocked {
+  background: rgba(255, 117, 143, 0.08);
+  border-color: rgba(255, 117, 143, 0.3);
+}
+
+.album-item.unlocked img {
+  filter: none;
+}
+
+.album-item.unlocked h3 {
+  color: var(--accent-yellow);
+}
+
+.album-item.unlocked .album-status {
+  background: var(--accent-color);
+  content: '🎉 획득!';
+}
+
+.modal-footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-reset {
+  font-family: 'Jua', sans-serif;
+  background: #3a0ca3;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-reset:hover {
+  background: #4361ee;
+}
+
+/* 화면 페이드 효과용 클래스 */
+.fade-out {
+  opacity: 0 !important;
+}
+
+.fade-in {
+  opacity: 1 !important;
+}
+
+/* 미니 애니메이션 */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+.illustration-card img {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* 모바일 스크롤바 커스텀 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 미디어 쿼리 - 태블릿 및 모바일 최적화 */
+@media (max-width: 600px) {
+  .app-container {
+    padding: 10px;
+  }
+  .logo {
+    font-size: 1.1rem;
+  }
+  .btn-icon {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+  .illustration-card {
+    height: 35%;
+    min-height: 180px;
+  }
+  .story-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+  .btn-choice {
+    padding: 12px 15px;
+    font-size: 1rem;
+  }
+  .album-grid {
+    grid-template-columns: 1fr;
+  }
+  .album-item img {
+    height: 100px;
+  }
+}
