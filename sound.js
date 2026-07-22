@@ -246,33 +246,8 @@ class SoundManager {
     return segments;
   }
 
-  // 영문 원어민 프리미엄(Natural/Neural/Google) 음성 탐색기
-  getBestEnglishVoice() {
-    if (!('speechSynthesis' in window)) return null;
-    const voices = window.speechSynthesis.getVoices();
-    const enVoices = voices.filter(v => v.lang.includes('en') || v.lang.includes('EN'));
-
-    if (enVoices.length === 0) return null;
-
-    // 1순위: Edge/Chrome의 프리미엄 영문 신경망 성우 (Jenny, Aria, Ana, Google US English 등)
-    const naturalVoice = enVoices.find(v => 
-      v.name.includes('Natural') || 
-      v.name.includes('Neural') || 
-      v.name.includes('Jenny') ||
-      v.name.includes('Aria') ||
-      v.name.includes('Ana') ||
-      v.name.includes('Google US English')
-    );
-    if (naturalVoice) return naturalVoice;
-
-    const usVoice = enVoices.find(v => v.lang.includes('US') || v.lang.includes('us'));
-    if (usVoice) return usVoice;
-
-    return enVoices[0];
-  }
-
-  // 6. 동화 본문 TTS 음성 낭독 엔진 (한국어/영어 다국어 모드)
-  speakText(text, lang = 'ko', onStartCallback, onEndCallback) {
+  // 6. 동화 본문 TTS 음성 낭독 엔진 (모바일 iOS Safari / Android Chrome 완벽 호환 한국어 구연동화)
+  speakText(text, onStartCallback, onEndCallback) {
     if (!('speechSynthesis' in window)) return;
 
     if (window.speechSynthesis.paused) {
@@ -300,20 +275,12 @@ class SoundManager {
         }
 
         const utterance = new SpeechSynthesisUtterance(currentText);
+        utterance.lang = 'ko-KR';
 
-        if (lang === 'en') {
-          utterance.lang = 'en-US';
-          try {
-            const bestEnVoice = this.getBestEnglishVoice();
-            if (bestEnVoice) utterance.voice = bestEnVoice;
-          } catch (e) {}
-        } else {
-          utterance.lang = 'ko-KR';
-          try {
-            const bestKoVoice = this.getBestKoreanVoice();
-            if (bestKoVoice) utterance.voice = bestKoVoice;
-          } catch (e) {}
-        }
+        try {
+          const bestKoVoice = this.getBestKoreanVoice();
+          if (bestKoVoice) utterance.voice = bestKoVoice;
+        } catch (e) {}
 
         // 구연동화 캐릭터 연기 톤
         if (seg.isDialogue) {

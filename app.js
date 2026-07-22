@@ -1,10 +1,10 @@
 // ==========================================
 // 꼬마 탐정 아리와 비밀 도서관의 꼬마 유령
-// 게임 엔진 및 한국어/영어 45개 초대형 스토리 노드 소스 코드 (2배 대폭 추가 확장판)
+// 게임 엔진 및 순수 한국어 45개 대용량 스토리 소스 코드
 // ==========================================
 
-// 1. 한국어 스토리 노드 데이터 (45개 대용량 탐험 노드 트리)
-const storyDataKo = {
+// 1. 한국어 45개 대용량 스토리 노드 데이터
+const storyData = {
   start: {
     text: "구름 사이로 은은한 달빛이 내리쬐는 밤, 8살 꼬마 탐정 아리는 분홍색 탐정 모자를 눌러쓰고 손전등과 커다란 돋보기를 꼭 쥐었어요.\n아리 앞에는 오랜 세월 비밀을 간직해 온 마을의 비밀 도서관이 고요하게 서 있었답니다.\n\"소문에 의하면 이 도서관 깊은 곳에 밤마다 신비로운 마법을 부리는 황금 열쇠가 숨겨져 있다고 했어!\"\n아리의 가슴은 두근두근 기대감으로 부풀어 올랐어요. 도서관으로 진입할 수 있는 통로는 3곳이 눈에 띕니다.",
     image: "assets/images/scene_start.png",
@@ -349,7 +349,7 @@ const storyDataKo = {
     choices: []
   },
   ending_toy: {
-    text: "아리는 황금 열쇠 대신, 지하 장난감 방에서 춤추는 태엽 쥐 인형들과 신나게 소꿉놀이를 하며 시간 가는 줄 몰랐어요.\n비록 열쇠는 찾지 못했지만, 잊지 못할 세상에서 가장 신나고 유쾌한 비밀 장난감 친구들을 얻었답니다!\n\n[장난감 친구 엔딩] 귀여운 태엽 쥐들과 언제든 비밀 소꿉장난을 즐길 수 있게 되었습니다!",
+    text: "아리는 황금 열쇠 대신, 지하 장난감 방에서 춤추는 태엽 쥐 인형들과 신나게 소꿉놀이를 하며 시간 가는 줄 몰랐어요.\n비록 열쇠는 못 찾았지만, 잊지 못할 세상에서 가장 신나고 유쾌한 비밀 장난감 친구들을 얻었답니다!\n\n[장난감 친구 엔딩] 귀여운 태엽 쥐들과 언제든 비밀 소꿉장난을 즐길 수 있게 되었습니다!",
     image: "assets/images/scene_ending_toy.png",
     progress: 100,
     endingId: "ending-toy",
@@ -364,368 +364,7 @@ const storyDataKo = {
   }
 };
 
-// 2. 영어 스토리 노드 데이터 (45개 대용량 탐험 노드 트리 English Edition)
-const storyDataEn = {
-  start: {
-    text: "On a moonlit night, 8-year-old little detective Ari adjusted her pink detective hat and gripped her flashlight and magnifying glass tightly.\nIn front of her stood the old secret library holding deep mysteries for centuries.\n\"Rumors say a golden magical key that casts magical spells every night is hidden deep inside!\"\nAri's heart fluttered with excitement. Three secret entrances lead into the library.",
-    image: "assets/images/scene_start.png",
-    progress: 5,
-    choices: [
-      { text: "🚪 Gently push open the heavy creaky old wooden library door.", nextNode: "library_door" },
-      { text: "🪟 Crawl into the small dusty basement window hidden behind ivy vines.", nextNode: "basement_window" },
-      { text: "🌿 Climb the ivy ladder onto the 2nd floor rooftop terrace garden.", nextNode: "rooftop_garden" }
-    ]
-  },
-  library_door: {
-    text: "As Ari gently pushed the door, a friendly creak echoed, and the cozy smell of old paper wrapped around her.\nThe ceiling was towering high, with thousands of books neatly stacked on endless shelves.\nSuddenly, a golden light streamed out from between the tall bookshelves!\nAt the same time, strange sounds echoed near the clock tower hall and ancient archive.",
-    image: "assets/images/scene_bookshelf.png",
-    progress: 12,
-    choices: [
-      { text: "✨ Walk toward the glowing golden light between the secret bookshelves.", nextNode: "glowing_bookshelf" },
-      { text: "🕰️ Head into the grand clock tower hall where ticking sounds resonate.", nextNode: "clock_tower_hall" },
-      { text: "📜 Step into the candlelight of the ancient archive entrance.", nextNode: "ancient_archive" }
-    ]
-  },
-  basement_window: {
-    text: "Ari carefully climbed through the window frame and landed softly in the basement storage room!\nOld treasure chests, cobwebs, and large wooden barrels filled the cozy space.\nIn the middle, a shiny blue gem chest was sparkling with magical blue light.\nAn ancient map hung on the wall, and a deep underground cave passage opened in the floor.",
-    image: "assets/images/scene_basement.png",
-    progress: 12,
-    choices: [
-      { text: "💎 Inspect and open the sparkling blue gem chest.", nextNode: "blue_box" },
-      { text: "🗺️ Examine the secret parchment map hanging on the wall.", nextNode: "library_map" },
-      { text: "🦇 Descend into the deep underground secret cave.", nextNode: "underground_cave" }
-    ]
-  },
-  rooftop_garden: {
-    text: "Standing in the moonlit 2nd floor terrace garden, night-blooming glowing flowers emitted a dreamlike scent.\nThrough the glass windows, Ari could see the starry observatory deck and the 2nd floor library study.",
-    image: "assets/images/scene_start.png",
-    progress: 12,
-    choices: [
-      { text: "🔭 Move onto the mysterious observatory deck equipped with a telescope.", nextNode: "observatory_deck" },
-      { text: "✨ Open the garden window and step into the glowing 2nd floor study.", nextNode: "glowing_bookshelf" }
-    ]
-  },
-  clock_tower_hall: {
-    text: "Inside the clock tower hall, giant gears were turning slowly with steady ticking sounds.\nIn the center lay a giant encyclopedia open to 'Forgotten Secret Tales of the Library'.\nOn the floor were glowing footprint dots and a door leading to the clockwork gear room.",
-    image: "assets/images/scene_bookshelf.png",
-    progress: 20,
-    choices: [
-      { text: "📖 Read the magical riddle page inside the open encyclopedia.", nextNode: "old_encyclopedia" },
-      { text: "👣 Follow the sparkling footprint dots toward the main counter.", nextNode: "counter_footsteps" },
-      { text: "⚙️ Look inside the clockwork gear machine chamber.", nextNode: "clockwork_gear_room" }
-    ]
-  },
-  glowing_bookshelf: {
-    text: "Peeking through the books, Ari's eyes widened in amazement!\nA cute chubby white baby ghost named Pong was floating in the air, happily reading a storybook.\nBeside the shelf sat a magical music box playing a dreamlike melody.",
-    image: "assets/images/scene_pong.png",
-    progress: 20,
-    choices: [
-      { text: "👻 Greet Pong shyly with a warm hello.", nextNode: "pong_first_meeting" },
-      { text: "🔍 Scan the starlight dust clues around the shelf with a magnifying glass.", nextNode: "search_clues" },
-      { text: "🎶 Open the lid of the magical music box playing sweet melodies.", nextNode: "music_box_room" }
-    ]
-  },
-  blue_box: {
-    text: "Opening the blue chest, cute mechanical clockwork toy mice popped out with cheerful winding sounds!\nSeeing a secret code note under their winding gears, Ari gained a new clue.",
-    image: "assets/images/scene_ending_toy.png",
-    progress: 20,
-    choices: [
-      { text: "🐭 Follow the toy mice into the secret toy playroom.", nextNode: "toy_mice_room" },
-      { text: "📖 Carry the secret code note up to the 2nd floor glowing bookshelf.", nextNode: "glowing_bookshelf" }
-    ]
-  },
-  library_map: {
-    text: "Shining her magnifying glass on the parchment map, secret magic ink revealed three major hidden paths!\nThe coordinates for the underground cave, desk maze, and counter footsteps became clear.",
-    image: "assets/images/scene_basement.png",
-    progress: 20,
-    choices: [
-      { text: "🗺️ Dive into the secret desk maze path marked on the map.", nextNode: "secret_passage" },
-      { text: "👣 Head toward the glowing footprints under the counter.", nextNode: "counter_footsteps" }
-    ]
-  },
-  observatory_deck: {
-    text: "Stepping onto the starry observatory deck, Ari looked through the giant telescope!\nThe Big Dipper was shooting light arrows down toward the secret library below.\nA constellation magic puzzle board lay on the deck floor.",
-    image: "assets/images/scene_start.png",
-    progress: 28,
-    choices: [
-      { text: "🌌 Solve the constellation magic puzzle with her magnifying glass.", nextNode: "star_constellation_puzzle" },
-      { text: "✨ Follow the light arrows down to Pong's bookshelf.", nextNode: "pong_first_meeting" }
-    ]
-  },
-  underground_cave: {
-    text: "Descending into the cool underground cave, a bubbling riddle fountain appeared!\nGlowing riddle sentences were floating gently on the water waves.",
-    image: "assets/images/scene_basement.png",
-    progress: 28,
-    choices: [
-      { text: "⛲ Solve the fountain riddle to connect the magic rainbow bridge.", nextNode: "riddle_fountain" },
-      { text: "🐭 Follow winding clockwork sounds into the toy room.", nextNode: "toy_mice_room" }
-    ]
-  },
-  ancient_archive: {
-    text: "The ancient archive was filled with hundreds of years old parchment scrolls.\nKind old bookworm ghost 'Grandpa Jiki' wearing glasses welcomed Ari warmly!\n\"Aha! Detective Ari! I shall share the key clue to the golden lock.\"",
-    image: "assets/images/scene_bookshelf.png",
-    progress: 28,
-    choices: [
-      { text: "👴 Listen to Grandpa Jiki's secret hint for the golden lock.", nextNode: "bookworm_jiki" },
-      { text: "📖 Inspect the encyclopedia magic page in the center.", nextNode: "old_encyclopedia" }
-    ]
-  },
-  music_box_room: {
-    text: "Opening the music box, dancing shadow dolls performed a magical puppet show on the wall!\nThe shadow dolls pointed toward a sweet-smelling Ghost Bakery.",
-    image: "assets/images/scene_pong.png",
-    progress: 28,
-    choices: [
-      { text: "🎭 Follow the shadow puppet signal to the Ghost Bakery.", nextNode: "shadow_game" },
-      { text: "👻 Talk warmly with Pong who floated over attracted by the music.", nextNode: "pong_first_meeting" }
-    ]
-  },
-  old_encyclopedia: {
-    text: "A glowing riddle appeared on the magic page:\n'Only those who love stars and fairytales can open the magic chest.'\nAri instantly sensed the answer.",
-    image: "assets/images/scene_bookshelf.png",
-    progress: 36,
-    choices: [
-      { text: "🧠 Step into the Magic Quiz Room to solve the riddle.", nextNode: "magic_riddle_quiz" }
-    ]
-  },
-  counter_footsteps: {
-    text: "Following the footprints, gentle echo sounds whispered from under the counter!\nThe footprints led through the Echo Hall toward the ghost ballroom.",
-    image: "assets/images/scene_bookshelf.png",
-    progress: 36,
-    choices: [
-      { text: "👣 Track the starlight footprint trail to the end.", nextNode: "footstep_trail" },
-      { text: "🗣️ Courageously shout, \"Is anyone there? Ari is here to help!\"", nextNode: "call_out" }
-    ]
-  },
-  clockwork_gear_room: {
-    text: "Inside the gear chamber, magic gears played like an orchestra!\nBehind the gear door lay the toy mice dance floor and mirror puzzle chamber.",
-    image: "assets/images/scene_ending_toy.png",
-    progress: 36,
-    choices: [
-      { text: "🎉 Enter the toy mice dance party filled with cheerful music.", nextNode: "toy_mouse_dance_party" },
-      { text: "🪞 Enter the secret temple fitted with light reflecting mirrors.", nextNode: "mirror_puzzle_chamber" }
-    ]
-  },
-  pong_first_meeting: {
-    text: "Pong smiled sweetly at Ari's warm greeting!\n\"Hi Detective Ari! Hold my hand, and we can cross the cobweb rainbow bridge to the chest!\"",
-    image: "assets/images/scene_pong.png",
-    progress: 45,
-    choices: [
-      { text: "🤝 Become best friends with Pong and head to the treasure chest.", nextNode: "friend_ghost" },
-      { text: "🕸️ Cross the cobweb rainbow bridge guided by Pong.", nextNode: "spider_web_bridge" }
-    ]
-  },
-  search_clues: {
-    text: "Scanning the shelves with her magnifying glass, starlight dust clues left by Pong stretched far!\nAri's brilliant deduction began solving the clues one by one.",
-    image: "assets/images/scene_ending_detective.png",
-    progress: 45,
-    choices: [
-      { text: "🌟 Track the starlight dust path to locate the golden key.", nextNode: "starlight_dust_path" },
-      { text: "🔍 Reveal the hidden magic switch using magnifying search techniques.", nextNode: "magnifier_deep_search" }
-    ]
-  },
-  toy_mice_room: {
-    text: "Arriving at the secret toy room, cute mechanical mice offered snacks and invited Ari to dance!",
-    image: "assets/images/scene_ending_toy.png",
-    progress: 45,
-    choices: [
-      { text: "🐭 Dance happily with the toy mice to reach the Toy Ending.", nextNode: "toy_mouse_dance_party" }
-    ]
-  },
-  secret_passage: {
-    text: "Passing through the desk maze, a magical playroom with floating trampolines appeared!\nA glowing chest and light reflecting mirrors lay in the center.",
-    image: "assets/images/scene_basement.png",
-    progress: 45,
-    choices: [
-      { text: "🎁 Go to the secret chest and open it with Pong.", nextNode: "secret_room" },
-      { text: "🪞 Align the mirror puzzle to enter the Master Detective Room.", nextNode: "mirror_puzzle_chamber" }
-    ]
-  },
-  star_constellation_puzzle: {
-    text: "As Ari aligned the Big Dipper constellation with her magnifying glass light, starlight dust showered down, revealing the golden key coordinates!",
-    image: "assets/images/scene_start.png",
-    progress: 55,
-    choices: [
-      { text: "🌟 Follow the starlight path to earn the Master Detective Badge.", nextNode: "starlight_dust_path" }
-    ]
-  },
-  riddle_fountain: {
-    text: "Solving the fountain riddle transformed the water stream into a rainbow bridge connected to Pong's chest room!",
-    image: "assets/images/scene_basement.png",
-    progress: 55,
-    choices: [
-      { text: "🌈 Cross the rainbow bridge toward the treasure chest.", nextNode: "rainbow_bridge" }
-    ]
-  },
-  bookworm_jiki: {
-    text: "Grandpa Jiki handed over an ancient parchment scroll.\n\"Enter this code, and the golden lock will click open!\"",
-    image: "assets/images/scene_bookshelf.png",
-    progress: 55,
-    choices: [
-      { text: "🔑 Take Grandpa Jiki's code scroll to the lock chamber.", nextNode: "golden_lock_chamber" }
-    ]
-  },
-  shadow_game: {
-    text: "Passing the shadow play into the Ghost Bakery, warm smells of freshly baked rainbow bread filled the library!",
-    image: "assets/images/scene_pong.png",
-    progress: 55,
-    choices: [
-      { text: "🧁 Share bread at the bakery and head to the ghost ballroom.", nextNode: "ghost_bakery" }
-    ]
-  },
-  magic_riddle_quiz: {
-    text: "The Magic Quiz door clicked open, revealing a radiant golden chest!",
-    image: "assets/images/scene_ending_happy.png",
-    progress: 65,
-    choices: [
-      { text: "🔑 Open the rainbow treasure chest with the golden key.", nextNode: "rainbow_chest" }
-    ]
-  },
-  footstep_trail: {
-    text: "Following the footprint trail, the Echo Hall appeared, leading to a grand party hosted by baby ghosts!",
-    image: "assets/images/scene_bookshelf.png",
-    progress: 65,
-    choices: [
-      { text: "🎶 Pass through the Echo Hall into the ghost ballroom.", nextNode: "echo_hall" }
-    ]
-  },
-  toy_mouse_dance_party: {
-    text: "Ari danced happily with the toy mice, enjoying the most delightful night ever!\n[Toy Friends Ending] Ari made secret toy friends forever in the basement!",
-    image: "assets/images/scene_ending_toy.png",
-    progress: 100,
-    endingId: "ending-toy",
-    choices: []
-  },
-  spider_web_bridge: {
-    text: "Crossing the rainbow cobweb bridge, a dazzling treasure chest awaited Ari!",
-    image: "assets/images/scene_ending_happy.png",
-    progress: 75,
-    choices: [
-      { text: "💫 Push open the treasure chest together with Pong.", nextNode: "rainbow_chest" }
-    ]
-  },
-  starlight_dust_path: {
-    text: "At the end of the starlight dust path, Ari discovered the Master Detective Badge and Golden Key!",
-    image: "assets/images/scene_ending_detective.png",
-    progress: 85,
-    choices: [
-      { text: "🏆 Enter the Hall of Fame for the Legendary Detective Ending.", nextNode: "master_badge_ceremony" }
-    ]
-  },
-  magnifier_deep_search: {
-    text: "Thanks to Ari's precise magnifying search, every hidden magic mechanism unlocked!",
-    image: "assets/images/scene_ending_detective.png",
-    progress: 85,
-    choices: [
-      { text: "🌟 Move to the Master Badge Award Ceremony.", nextNode: "master_badge_ceremony" }
-    ]
-  },
-  secret_room: {
-    text: "Standing before the golden lock in the secret room, Ari and Pong turned the key together.",
-    image: "assets/images/scene_ending_happy.png",
-    progress: 85,
-    choices: [
-      { text: "🔑 Unlock the golden lock completely.", nextNode: "golden_lock_chamber" }
-    ]
-  },
-  mirror_puzzle_chamber: {
-    text: "Reflecting light through the mirror puzzle opened the Master Detective Ceremony!",
-    image: "assets/images/scene_ending_detective.png",
-    progress: 85,
-    choices: [
-      { text: "🏆 Wear the Legendary Detective Badge for the ending.", nextNode: "master_badge_ceremony" }
-    ]
-  },
-  rainbow_bridge: {
-    text: "Crossing the rainbow bridge, Ari arrived safely before the rainbow treasure chest!",
-    image: "assets/images/scene_ending_happy.png",
-    progress: 85,
-    choices: [
-      { text: "🌈 Open the chest and become the Library Guardian.", nextNode: "rainbow_chest" }
-    ]
-  },
-  golden_lock_chamber: {
-    text: "Turning the lock according to Grandpa Jiki's scroll unlocked all magical books!",
-    image: "assets/images/scene_ending_happy.png",
-    progress: 90,
-    choices: [
-      { text: "🔑 Unseal the magical treasure chest.", nextNode: "secret_chest_unsealing" }
-    ]
-  },
-  ghost_bakery: {
-    text: "After eating warm rainbow bread at the bakery, Ari headed to the campfire story ground!",
-    image: "assets/images/scene_ending_ghost.png",
-    progress: 85,
-    choices: [
-      { text: "🔥 Sit around the campfire with ghost friends to read storybooks.", nextNode: "ghost_story_campfire" }
-    ]
-  },
-  echo_hall: {
-    text: "Passing the Echo Hall, a jolly ghost campfire story party began!",
-    image: "assets/images/scene_ending_ghost.png",
-    progress: 85,
-    choices: [
-      { text: "👻 Enter the Ghost Party Ending.", nextNode: "ghost_story_campfire" }
-    ]
-  },
-  ghost_story_campfire: {
-    text: "Every night, Ari joins ghost friends around the campfire to eat rainbow jellies and read storybooks!\n[Jolly Ghost Party Ending] Ari gained warm reading companions forever!",
-    image: "assets/images/scene_ending_ghost.png",
-    progress: 100,
-    endingId: "ending-ghost",
-    choices: []
-  },
-  rainbow_chest: {
-    text: "The rainbow chest opened, unsealing all magical storybooks in the library!\n[Library Guardian Ending] Ari and Pong enjoy endless fairytale adventures together. Happy Ending!",
-    image: "assets/images/scene_ending_happy.png",
-    progress: 100,
-    endingId: "ending-happy",
-    choices: []
-  },
-  secret_chest_unsealing: {
-    text: "Ari and Pong unsealed the chest, enjoying joyful bedtime stories with fairytale characters every night!\n[Library Guardian Ending] Happy Ending!",
-    image: "assets/images/scene_ending_happy.png",
-    progress: 100,
-    endingId: "ending-happy",
-    choices: []
-  },
-  master_badge_ceremony: {
-    text: "Ari solved all library riddles with her magnifying glass and deduction, wearing the 'Master Detective Badge' proudly!\n[Legendary Detective Ending] Long live Detective Ari!",
-    image: "assets/images/scene_ending_detective.png",
-    progress: 100,
-    endingId: "ending-detective",
-    choices: []
-  },
-  ending_happy: {
-    text: "Ari and Pong unlocked the library treasure chest with the golden key, freeing all magical storybooks!\nEvery night, storybook characters come alive and read wonderful tales to Ari and Pong.\n\n[Library Guardian Ending] Ari and Pong became lifelong friends, ready for endless magical adventures. Happy Ending!",
-    image: "assets/images/scene_ending_happy.png",
-    progress: 100,
-    endingId: "ending-happy",
-    choices: []
-  },
-  ending_detective: {
-    text: "With her trusty magnifying glass and brilliant deduction, Ari solved every mystery in the secret library!\nThe Library King awarded Ari the 'Legendary Master Detective Badge'.\n\n[Legendary Detective Ending] Ari became celebrated as the greatest detective in town!",
-    image: "assets/images/scene_ending_detective.png",
-    progress: 100,
-    endingId: "ending-detective",
-    choices: []
-  },
-  ending_toy: {
-    text: "Instead of searching for the key, Ari spent the night dancing and playing house with the mechanical toy mice in the basement.\nShe gained unforgettable, sweet secret toy friends forever!\n\n[Toy Friends Ending] Ari and the toy mice can play secret house anytime in the basement!",
-    image: "assets/images/scene_ending_toy.png",
-    progress: 100,
-    endingId: "ending-toy",
-    choices: []
-  },
-  ending_ghost: {
-    text: "Every night, Ari joins the ghost ballroom party to eat rainbow jellies and read storybooks together.\nThe ghosts were the warmest and kindest reading friends in the world!\n\n[Jolly Ghost Party Ending] Cozy storybook campfire parties are held every night in the library!",
-    image: "assets/images/scene_ending_ghost.png",
-    progress: 100,
-    endingId: "ending-ghost",
-    choices: []
-  }
-};
-
-// 3. DOM 요소 취득
+// 2. DOM 요소 취득
 const illustrationEl = document.getElementById("illustration");
 const storyTextEl = document.getElementById("story-text");
 const choiceContainerEl = document.getElementById("choice-container");
@@ -736,48 +375,26 @@ const albumModalEl = document.getElementById("album-modal");
 const btnCloseAlbumEl = document.getElementById("btn-close-album");
 const btnResetStoryEl = document.getElementById("btn-reset-story");
 
-// 4. 전역 상태 변수
+// 3. 전역 상태 변수
 let currentNodeId = "start";
 let unlockedEndings = [];
 let isAutoTTSMode = false;
-let currentLang = "ko"; // 기본 언어: 'ko' | 'en'
 
-// 활성화된 언어 스토리 데이터 취득 헬퍼
-function getActiveStoryData() {
-  return currentLang === "en" ? storyDataEn : storyDataKo;
-}
-
-// 헬퍼 함수: 엔딩 이름 반환 (다국어)
+// 헬퍼 함수: 엔딩 이름 반환
 function getEndingName(endingId) {
-  if (currentLang === "en") {
-    switch (endingId) {
-      case "ending-happy": return "Library Guardian Ending";
-      case "ending-detective": return "Legendary Detective Ending";
-      case "ending-toy": return "Toy Friends Ending";
-      case "ending-ghost": return "Jolly Ghost Party Ending";
-      default: return "Library Guardian Ending";
-    }
-  } else {
-    switch (endingId) {
-      case "ending-happy": return "도서관 수호자 엔딩";
-      case "ending-detective": return "전설의 꼬마 탐정 엔딩";
-      case "ending-toy": return "장난감 친구 엔딩";
-      case "ending-ghost": return "왁자지껄 유령 파티 엔딩";
-      default: return "도서관 수호자 엔딩";
-    }
+  switch (endingId) {
+    case "ending-happy": return "도서관 수호자 엔딩";
+    case "ending-detective": return "전설의 꼬마 탐정 엔딩";
+    case "ending-toy": return "장난감 친구 엔딩";
+    case "ending-ghost": return "왁자지껄 유령 파티 엔딩";
+    default: return "도서관 수호자 엔딩";
   }
 }
 
-// 5. 로컬 스토리지 데이터 로드
+// 4. 로컬 스토리지 데이터 로드
 function loadGameData() {
-  const savedLang = localStorage.getItem("storyLang");
-  if (savedLang === "en" || savedLang === "ko") {
-    currentLang = savedLang;
-  }
-
-  const activeData = getActiveStoryData();
   const savedNode = localStorage.getItem("currentStoryNode");
-  if (savedNode && activeData[savedNode]) {
+  if (savedNode && storyData[savedNode]) {
     currentNodeId = savedNode;
   } else {
     currentNodeId = "start";
@@ -791,22 +408,12 @@ function loadGameData() {
       unlockedEndings = [];
     }
   }
-  updateLangUI();
   updateAlbumUI();
 }
 
-// 언어 UI 업데이트
-function updateLangUI() {
-  const btnLangEl = document.getElementById("btn-lang");
-  if (btnLangEl) {
-    btnLangEl.textContent = currentLang === "en" ? "🇰🇷 한국어" : "🇺🇸 English";
-  }
-}
-
-// 6. 메인 화면 렌더링 함수
+// 5. 메인 화면 렌더링 함수
 function renderNode(nodeId) {
-  const activeData = getActiveStoryData();
-  const node = activeData[nodeId];
+  const node = storyData[nodeId];
   if (!node) return;
 
   // 이전 진행 중이던 음성 중지
@@ -826,9 +433,8 @@ function renderNode(nodeId) {
     }
   }
 
-  // 로컬스토리지에 현재 노드 및 언어 저장
+  // 로컬스토리지에 현재 노드 저장
   localStorage.setItem("currentStoryNode", nodeId);
-  localStorage.setItem("storyLang", currentLang);
 
   // 진행률 업데이트
   progressEl.style.width = `${node.progress}%`;
@@ -865,9 +471,7 @@ function renderNode(nodeId) {
       const btnReset = document.createElement("button");
       btnReset.className = "btn-choice";
       btnReset.style.background = "linear-gradient(135deg, #7209b7 0%, #b5179e 100%)";
-      btnReset.textContent = currentLang === "en" 
-        ? "📖 Adventure Complete! Read from the Start" 
-        : "📖 모험을 성공적으로 마쳤어요! 처음부터 다시 읽기";
+      btnReset.textContent = "📖 모험을 성공적으로 마쳤어요! 처음부터 다시 읽기";
       btnReset.addEventListener("click", () => {
         if (window.soundManager) window.soundManager.playClick();
         resetStory();
@@ -902,7 +506,7 @@ function renderNode(nodeId) {
   }, 400);
 }
 
-// 7. 엔딩 해금 및 축하 이벤트 로직
+// 6. 엔딩 해금 및 축하 이벤트 로직
 function unlockEnding(endingId) {
   const isNew = !unlockedEndings.includes(endingId);
   if (isNew) {
@@ -916,7 +520,7 @@ function unlockEnding(endingId) {
   }, 300);
 }
 
-// 7-1. 마법 축하 모달 및 컨페티 폭죽 엔진
+// 7. 마법 축하 모달 및 컨페티 폭죽 엔진
 function showCelebrationModal(endingId) {
   const celModalEl = document.getElementById("celebration-modal");
   const celTitleEl = document.getElementById("cel-title");
@@ -950,15 +554,11 @@ function showCelebrationModal(endingId) {
   celEndingNameEl.textContent = `🔑 ${endingTitle}`;
 
   if (isAllCompleted) {
-    celTitleEl.textContent = currentLang === "en" ? "🏆 Master Title Unlocked!" : "🏆 축! 전설의 마스터 칭호 획득!";
-    celDescEl.textContent = currentLang === "en"
-      ? "Amazing! You collected all 4 secret endings and became the [Legendary Master Detective]! 🎉"
-      : "대단해요! 도서관의 4가지 비밀 엔딩을 모두 수집하여 [전설의 꼬마 탐정 마스터]가 되셨습니다! 🎉";
+    celTitleEl.textContent = "🏆 축! 전설의 마스터 칭호 획득!";
+    celDescEl.textContent = "대단해요! 도서관의 4가지 비밀 엔딩을 모두 수집하여 [전설의 꼬마 탐정 마스터]가 되셨습니다! 🎉";
   } else {
-    celTitleEl.textContent = currentLang === "en" ? "🎉 New Ending Unlocked!" : "🎉 새로운 엔딩 도감 해금!";
-    celDescEl.textContent = currentLang === "en"
-      ? "Congratulations! You revealed a new ending with Ari!"
-      : "아리와 함께 동화 속 새로운 모험의 결말을 밝혀내셨습니다!";
+    celTitleEl.textContent = "🎉 새로운 엔딩 도감 해금!";
+    celDescEl.textContent = "아리와 함께 동화 속 새로운 모험의 결말을 밝혀내셨습니다!";
   }
 
   launchConfetti();
@@ -967,7 +567,7 @@ function showCelebrationModal(endingId) {
   celModalEl.classList.remove("hidden");
 }
 
-// 7-2. Canvas 마법 폭죽 컨페티 연출 엔진
+// 7-1. Canvas 마법 폭죽 컨페티 연출 엔진
 function launchConfetti() {
   const canvas = document.getElementById("confetti-canvas");
   if (!canvas) return;
@@ -1035,7 +635,7 @@ function updateAlbumUI() {
       if (unlockedEndings.includes(id)) {
         itemEl.classList.add("unlocked");
         const statusEl = itemEl.querySelector(".album-status");
-        if (statusEl) statusEl.textContent = currentLang === "en" ? "🎉 Unlocked" : "🎉 획득 (클릭하여 감상)";
+        if (statusEl) statusEl.textContent = "🎉 획득 (클릭하여 감상)";
         
         itemEl.onclick = () => {
           showCelebrationModal(id);
@@ -1044,7 +644,7 @@ function updateAlbumUI() {
       } else {
         itemEl.classList.remove("unlocked");
         const statusEl = itemEl.querySelector(".album-status");
-        if (statusEl) statusEl.textContent = currentLang === "en" ? "🔒 Locked" : "🔒 미획득";
+        if (statusEl) statusEl.textContent = "🔒 미획득";
         itemEl.onclick = null;
         itemEl.style.cursor = "default";
       }
@@ -1075,7 +675,7 @@ function resetStory() {
   renderNode("start");
 }
 
-// 10. 현재 스토리 노드 TTS 낭독 시작 함수 (순수 본문만 낭독)
+// 10. 현재 스토리 노드 TTS 낭독 시작 함수 (순수 한국어 동화)
 function startTTSForCurrentNode() {
   if (!window.soundManager) return;
 
@@ -1083,7 +683,6 @@ function startTTSForCurrentNode() {
 
   window.soundManager.speakText(
     textToRead,
-    currentLang, // 'ko' | 'en'
     () => updateTTSUI(true),
     () => {
       if (isAutoTTSMode) {
@@ -1102,28 +701,17 @@ function updateTTSUI(isSpeaking) {
   if (!btnTts) return;
 
   if (isSpeaking || isAutoTTSMode) {
-    btnTts.textContent = currentLang === "en" ? "🛑 Stop Speech" : "🛑 읽기 중지";
+    btnTts.textContent = "🛑 읽기 중지";
     btnTts.classList.add("speaking");
     if (storyCard) storyCard.classList.add("speaking");
   } else {
-    btnTts.textContent = currentLang === "en" ? "🔊 Read Story" : "🔊 동화 읽어주기";
+    btnTts.textContent = "🔊 동화 읽어주기";
     btnTts.classList.remove("speaking");
     if (storyCard) storyCard.classList.remove("speaking");
   }
 }
 
 // 12. 이벤트 리스너 설정
-const btnLangEl = document.getElementById("btn-lang");
-if (btnLangEl) {
-  btnLangEl.addEventListener("click", () => {
-    currentLang = currentLang === "ko" ? "en" : "ko";
-    localStorage.setItem("storyLang", currentLang);
-    updateLangUI();
-    updateAlbumUI();
-    renderNode(currentNodeId);
-  });
-}
-
 const btnResetHeaderEl = document.getElementById("btn-reset-header");
 if (btnResetHeaderEl) {
   btnResetHeaderEl.addEventListener("click", () => {
