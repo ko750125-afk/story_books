@@ -246,59 +246,70 @@ class SoundManager {
     return segments;
   }
 
-  // 6. 동화 본문 TTS 음성 낭독 엔진 (구연동화 성우 캐릭터 연기 & 호흡 낭독)
+  // 6. 동화 본문 TTS 음성 낭독 엔진 (모바일 iOS Safari / Android Chrome 완벽 호환)
   speakText(text, onStartCallback, onEndCallback) {
     if (!('speechSynthesis' in window)) return;
-    this.stopSpeech();
 
-    const segments = this.parseStorySegments(text);
-    let index = 0;
+    // 모바일 브라우저 일시정지 상태 해제
+    if (window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
+    }
 
-    const playNextSegment = () => {
-      if (index >= segments.length) {
-        if (onEndCallback) onEndCallback();
-        return;
-      }
+    // 모바일에서는 cancel() 후 20ms 딜레이를 주어야 오디오 스레드가 무너지지 않음
+    window.speechSynthesis.cancel();
 
-      const seg = segments[index++];
-      const currentText = seg.text.replace(/[\"\"\[\]\(\)]/g, '').trim();
+    setTimeout(() => {
+      const segments = this.parseStorySegments(text);
+      let index = 0;
 
-      if (!currentText) {
-        playNextSegment();
-        return;
-      }
+      const playNextSegment = () => {
+        if (index >= segments.length) {
+          if (onEndCallback) onEndCallback();
+          return;
+        }
 
-      const utterance = new SpeechSynthesisUtterance(currentText);
-      utterance.lang = 'ko-KR';
+        const seg = segments[index++];
+        const currentText = seg.text.replace(/[\"\"\[\]\(\)]/g, '').trim();
 
-      const bestVoice = this.getBestKoreanVoice();
-      if (bestVoice) utterance.voice = bestVoice;
+        if (!currentText) {
+          playNextSegment();
+          return;
+        }
 
-      // 구연동화 캐릭터 연기 피치/속도 다원화
-      if (seg.isDialogue) {
-        // 따옴표 대사 (아리/퐁이): 조금 더 맑고 기분 좋은 톤
-        utterance.pitch = 1.30;
-        utterance.rate = 0.90;
-      } else {
-        // 동화 해설: 따뜻하고 조근조근한 이야기꾼 톤
-        utterance.pitch = 1.10;
-        utterance.rate = 0.85;
-      }
+        const utterance = new SpeechSynthesisUtterance(currentText);
+        utterance.lang = 'ko-KR'; // 모바일 표준 필수 한국어 코드
 
-      utterance.onend = () => {
-        // 문장과 문장 사이 220ms 문장 숨쉬기 휴식 시간 부여 (자연스러움 극대화)
-        setTimeout(playNextSegment, 220);
+        // 모바일 호환 음성 할당 시도
+        try {
+          const bestVoice = this.getBestKoreanVoice();
+          if (bestVoice) utterance.voice = bestVoice;
+        } catch (e) {
+          // 모바일 예외 발생 시 기본 lang ko-KR로 자동 발음
+        }
+
+        // 구연동화 캐릭터 연기 톤
+        if (seg.isDialogue) {
+          utterance.pitch = 1.25;
+          utterance.rate = 0.90;
+        } else {
+          utterance.pitch = 1.10;
+          utterance.rate = 0.86;
+        }
+
+        utterance.onend = () => {
+          setTimeout(playNextSegment, 200);
+        };
+        utterance.onerror = () => {
+          setTimeout(playNextSegment, 100);
+        };
+
+        if (index === 1 && onStartCallback) onStartCallback();
+
+        window.speechSynthesis.speak(utterance);
       };
-      utterance.onerror = () => {
-        setTimeout(playNextSegment, 100);
-      };
 
-      if (index === 1 && onStartCallback) onStartCallback();
-
-      window.speechSynthesis.speak(utterance);
-    };
-
-    playNextSegment();
+      playNextSegment();
+    }, 20);
   }
 
   stopSpeech() {
@@ -311,6 +322,18 @@ class SoundManager {
     return 'speechSynthesis' in window && window.speechSynthesis.speaking;
   }
 }
+
+// 모바일 브라우저 오디오 보안 해금 (iOS Safari / Android Chrome Touch Unlocker)
+function unlockMobileTTS() {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.resume();
+    const silentUtterance = new SpeechSynthesisUtterance('');
+    silentUtterance.volume = 0;
+    window.speechSynthesis.speak(silentUtterance);
+  }
+}
+document.addEventListener('touchstart', unlockMobileTTS, { once: true });
+document.addEventListener('click', unlockMobileTTS, { once: true });
 
 // 싱글톤 인스턴스 전역 제공
 window.soundManager = new SoundManager();
